@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>OpenMote</title>
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --blue:#25AFF4;
+      --gray:#9A9A9A;
+      --dark:#0a0a0a;
+      --light:#f5f5f5;
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Montserrat',sans-serif;
+      background:var(--dark);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    body.lock{overflow:hidden}
+
+    /* HEADER - Transparent, glass on scroll */
+    header{
+      position:fixed;top:0;left:0;right:0;z-index:99;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:1rem;
+      padding-top:calc(1rem + env(safe-area-inset-top));
+      background:transparent;
+      transition:background 0.3s,padding 0.3s,backdrop-filter 0.3s;
+    }
+    header.scrolled{
+      padding:0.5rem 1rem;
+      padding-top:calc(0.5rem + env(safe-area-inset-top));
+      background:rgba(255,255,255,0.7);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+    .logo{
+      width:180px;
+      height:auto;
+      transition:width 0.3s;
+    }
+    header.scrolled .logo{width:140px}
+    .join-btn{
+      padding:0.65rem 1.1rem;
+      font-size:0.8rem;
+      font-weight:700;
+      font-family:inherit;
+      letter-spacing:0.05em;
+      text-transform:uppercase;
+      color:#fff;
+      background:var(--blue);
+      border:none;
+      cursor:pointer;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .join-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 24px rgba(37,175,244,0.4);
+    }
+
+    /* HERO - Cinematic full bleed */
+    .hero{
+      position:relative;
+      min-height:100svh;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+    }
+    .hero-img{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      object-position:center 25%;
+    }
+    .hero::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to top,
+        rgba(10,10,10,1) 0%,
+        rgba(10,10,10,0.7) 30%,
+        rgba(10,10,10,0.3) 60%,
+        rgba(10,10,10,0.4) 100%
+      );
+      pointer-events:none;
+    }
+    .hero-content{
+      position:relative;z-index:1;
+      padding:2rem 1.25rem;
+      padding-bottom:calc(2rem + env(safe-area-inset-bottom));
+    }
+    .badge{
+      display:inline-block;
+      padding:0.35rem 0.75rem;
+      font-size:0.6rem;
+      font-weight:700;
+      letter-spacing:0.15em;
+      text-transform:uppercase;
+      color:var(--blue);
+      border:2px solid var(--blue);
+      margin-bottom:1rem;
+    }
+    .hero-content h1{
+      font-size:2rem;
+      font-weight:900;
+      line-height:1.05;
+      letter-spacing:-0.03em;
+      margin-bottom:0.75rem;
+    }
+    .hero-content h1 span{
+      display:block;
+      color:var(--blue);
+    }
+    .hero-content>p{
+      font-size:0.9rem;
+      color:rgba(255,255,255,0.7);
+      line-height:1.5;
+      margin-bottom:1.5rem;
+      max-width:320px;
+    }
+    .cta{
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      padding:1rem 1.5rem;
+      font-size:0.95rem;
+      font-weight:700;
+      font-family:inherit;
+      letter-spacing:0.03em;
+      color:#fff;
+      background:var(--blue);
+      border:none;
+      cursor:pointer;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .cta:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 32px rgba(37,175,244,0.5);
+    }
+    .cta svg{width:16px;height:16px}
+
+    /* USE CASES - Bold typography driven */
+    .use-cases{
+      padding:4rem 1.25rem;
+      background:#fff;
+      color:var(--dark);
+    }
+    .use-cases-header{
+      margin-bottom:2.5rem;
+    }
+    .use-cases-header h2{
+      font-size:0.75rem;
+      font-weight:700;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      color:var(--blue);
+      margin-bottom:0.75rem;
+    }
+    .use-cases-header p{
+      font-size:1.6rem;
+      font-weight:800;
+      line-height:1.2;
+      letter-spacing:-0.02em;
+    }
+    .use-cases-grid{
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
+    }
+    .use-case{
+      position:relative;
+      overflow:hidden;
+    }
+    .use-case video,
+    .use-case img{
+      width:100%;
+      aspect-ratio:16/9;
+      object-fit:cover;
+      display:block;
+      filter:brightness(0.9);
+    }
+    .use-case-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to top,
+        rgba(10,10,10,0.95) 0%,
+        rgba(10,10,10,0) 60%
+      );
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:1.25rem;
+    }
+    .use-case-num{
+      font-size:0.7rem;
+      font-weight:700;
+      letter-spacing:0.15em;
+      color:var(--blue);
+      margin-bottom:0.35rem;
+    }
+    .use-case-title{
+      font-size:1.2rem;
+      font-weight:800;
+      letter-spacing:-0.01em;
+      color:#fff;
+    }
+
+    /* SPECS - Minimal list */
+    .specs-section{
+      padding:4rem 1.25rem;
+      background:var(--light);
+      color:var(--dark);
+    }
+    .specs-header{
+      margin-bottom:2rem;
+    }
+    .specs-header h2{
+      font-size:0.75rem;
+      font-weight:700;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      color:var(--blue);
+      margin-bottom:0.75rem;
+    }
+    .specs-header p{
+      font-size:1.4rem;
+      font-weight:800;
+      line-height:1.25;
+      letter-spacing:-0.02em;
+    }
+    .specs-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.5rem;
+    }
+    .specs-list span{
+      padding:0.55rem 0.85rem;
+      font-size:0.75rem;
+      font-weight:600;
+      background:var(--blue);
+      color:#fff;
+    }
+
+    /* SHOWCASE - Full bleed image */
+    .showcase{
+      position:relative;
+    }
+    .showcase img{
+      width:100%;
+      display:block;
+    }
+    .showcase-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to top,
+        rgba(10,10,10,1) 0%,
+        rgba(10,10,10,0) 50%
+      );
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:2rem 1.25rem;
+    }
+    .showcase-overlay strong{
+      display:block;
+      font-size:1.1rem;
+      font-weight:800;
+      margin-bottom:0.25rem;
+    }
+    .showcase-overlay span{
+      font-size:0.8rem;
+      color:rgba(255,255,255,0.7);
+    }
+
+    /* FINAL CTA */
+    .final{
+      padding:5rem 1.25rem;
+      text-align:center;
+      background:#fff;
+      color:var(--dark);
+    }
+    .final h2{
+      font-size:1.8rem;
+      font-weight:900;
+      letter-spacing:-0.02em;
+      margin-bottom:0.5rem;
+    }
+    .final>p{
+      font-size:1rem;
+      color:var(--gray);
+      margin-bottom:2rem;
+    }
+    .final .cta{
+      margin-bottom:1.5rem;
+    }
+    .cs-link{
+      display:inline-flex;
+      align-items:center;
+      gap:0.4rem;
+      font-size:0.85rem;
+      font-weight:600;
+      color:var(--gray);
+      text-decoration:none;
+      transition:color 0.2s;
+    }
+    .cs-link:hover{color:var(--dark)}
+    .cs-link svg{width:12px;height:12px}
+
+    /* FOOTER */
+    footer{
+      padding:2rem 1.25rem;
+      padding-bottom:calc(2rem + env(safe-area-inset-bottom));
+      text-align:center;
+      font-size:0.75rem;
+      color:var(--gray);
+      background:#fff;
+      border-top:1px solid #eee;
+    }
+
+    /* MODAL */
+    .overlay{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,0.8);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      z-index:200;
+      opacity:0;
+      visibility:hidden;
+      transition:0.25s ease;
+    }
+    .overlay.on{opacity:1;visibility:visible}
+    .sheet{
+      position:fixed;
+      bottom:0;left:0;right:0;
+      background:#fff;
+      border-top:1px solid #eee;
+      padding:1.5rem;
+      padding-bottom:calc(2rem + env(safe-area-inset-bottom));
+      z-index:201;
+      transform:translateY(100%);
+      transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      color:var(--dark);
+    }
+    .sheet.on{transform:translateY(0)}
+    .sheet-bar{
+      width:40px;
+      height:4px;
+      background:#ddd;
+      margin:0 auto 1.5rem;
+    }
+    .sheet h2{
+      font-size:1.2rem;
+      font-weight:800;
+      text-align:center;
+      margin-bottom:0.35rem;
+    }
+    .sheet .sub{
+      font-size:0.85rem;
+      color:var(--gray);
+      text-align:center;
+      margin-bottom:1.25rem;
+    }
+    .sheet input{
+      width:100%;
+      padding:1rem;
+      font-size:1rem;
+      font-family:inherit;
+      background:#fff;
+      border:2px solid #e5e5e5;
+      color:var(--dark);
+      outline:none;
+      margin-bottom:0.75rem;
+      -webkit-appearance:none;
+      transition:border-color 0.2s;
+    }
+    .sheet input::placeholder{color:var(--gray)}
+    .sheet input:focus{border-color:var(--blue)}
+    .sheet button[type=submit]{
+      width:100%;
+      padding:1rem;
+      font-size:0.95rem;
+      font-weight:700;
+      font-family:inherit;
+      letter-spacing:0.03em;
+      color:#fff;
+      background:var(--blue);
+      border:none;
+      cursor:pointer;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .sheet button[type=submit]:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 24px rgba(37,175,244,0.4);
+    }
+    .sheet .note{
+      font-size:0.7rem;
+      color:var(--gray);
+      text-align:center;
+      margin-top:0.75rem;
+    }
+
+    /* DESKTOP */
+    @media(min-width:768px){
+      /* Custom cursors - controller theme */
+      *{cursor:url('cursors/cursor-arrow.png') 0 0,auto}
+      a,button,input[type=submit],.cta,.join-btn,.cs-link{
+        cursor:url('cursors/cursor-pointer.png') 24 0,pointer;
+      }
+      header{padding:1.5rem 3rem}
+      header.scrolled{padding:0.6rem 3rem;padding-top:calc(0.6rem + env(safe-area-inset-top))}
+      .logo{width:220px}
+      header.scrolled .logo{width:180px}
+      .join-btn{padding:0.75rem 1.5rem;font-size:0.85rem}
+
+      .hero{
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+      }
+      .hero-img{
+        position:relative;
+        width:55%;
+        height:auto;
+        max-height:90vh;
+        object-fit:contain;
+        object-position:center;
+        margin-left:auto;
+      }
+      .hero::after{
+        background:linear-gradient(
+          to right,
+          rgba(10,10,10,1) 0%,
+          rgba(10,10,10,0.8) 30%,
+          rgba(10,10,10,0.2) 60%,
+          rgba(10,10,10,0.1) 100%
+        );
+      }
+      .hero-content{
+        position:absolute;
+        left:0;
+        padding:4rem;
+        max-width:500px;
+      }
+      .hero-content h1{font-size:3.5rem}
+      .hero-content>p{font-size:1.1rem;max-width:400px}
+      .cta{padding:1.1rem 2rem;font-size:1rem}
+
+      .use-cases{padding:6rem 3rem}
+      .use-cases-header{
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-end;
+        margin-bottom:3rem;
+      }
+      .use-cases-header p{font-size:2.2rem;max-width:500px}
+      .use-cases-grid{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:1.5rem;
+      }
+      .use-case video,
+      .use-case img{aspect-ratio:4/3}
+      .use-case-overlay{padding:1.5rem}
+      .use-case-title{font-size:1.35rem}
+
+      .specs-section{padding:6rem 3rem}
+      .specs-header{
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-end;
+        margin-bottom:2.5rem;
+      }
+      .specs-header p{font-size:1.9rem;max-width:450px}
+      .specs-list{gap:0.6rem}
+      .specs-list span{padding:0.65rem 1.1rem;font-size:0.8rem}
+
+      .showcase-overlay{padding:3rem}
+      .showcase-overlay strong{font-size:1.6rem}
+      .showcase-overlay span{font-size:1rem}
+
+      .final{padding:8rem 3rem}
+      .final h2{font-size:2.75rem}
+      .final>p{font-size:1.15rem}
+
+      footer{padding:2.5rem 3rem}
+
+      .sheet{
+        top:50%;left:50%;right:auto;bottom:auto;
+        max-width:420px;width:calc(100% - 2rem);
+        transform:translate(-50%,-50%) scale(0.95);
+        opacity:0;
+        border:1px solid #eee;
+        padding:2rem;
+        box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);
+      }
+      .sheet.on{
+        transform:translate(-50%,-50%) scale(1);
+        opacity:1;
+      }
+      .sheet-bar{display:none}
+    }
+
+    @media(min-width:1024px){
+      header{padding:2rem 4rem}
+      header.scrolled{padding:0.75rem 4rem;padding-top:calc(0.75rem + env(safe-area-inset-top))}
+      .logo{width:280px}
+      header.scrolled .logo{width:200px}
+
+      .hero-img{width:50%}
+      .hero-content{padding:5rem;max-width:550px}
+      .hero-content h1{font-size:4.5rem}
+
+      .use-cases{padding:8rem 4rem}
+      .use-cases-header p{font-size:2.5rem}
+
+      .specs-section{padding:8rem 4rem}
+      .specs-header p{font-size:2.2rem}
+
+      .final{padding:10rem 4rem}
+      .final h2{font-size:3.25rem}
+    }
+
+    @media(min-width:1280px){
+      .use-cases-grid{gap:2rem}
+      .specs-list{gap:0.75rem}
+      .hero-img{width:45%}
+      .hero-content{max-width:600px}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="some assets/Frame 15.png" alt="OpenMote" class="logo">
+  <button class="join-btn" onclick="openModal()">Join Waitlist</button>
+</header>
+
+<section class="hero">
+  <img src="some assets/OpenMote_Twin_standing_basicBackground.png" alt="" class="hero-img">
+  <div class="hero-content">
+    <div class="badge">Coming Soon</div>
+    <h1>Give Your Controller<span>Superpowers</span></h1>
+    <p>A drop-in dev board for makers. Play games, control your home, build anything.</p>
+    <button class="cta" onclick="openModal()">
+      Join Waitlist
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</section>
+
+<section class="use-cases">
+  <div class="use-cases-header">
+    <div>
+      <h2>What You Can Build</h2>
+      <p>Old tech, new creations. Transform a classic controller into anything you imagine.</p>
+    </div>
+  </div>
+  <div class="use-cases-grid">
+    <figure class="use-case">
+      <video src="some assets/project_dino_run.MP4" autoplay loop muted playsinline></video>
+      <div class="use-case-overlay">
+        <span class="use-case-num">01</span>
+        <span class="use-case-title">Play Games</span>
+      </div>
+    </figure>
+    <figure class="use-case">
+      <video src="some assets/project_media_example.MP4" autoplay loop muted playsinline></video>
+      <div class="use-case-overlay">
+        <span class="use-case-num">02</span>
+        <span class="use-case-title">Control Media</span>
+      </div>
+    </figure>
+    <figure class="use-case">
+      <img src="some assets/openMote_open_forwardfacing.png" alt="">
+      <div class="use-case-overlay">
+        <span class="use-case-num">03</span>
+        <span class="use-case-title">Arduino Compatible</span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section class="specs-section">
+  <div class="specs-header">
+    <div>
+      <h2>What's Inside</h2>
+      <p>Powered by ESP32-S3. WiFi. Bluetooth. Motion sensing. IR. Haptics. Audio. All built in.</p>
+    </div>
+  </div>
+  <div class="specs-list">
+    <span>ESP32-S3</span>
+    <span>WiFi</span>
+    <span>Bluetooth 5.0</span>
+    <span>6-Axis IMU</span>
+    <span>IR Blaster</span>
+    <span>USB-C</span>
+    <span>12 Buttons</span>
+    <span>Haptic Motor</span>
+    <span>Speaker</span>
+    <span>4 LEDs</span>
+    <span>Battery</span>
+    <span>Open Source</span>
+  </div>
+</section>
+
+<figure class="showcase">
+  <img src="some assets/OpenMote_open_held_wood_cover.png" alt="">
+  <div class="showcase-overlay">
+    <strong>No Soldering Required</strong>
+    <span>Just swap the board and start building.</span>
+  </div>
+</figure>
+
+<section class="final">
+  <h2>Ready to Build?</h2>
+  <p>Be first in line when we launch.</p>
+  <button class="cta" onclick="openModal()">
+    Get Early Access
+    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+  <a href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" class="cs-link">
+    View on Crowd Supply
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<footer>© 2025 Hat & Hammer · Los Angeles</footer>
+
+<div class="overlay" onclick="closeModal()"></div>
+<div class="sheet">
+  <div class="sheet-bar"></div>
+  <h2>Join the Waitlist</h2>
+  <p class="sub">Be first when OpenMote launches.</p>
+  <form onsubmit="event.preventDefault();location.href='https://www.crowdsupply.com/hat-and-hammer/openmote'">
+    <input type="text" placeholder="Your name" required>
+    <input type="email" placeholder="Your email" required>
+    <button type="submit">Get Early Access</button>
+  </form>
+  <p class="note">No spam. Unsubscribe anytime.</p>
+</div>
+
+<script>
+function openModal(){document.querySelector('.overlay').classList.add('on');document.querySelector('.sheet').classList.add('on');document.body.classList.add('lock')}
+function closeModal(){document.querySelector('.overlay').classList.remove('on');document.querySelector('.sheet').classList.remove('on');document.body.classList.remove('lock')}
+document.addEventListener('keydown',e=>e.key==='Escape'&&closeModal());
+
+// Header scroll effect
+const header=document.querySelector('header');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>50){
+    header.classList.add('scrolled');
+  }else{
+    header.classList.remove('scrolled');
+  }
+},{passive:true});
+</script>
+</body>
+</html>
