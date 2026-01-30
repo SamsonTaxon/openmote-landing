@@ -16,13 +16,18 @@
       --dark:#0a0a0a;
       --light:#f5f5f5;
     }
-    html{scroll-behavior:smooth}
+    html{
+      scroll-behavior:smooth;
+      height:-webkit-fill-available;
+    }
     body{
       font-family:'Montserrat',sans-serif;
       background:var(--dark);
       color:#fff;
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
+      min-height:100vh;
+      min-height:-webkit-fill-available;
     }
     body.lock{overflow:hidden}
 
@@ -70,10 +75,14 @@
     /* HERO - Cinematic full bleed */
     .hero{
       position:relative;
-      min-height:100svh;
+      min-height:100vh;
+      min-height:100dvh;
       display:flex;
       flex-direction:column;
       justify-content:flex-end;
+    }
+    @supports (-webkit-touch-callout: none) {
+      .hero{min-height:-webkit-fill-available}
     }
     .hero-img{
       position:absolute;inset:0;
