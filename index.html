@@ -5,9 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>OpenMote</title>
   <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "v9q836emlg");
+  </script>
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
@@ -30,29 +38,30 @@
     }
     body.lock{overflow:hidden;position:fixed;width:100%;height:100%}
 
-    /* HEADER - Transparent, glass on scroll */
+    /* HEADER */
     header{
       position:fixed;top:0;left:0;right:0;z-index:99;
       display:flex;justify-content:space-between;align-items:center;
       padding:1rem;
       padding-top:calc(1rem + env(safe-area-inset-top));
-      background:transparent;
-      transition:background 0.3s,padding 0.3s,backdrop-filter 0.3s;
     }
-    header.scrolled{
-      padding:0.5rem 1rem;
-      padding-top:calc(0.5rem + env(safe-area-inset-top));
-      background:rgba(255,255,255,0.7);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-      border-bottom:1px solid rgba(0,0,0,0.05);
+    header::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:#fff;
+      border-bottom:1px solid #e5e5e5;
+      opacity:0;
+      transition:opacity 0.35s ease;
     }
+    header.scrolled::before{
+      opacity:1;
+    }
+    header>*{position:relative;z-index:1}
     .logo{
       width:180px;
       height:auto;
-      transition:width 0.3s;
     }
-    header.scrolled .logo{width:140px}
     .join-btn{
       padding:0.65rem 1.1rem;
       font-size:0.8rem;
@@ -431,7 +440,6 @@
       header{padding:1.5rem 3rem}
       header.scrolled{padding:0.6rem 3rem;padding-top:calc(0.6rem + env(safe-area-inset-top))}
       .logo{width:220px}
-      header.scrolled .logo{width:180px}
       .join-btn{padding:0.75rem 1.5rem;font-size:0.85rem}
 
       .hero{
@@ -526,7 +534,6 @@
       header{padding:2rem 4rem}
       header.scrolled{padding:0.75rem 4rem;padding-top:calc(0.75rem + env(safe-area-inset-top))}
       .logo{width:280px}
-      header.scrolled .logo{width:200px}
 
       .hero-img{width:50%}
       .hero-content{padding:5rem;max-width:550px}
@@ -553,12 +560,12 @@
 <body>
 
 <header>
-  <img src="img/logo.png" alt="OpenMote" class="logo">
+  <img src="img/logo.png" alt="OpenMote" class="logo" width="600" height="300">
   <button class="join-btn" onclick="openModal()">Join Waitlist</button>
 </header>
 
 <section class="hero">
-  <img src="img/hero.webp" alt="" class="hero-img">
+  <img src="img/hero.webp" alt="" class="hero-img" width="675" height="1200" fetchpriority="high">
   <div class="hero-content">
     <div class="badge">Coming Soon</div>
     <h1>Give Your Controller<span>Superpowers</span></h1>
@@ -593,7 +600,7 @@
       </div>
     </figure>
     <figure class="use-case">
-      <img src="img/arduino.webp" alt="">
+      <img src="img/arduino.webp" alt="" width="800" height="450">
       <div class="use-case-overlay">
         <span class="use-case-num">03</span>
         <span class="use-case-title">Arduino Compatible</span>
@@ -606,7 +613,7 @@
   <div class="specs-header">
     <div>
       <h2>What's Inside</h2>
-      <p>Powered by ESP32-S3. WiFi. Bluetooth. Motion sensing. IR. Haptics. Audio. All built in.</p>
+      <p>Everything you need in one board. WiFi. Bluetooth. Motion. IR. Haptics. Mic. Speaker.</p>
     </div>
   </div>
   <div class="specs-list">
@@ -619,6 +626,7 @@
     <span>12 Buttons</span>
     <span>Haptic Motor</span>
     <span>Speaker</span>
+    <span>Mic</span>
     <span>4 LEDs</span>
     <span>Battery</span>
     <span>Open Source</span>
@@ -626,7 +634,7 @@
 </section>
 
 <figure class="showcase">
-  <img src="img/showcase.webp" alt="">
+  <img src="img/showcase.webp" alt="" width="1000" height="562">
   <div class="showcase-overlay">
     <strong>No Soldering Required</strong>
     <span>Just swap the board and start building.</span>
@@ -646,16 +654,16 @@
   </a>
 </section>
 
-<footer>© 2025 Hat & Hammer · Los Angeles</footer>
+<footer>© 2026 Hat & Hammer · Los Angeles</footer>
 
 <div class="overlay" onclick="closeModal()"></div>
 <div class="sheet">
   <div class="sheet-bar"></div>
   <h2>Join the Waitlist</h2>
   <p class="sub">Be first when OpenMote launches.</p>
-  <form onsubmit="event.preventDefault();location.href='https://www.crowdsupply.com/hat-and-hammer/openmote'">
-    <input type="text" placeholder="Your name" required>
-    <input type="email" placeholder="Your email" required>
+  <form id="joinForm" onsubmit="handleJoin(event)">
+    <input type="text" name="entry.595126051" placeholder="Your name" required>
+    <input type="email" name="entry.496820789" placeholder="Your email" required>
     <button type="submit">Get Early Access</button>
   </form>
   <p class="note">No spam. Unsubscribe anytime.</p>
@@ -688,6 +696,39 @@ window.addEventListener('scroll',()=>{
     header.classList.remove('scrolled');
   }
 },{passive:true});
+
+function handleJoin(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button');
+  const sheet = document.querySelector('.sheet');
+  
+  btn.textContent = 'Joining...';
+  btn.disabled = true;
+
+  const data = new FormData(form);
+  
+  // Submit to Google Forms
+  fetch('https://docs.google.com/forms/d/e/1FAIpQLScmmntyRdq0cujMaYjoVEoSwXtZiYo9S43xZFxoj5zqCcFWfQ/formResponse', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: data
+  }).then(() => {
+    // Show success message inside the modal
+    sheet.innerHTML = `
+      <div class="sheet-bar"></div>
+      <h2>Success!</h2>
+      <p class="sub">Thanks for joining. For the most up-to-date news, follow our project on Crowd Supply.</p>
+      <a href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" style="display:block; width:100%; padding:1rem; font-size:0.95rem; font-weight:700; text-align:center; text-decoration:none; color:#fff; background:#25AFF4; border:none; margin-top:1rem; box-shadow:0 4px 12px rgba(37,175,244,0.3);">
+        Follow on Crowd Supply
+      </a>
+    `;
+  }).catch(err => {
+    console.error('Form error:', err);
+    btn.textContent = 'Something went wrong. Try again.';
+    btn.disabled = false;
+  });
+}
 </script>
 </body>
 </html>
