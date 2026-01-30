@@ -18,6 +18,7 @@
     }
     html{
       scroll-behavior:auto;
+      -webkit-overflow-scrolling:touch;
     }
     body{
       font-family:'Montserrat',sans-serif;
@@ -25,8 +26,9 @@
       color:#fff;
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
+      overscroll-behavior-y:none;
     }
-    body.lock{overflow:hidden}
+    body.lock{overflow:hidden;position:fixed;width:100%;height:100%}
 
     /* HEADER - Transparent, glass on scroll */
     header{
@@ -78,6 +80,7 @@
       flex-direction:column;
       justify-content:flex-end;
       overflow:hidden;
+      touch-action:pan-y;
     }
     .hero-img{
       position:absolute;
@@ -85,6 +88,8 @@
       width:100%;height:100%;
       object-fit:cover;
       object-position:center 25%;
+      will-change:auto;
+      pointer-events:none;
     }
     .hero::after{
       content:'';
@@ -657,8 +662,21 @@
 </div>
 
 <script>
-function openModal(){document.querySelector('.overlay').classList.add('on');document.querySelector('.sheet').classList.add('on');document.body.classList.add('lock')}
-function closeModal(){document.querySelector('.overlay').classList.remove('on');document.querySelector('.sheet').classList.remove('on');document.body.classList.remove('lock')}
+let scrollPos=0;
+function openModal(){
+  scrollPos=window.scrollY;
+  document.body.style.top=`-${scrollPos}px`;
+  document.body.classList.add('lock');
+  document.querySelector('.overlay').classList.add('on');
+  document.querySelector('.sheet').classList.add('on');
+}
+function closeModal(){
+  document.querySelector('.overlay').classList.remove('on');
+  document.querySelector('.sheet').classList.remove('on');
+  document.body.classList.remove('lock');
+  document.body.style.top='';
+  window.scrollTo(0,scrollPos);
+}
 document.addEventListener('keydown',e=>e.key==='Escape'&&closeModal());
 
 // Header scroll effect
