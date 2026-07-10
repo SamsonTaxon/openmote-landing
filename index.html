@@ -663,8 +663,8 @@
   <h2>Join the Waitlist</h2>
   <p class="sub">Be first when OpenMote launches.</p>
   <form id="joinForm" onsubmit="handleJoin(event)">
-    <input type="text" name="entry.595126051" placeholder="Your name" required>
-    <input type="email" name="entry.496820789" placeholder="Your email" required>
+    <input type="text" name="firstName" placeholder="Your name" required>
+    <input type="email" name="email" placeholder="Your email" required>
     <button type="submit">Get Early Access</button>
   </form>
   <p class="note">No spam. Unsubscribe anytime.</p>
@@ -709,12 +709,15 @@ function handleJoin(e) {
 
   const data = new FormData(form);
   
-  // Submit to Google Forms
-  fetch('https://docs.google.com/forms/d/e/1FAIpQLScmmntyRdq0cujMaYjoVEoSwXtZiYo9S43xZFxoj5zqCcFWfQ/formResponse', {
+  // Submit to Loops
+  const body = new URLSearchParams(data);
+  body.append('source', 'OpenMote Landing Page');
+  fetch('https://app.loops.so/api/newsletter-form/cmp4np7jc03ic0j038dtkmvsv', {
     method: 'POST',
-    mode: 'no-cors',
-    body: data
-  }).then(() => {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString()
+  }).then(res => res.json()).then(res => {
+    if (!res || !res.success) throw new Error((res && res.message) || 'Signup failed');
     // Show success message inside the modal
     sheet.innerHTML = `
       <div class="sheet-bar"></div>
