@@ -446,7 +446,16 @@
 
     /* S2 SMART HOME */
     .smart{position:relative;padding-top:0;overflow:hidden}
-    .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:11px;padding:clamp(1.6rem,3vw,2rem) 0 clamp(1.2rem,2vw,1.35rem)}
+    .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:11px;padding:0}
+    /* Per-instance cue spacing, baked from the live tuner (owner approved) */
+    #smart > .scroll-cue{padding-top:26px;padding-bottom:27px}
+    #apps > .scroll-cue{padding-top:0;padding-bottom:30px}
+    #code > .scroll-cue{padding-top:0;padding-bottom:22px}
+    @media(min-width:1024px){
+      #smart > .scroll-cue{padding-top:35px;padding-bottom:32px}
+      #apps > .scroll-cue{padding-top:0;padding-bottom:27px}
+      #code > .scroll-cue{padding-top:0;padding-bottom:0;transform:translateX(1px)}
+    }
     .scroll-cue b{width:7px;height:7px;background:var(--blue);animation:cuestep 2s infinite}
     .scroll-cue b:nth-child(2){animation-delay:0.25s}
     .scroll-cue b:nth-child(3){animation-delay:0.5s}
@@ -511,8 +520,12 @@
     .smart-copy{position:relative;z-index:31;text-align:center;max-width:38ch;margin:0 auto;padding:0 1.25rem clamp(1.5rem,3vw,2.5rem);color:var(--gray);font-weight:500;line-height:1.6;font-size:clamp(0.95rem,1.3vw,1.1rem)}
 
     /* S3 COMMUNITY APPS */
-    .apps{padding:0 0 clamp(2rem,4vw,3.5rem)}
-    .apps-head{align-items:center;text-align:center;margin-bottom:clamp(1.25rem,2.2vw,1.75rem)}
+    /* Bottom of the apps band sets the gap above the YOUR CODE cue.
+       Below 768 the remote cutout stops 9px short of the band's clip edge,
+       so the section padding is 9px smaller there to land on the same gap. */
+    .apps{padding:0 0 5px}
+    @media(min-width:768px){.apps{padding-bottom:14px}}
+    .apps-head{align-items:center;text-align:center;margin-bottom:3px}
     .apps-head .sub{max-width:44ch}
     .apps-break{position:relative;width:100vw;left:50%;transform:translateX(-50%);overflow:hidden;padding:clamp(1rem,2.4vw,1.5rem) 0 clamp(2rem,3vw,3rem);--sh:72px}
     @media(min-width:768px){.apps-break{--sh:96px}}
@@ -530,6 +543,10 @@
     @media(min-width:768px){.apps-remote{height:300px}}
     .prog-line{text-align:center;margin-top:clamp(1rem,2vw,1.75rem);color:var(--gray);font-weight:700;font-size:clamp(1rem,1.6vw,1.25rem);letter-spacing:-0.01em}
     .plat-row{display:flex;justify-content:center;align-items:flex-start;gap:clamp(1.6rem,4.5vw,4rem);margin-top:1.5rem;flex-wrap:wrap}
+    /* 4 across only while they comfortably fit, otherwise a clean 2x2. Never 3+1. */
+    @media(max-width:559.98px){
+      .plat-row{display:grid;grid-template-columns:repeat(2,minmax(0,auto));justify-content:center;justify-items:center}
+    }
     .plat{display:flex;flex-direction:column;align-items:center;gap:0.75rem;width:clamp(6.4rem,10vw,8rem)}
     .plat img{width:clamp(54px,6vw,74px);height:auto;display:block}
     .plat span{font-size:0.85rem;font-weight:700;color:#fff;letter-spacing:0.02em}
