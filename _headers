@@ -1,3 +1,7 @@
+/preview-b7k4x9
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+  Cache-Control: no-store
+
 /preview-b7k4x9/*
-  X-Robots-Tag: noindex, nofollow
-  Cache-Control: no-cache
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+  Cache-Control: no-store
