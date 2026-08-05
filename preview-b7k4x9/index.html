@@ -475,10 +475,10 @@
     .msym img{width:60px;height:13px;max-width:none;display:block}
 
     /* S2 SMART HOME */
-    .smart{position:relative;padding-top:0;overflow:hidden}
-    .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:11px;padding:0}
+    .smart{position:relative;padding-top:var(--smart-top,110px);overflow:hidden}
+    .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:var(--cue-gap,11px);padding:0}
     /* Per-instance cue spacing, baked from the live tuner (owner approved) */
-    #smart > .scroll-cue{padding-top:26px;padding-bottom:27px}
+    #smart > .scroll-cue{padding-top:var(--cue-pad,26px);padding-bottom:var(--cue-pad,27px)}
     #apps > .scroll-cue{padding-top:0;padding-bottom:30px}
     #code > .scroll-cue{padding-top:0;padding-bottom:22px}
     @media(min-width:1024px){
@@ -486,18 +486,18 @@
       #apps > .scroll-cue{padding-top:0;padding-bottom:27px}
       #code > .scroll-cue{padding-top:9px;padding-bottom:0;transform:translateX(1px)}
     }
-    .scroll-cue b{width:7px;height:7px;background:var(--blue);animation:cuestep 2s infinite}
+    .scroll-cue b{width:var(--cue-dot,7px);height:var(--cue-dot,7px);background:var(--blue);animation:cuestep 2s infinite}
     .scroll-cue b:nth-child(2){animation-delay:0.25s}
     .scroll-cue b:nth-child(3){animation-delay:0.5s}
     @keyframes cuestep{0%,55%,100%{opacity:0.16}15%{opacity:1}}
     @keyframes cuestepwhite{0%,55%,100%{opacity:0.42}15%{opacity:1}}
     /* section eyebrows are gone: the heading now sits straight under the dots */
     .smart-h{margin-top:0;text-align:center;padding-inline:var(--gut)}
-    .proto-row{margin-top:0.9rem;text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;letter-spacing:0.22em}
+    .proto-row{margin-top:var(--radios-gap,0.9rem);text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;letter-spacing:0.22em}
     @media(min-width:640px){
       .smart-h{position:relative;z-index:40;margin-top:0}
       .proto-row{position:relative;z-index:40;margin-top:0.8rem;
-        margin-bottom:calc(min(1200px,94vw) * -0.035)}
+        margin-bottom:var(--scene-pull,calc(min(1200px,94vw) * -0.035))}
     }
     /* --rh/--rw are the rendered size of the remote cutout. Every callout label
        is anchored in these units, so the labels track the remote at any width. */
@@ -527,7 +527,8 @@
       animation:pillbob 6s ease-in-out infinite;
     }
     .eco{
-      position:absolute;z-index:35;left:var(--x);top:var(--y);
+      position:absolute;z-index:35;left:50%;top:50%;
+      transform:translate(calc(-50% + var(--dx,0px)),calc(-50% + var(--dy,0px)));
       display:flex;flex-direction:column;align-items:center;gap:0.6rem;
       color:#fff;text-align:center;
       filter:drop-shadow(0 10px 24px rgba(0,0,0,0.55));
@@ -535,11 +536,6 @@
     .eco .inv{height:clamp(40px,4.4vw,62px);width:auto;display:block;filter:brightness(0) invert(1)}
     .eco-wide .inv{height:clamp(22px,2.2vw,30px)}
     .eco .genico{width:clamp(42px,4.6vw,62px);height:clamp(42px,4.6vw,62px);display:block}
-    @media(min-width:768px){
-      /* The marks were spread to the viewport edges, leaving the scene sparse on
-         desktop. Pull the whole constellation toward the remote it belongs to. */
-      .eco{left:calc(50% + (var(--x) - 50%) * 0.66)}
-    }
     .eco .nm{font-size:clamp(0.78rem,1.05vw,1rem);font-weight:700;letter-spacing:0.01em;white-space:nowrap}
     .eco .tile{width:66px;height:66px;background:#FFFFFF;display:grid;place-items:center}
     .eco .tile img,.eco .tile svg{width:40px;height:40px;display:block}
@@ -551,11 +547,11 @@
     #p-wifi{--x:calc(50% - 0.25620 * var(--rw));--y:calc(50% - 0.075 * var(--rh));--tx:calc(-100% + 14px)}
     #p-bt{--x:calc(50% + 0.18402 * var(--rw));--y:calc(50% - 0.05293 * var(--rh));--tx:-14px}
     #p-usb{--x:calc(50% + 0.38426 * var(--rw));--y:calc(50% + 0.41413 * var(--rh));--tx:-5px}
-    #e-ha{--x:7%;--y:20%;--fd:6s;--fdel:0.5s}
-    #e-matter{--x:76%;--y:26%;--fd:6s;--fdel:0.6s}
-    #e-gh{--x:9%;--y:62%;--fd:6s;--fdel:0.8s}
-    #e-alexa{--x:78%;--y:58%;--fd:6s;--fdel:0.9s}
-    #e-ah{--x:16%;--y:76%;--fd:6s;--fdel:1.2s}
+    #e-ha{--dx:379.1px;--dy:26.5px;--fd:6s;--fdel:0.5s}
+    #e-matter{--dx:91.9px;--dy:368.7px;--fd:6s;--fdel:0.6s}
+    #e-gh{--dx:-322.3px;--dy:201.4px;--fd:6s;--fdel:0.8s}
+    #e-alexa{--dx:-291.1px;--dy:-244.3px;--fd:6s;--fdel:0.9s}
+    #e-ah{--dx:142.4px;--dy:-352.3px;--fd:6s;--fdel:1.2s}
     @media(max-width:899px){
       /* Narrow screens: the remote fills most of the scene, so IR moves above the
          tip and the side labels take shallower anchor points to stay on screen. */
@@ -578,7 +574,7 @@
        so the section padding is 9px smaller there to land on the same gap. */
     .apps{padding:0 0 5px}
     @media(min-width:768px){.apps{padding-bottom:14px}}
-    .apps-head{align-items:center;text-align:center;margin-bottom:3px}
+    .apps-head{align-items:center;text-align:center;margin-bottom:var(--apps-head-gap,3px)}
     .apps-head .sub{max-width:44ch}
     .apps-break{position:relative;width:100vw;left:50%;transform:translateX(-50%);overflow:hidden;padding:clamp(1rem,2.4vw,1.5rem) 0 clamp(2rem,3vw,3rem);--sh:72px}
     @media(min-width:768px){.apps-break{--sh:96px}}
@@ -586,14 +582,14 @@
     .strip-row img{height:var(--sh);width:auto;display:block;margin-right:calc(var(--sh) * 0.27084)}
     .row-1{animation-duration:96s;animation-direction:reverse;margin-bottom:20px}
     .row-2{animation-duration:72s}
-    .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-bottom:34px;pointer-events:none}
-    @media(min-width:768px){.nowrun-wrap{margin-bottom:58px}}
+    .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-top:var(--nowrun-top,0px);margin-bottom:var(--nowrun-gap,34px);pointer-events:none}
+    @media(min-width:768px){.nowrun-wrap{margin-bottom:var(--nowrun-gap,58px)}}
     .rows-zone{position:relative}
     .nowrun{width:min(320px,80vw);height:auto;animation:floaty 6s ease-in-out infinite}
     .nowrun .st{stroke:#FFFFFF;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
     .nowrun g[id^="app-"]{transition:opacity 0.35s ease}
-    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:210px;width:auto;pointer-events:none;filter:drop-shadow(0 14px 22px rgba(0,0,0,0.45)) drop-shadow(0 48px 90px rgba(0,0,0,0.35))}
-    @media(min-width:768px){.apps-remote{height:300px}}
+    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;pointer-events:none;filter:drop-shadow(0 14px 22px rgba(0,0,0,0.45)) drop-shadow(0 48px 90px rgba(0,0,0,0.35))}
+    @media(min-width:768px){.apps-remote{height:var(--apps-remote-h,300px)}}
     .prog-line{text-align:center;margin-top:clamp(1rem,2vw,1.75rem);color:var(--gray);font-weight:700;font-size:clamp(1rem,1.6vw,1.25rem);letter-spacing:-0.01em}
     .plat-row{display:flex;justify-content:center;align-items:flex-start;gap:clamp(1.6rem,4.5vw,4rem);margin-top:1.5rem;flex-wrap:wrap}
     /* 4 across only while they comfortably fit, otherwise a clean 2x2. Never 3+1. */
@@ -609,7 +605,7 @@
     .code-grid{position:relative;max-width:76rem;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.95fr) clamp(30px,6vw,190px) minmax(0,1.15fr);gap:0 clamp(0.3rem,1vw,1rem);align-items:start}
     .code-h{max-width:13ch}
     .flash-target{position:relative;z-index:2;width:fit-content;margin:clamp(1.8rem,3.5vw,3.6rem) auto clamp(2.8rem,4.5vw,4.5rem)}
-    .flash-target .remote{height:clamp(220px,32vw,430px);width:auto;display:block;filter:drop-shadow(0 26px 52px rgba(0,0,0,0.55))}
+    .flash-target .remote{height:clamp(220px,32vw,430px);width:auto;display:block}
     .ledstrip{position:absolute;left:50%;top:calc(100% + 14px);transform:translateX(-50%);width:clamp(86px,12vw,126px);height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,0.5))}
     .ledstrip .l1{animation:led1 4s linear infinite}
     .ledstrip .l2{animation:led2 4s linear infinite}
@@ -633,16 +629,16 @@
     .board-h{margin-top:0.9rem;font-size:clamp(1.9rem,3.4vw,3rem)}
     .inside-sub{max-width:30ch}
     .diy-copy .sub{max-width:32ch;margin-top:1rem}
-    .diy-scene{position:relative;display:flex;align-items:center;justify-content:center;gap:0}
+    .diy-scene{position:relative;translate:var(--diy-x,0px) var(--diy-y,0px);display:flex;align-items:center;justify-content:center;gap:0}
     @media(min-width:1280px){.diy-scene{justify-content:flex-end}}
-    .remote-rockwrap{position:relative;flex:0 0 auto;z-index:2}
-    .rock-remote{height:clamp(160px,21vw,330px);width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 20px 38px rgba(0,0,0,0.55))}
-    .waves{flex:0 0 auto;width:clamp(44px,8vw,120px);margin:0 -2px 34px}
+    .remote-rockwrap{translate:var(--diy-remote-x,-24px) 0;position:relative;flex:0 0 auto;z-index:2}
+    .rock-remote{height:var(--diy-remote-h,360px));width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 20px 38px rgba(0,0,0,0.55))}
+    .waves{flex:0 0 auto;width:var(--diy-waves-w,clamp(44px,8vw,120px));margin:0 var(--diy-waves-x,-2px) var(--diy-waves-y,34px)}
     .waves .w1{animation:wavepulse 2s ease-in-out infinite}
     .waves .w2{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.305s}
     .waves .w3{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.61s}
     .rig{flex:0 0 auto;width:clamp(180px,38vw,470px);height:auto}
-    @media(min-width:1280px){.rig{width:clamp(340px,30vw,430px)}}
+    @media(min-width:1280px){.rig{width:var(--diy-rig-w,clamp(340px,30vw,430px))}}
 
     #horn{animation:hornswing 4s ease-in-out infinite;transform-origin:196px 170px;transform-box:view-box}
     .bled{animation:bledblink 4s ease-in-out infinite}
@@ -826,8 +822,8 @@
     }
     .hero .scroll-cue{display:none}
     @media(min-width:1024px){.hero .scroll-cue{display:flex}}
-    @keyframes bobA{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-    @keyframes bobB{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes bobA{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(-0.9deg)}}
+    @keyframes bobB{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(0.7deg)}}
     @media (prefers-reduced-motion:reduce){.duo-a,.duo-b{animation:none!important}}
     /* Custom cursor must win over any later bare cursor:pointer declarations */
     @media(min-width:768px){
@@ -900,7 +896,6 @@
 
 <!-- S2 SMART HOME -->
 <section class="smart la" id="smart" data-screen-label="02 Smart Home">
-  <div class="scroll-cue" aria-hidden="true"><b></b><b></b><b></b></div>
   <h2 class="h2 smart-h rv">Control Your Whole Life.</h2>
   <p class="proto-row rv">WiFi &#183; Bluetooth &#183; IR</p>
 
