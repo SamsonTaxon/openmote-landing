@@ -454,6 +454,7 @@
 
     /* S1 WHAT YOU CAN BUILD */
     .build{padding:clamp(2rem,4vw,3.5rem) 0 0}
+    .build{display:none}
     .uc-ledger{max-width:66rem;margin:0 auto;border-top:1px solid var(--hair)}
     .ucr{display:grid;grid-template-columns:clamp(132px,30vw,300px) minmax(0,1fr);gap:clamp(1rem,3.5vw,2.8rem);align-items:center;padding:clamp(1rem,2.4vw,1.9rem) 0;border-bottom:1px solid var(--hair)}
     @media(min-width:768px){
@@ -498,8 +499,8 @@
       #code > .scroll-cue{padding-top:9px;padding-bottom:0;transform:translateX(1px)}
     }
     .scroll-cue b{width:7px;height:7px;background:var(--blue);animation:cuestep 2s infinite}
-    .scroll-cue b:nth-child(2){animation-delay:0s}
-    .scroll-cue b:nth-child(3){animation-delay:0.75s}
+    .scroll-cue b:nth-child(2){animation-delay:0.25s}
+    .scroll-cue b:nth-child(3){animation-delay:0.5s}
     @keyframes cuestep{0%,55%,100%{opacity:0.16}15%{opacity:1}}
     .smart-eyebrow{display:block;text-align:center;position:relative;z-index:40}
     .smart-h{margin-top:1rem;text-align:center;padding-inline:var(--gut)}
@@ -552,14 +553,14 @@
     .eco .lockup{height:clamp(46px,4.6vw,66px);width:auto}
     .eco .hk{height:clamp(46px,4.8vw,66px);width:auto}
     #p-ir{--x:44%;--y:10%;--fd:6s}
-    #p-wifi{--x:20%;--y:37%;--fd:6s;--fdel:0.75s}
+    #p-wifi{--x:20%;--y:37%;--fd:6s;--fdel:0.3s}
     #p-bt{--x:63%;--y:40%}
     #p-usb{--x:56%;--y:79%}
-    #e-ha{--x:7%;--y:23%;--fd:6s;--fdel:0s}
-    #e-matter{--x:76%;--y:26%;--fd:6s;--fdel:0.75s}
-    #e-gh{--x:9%;--y:62%;--fd:6s;--fdel:1.5s}
-    #e-alexa{--x:78%;--y:58%;--fd:6s;--fdel:0.75s}
-    #e-ah{--x:16%;--y:76%;--fd:6s;--fdel:1.5s}
+    #e-ha{--x:7%;--y:23%;--fd:6s;--fdel:0.5s}
+    #e-matter{--x:76%;--y:26%;--fd:6s;--fdel:0.6s}
+    #e-gh{--x:9%;--y:62%;--fd:6s;--fdel:0.8s}
+    #e-alexa{--x:78%;--y:58%;--fd:6s;--fdel:0.9s}
+    #e-ah{--x:16%;--y:76%;--fd:6s;--fdel:1.2s}
     @media(max-width:899px){
       #p-ir{--x:42%;--y:7%}
       #p-wifi{--x:4%;--y:33%}
@@ -663,8 +664,8 @@
     .rock-remote{height:clamp(160px,21vw,330px);width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 2px 4px rgba(15,23,32,0.14)) drop-shadow(0 18px 32px rgba(15,23,32,0.2))}
     .waves{flex:0 0 auto;width:clamp(44px,8vw,120px);margin:0 -2px 34px}
     .waves .w1{animation:wavepulse 2s ease-in-out infinite}
-    .waves .w2{animation:wavepulse 2s ease-in-out infinite;animation-delay:0s}
-    .waves .w3{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.75s}
+    .waves .w2{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.305s}
+    .waves .w3{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.61s}
     .rig{flex:0 0 auto;width:clamp(180px,38vw,470px);height:auto}
     @media(min-width:1280px){.rig{width:clamp(340px,30vw,430px)}}
 
@@ -956,31 +957,31 @@
           <circle cx="800" cy="560" r="170" stroke-width="150" stroke-opacity="0.19"></circle>
           <circle cx="800" cy="560" r="170" stroke-width="90" stroke-opacity="0.95"></circle>
         </g>
-        <g class="pulse loop" style="animation-delay:0s">
+        <g class="pulse loop" style="animation-delay:0.275s">
           <circle cx="800" cy="560" r="290" stroke-width="150" stroke-opacity="0.18"></circle>
           <circle cx="800" cy="560" r="290" stroke-width="90" stroke-opacity="0.85"></circle>
         </g>
-        <g class="pulse loop" style="animation-delay:0.75s">
+        <g class="pulse loop" style="animation-delay:0.55s">
           <circle cx="800" cy="560" r="410" stroke-width="150" stroke-opacity="0.15"></circle>
           <circle cx="800" cy="560" r="410" stroke-width="90" stroke-opacity="0.72"></circle>
         </g>
-        <g class="pulse loop" style="animation-delay:0.75s">
+        <g class="pulse loop" style="animation-delay:0.825s">
           <circle cx="800" cy="560" r="530" stroke-width="150" stroke-opacity="0.12"></circle>
           <circle cx="800" cy="560" r="530" stroke-width="90" stroke-opacity="0.6"></circle>
         </g>
-        <g class="pulse loop" style="animation-delay:0.75s">
+        <g class="pulse loop" style="animation-delay:1.1s">
           <circle cx="800" cy="560" r="650" stroke-width="150" stroke-opacity="0.09"></circle>
           <circle cx="800" cy="560" r="650" stroke-width="90" stroke-opacity="0.48"></circle>
         </g>
-        <g class="pulse loop" style="animation-delay:0.75s">
+        <g class="pulse loop" style="animation-delay:1.375s">
           <circle cx="800" cy="560" r="770" stroke-width="150" stroke-opacity="0.07"></circle>
           <circle cx="800" cy="560" r="770" stroke-width="90" stroke-opacity="0.36"></circle>
         </g>
-        <g class="pulse loop" style="animation-delay:1.5s">
+        <g class="pulse loop" style="animation-delay:1.65s">
           <circle cx="800" cy="560" r="890" stroke-width="150" stroke-opacity="0.05"></circle>
           <circle cx="800" cy="560" r="890" stroke-width="90" stroke-opacity="0.26"></circle>
         </g>
-        <g class="pulse loop" style="animation-delay:1.5s">
+        <g class="pulse loop" style="animation-delay:1.925s">
           <circle cx="800" cy="560" r="1010" stroke-width="150" stroke-opacity="0.04"></circle>
           <circle cx="800" cy="560" r="1010" stroke-width="90" stroke-opacity="0.18"></circle>
         </g>
@@ -1379,10 +1380,10 @@
   <div class="shell">
     <div class="ready-card la">
       <button class="pop-badge" id="b1" aria-label="Pop the gamepad badge"><img src="assets/badge-gamepad.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s"></button>
-      <button class="pop-badge" id="b2" aria-label="Pop the house badge"><img src="assets/badge-house.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:0.75s"></button>
-      <button class="pop-badge" id="b3" aria-label="Pop the wand badge"><img src="assets/badge-wand.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s;--fdel:1.5s"></button>
-      <button class="pop-badge" id="b4" aria-label="Pop the infrared badge"><img src="assets/badge-ir.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:0.75s"></button>
-      <button class="pop-badge" id="b5" aria-label="Pop the robot badge"><img src="assets/badge-robot.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s;--fdel:1.5s"></button>
+      <button class="pop-badge" id="b2" aria-label="Pop the house badge"><img src="assets/badge-house.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.4s"></button>
+      <button class="pop-badge" id="b3" aria-label="Pop the wand badge"><img src="assets/badge-wand.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s;--fdel:1.6s"></button>
+      <button class="pop-badge" id="b4" aria-label="Pop the infrared badge"><img src="assets/badge-ir.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.8s"></button>
+      <button class="pop-badge" id="b5" aria-label="Pop the robot badge"><img src="assets/badge-robot.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s;--fdel:0.3s"></button>
       <h2 class="rv">Ready To Build?</h2>
       <div class="ready-cta" data-rvg>
         <button class="btn-white" onclick="openModal()">
