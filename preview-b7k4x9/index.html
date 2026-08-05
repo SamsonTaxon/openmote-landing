@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>OpenMote</title>
   <meta name="description" content="OpenMote turns the classic motion remote into a programmable universal remote for everything. Works with Home Assistant, Matter, and Arduino. Launching on Crowd Supply September 1.">
-  <meta name="theme-color" content="#0A0B0D">
+  <meta name="theme-color" content="#FFFFFF">
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="preload" as="image" href="img/hero.webp" media="(max-width:1023px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/hero-remote-a.webp" media="(min-width:1024px)" fetchpriority="high">
@@ -24,9 +24,22 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
+      /* PALETTE. Four brand values and nothing else: blue, ink, red, white.
+         Every other value on the page is one of those four moved in alpha or
+         mixed with white. No neutral greys, no invented hues.
+         Brand blue is never darkened, tinted or "adjusted for contrast": where
+         blue would be illegible as small text it becomes a FILL with white or
+         ink on top instead (HIG Typography: "consider using a larger type size,
+         increasing contrast by modifying the text or background colors"). */
       --blue:#25AFF4;
-      --gray:#9A9A9A;
-      --dark:#0A0B0D;
+      --ink:#0A0A0A;
+      --gray:rgba(10,10,10,0.66);  /* the same ink, held back: 6.4:1 on white */
+      --dark:#0A0A0A;
+      --bg:#FFFFFF;
+      /* One shadow colour for the whole page: the blue hue at deep value, so
+         lift reads as cool light rather than as grime on a white sheet. */
+      --sh-1:rgba(16,60,88,0.10);
+      --sh-2:rgba(16,60,88,0.07);
     }
     html{
       scroll-behavior:auto;
@@ -37,8 +50,8 @@
     }
     body{
       font-family:'Montserrat',sans-serif;
-      background:var(--dark);
-      color:#fff;
+      background:var(--bg);
+      color:var(--dark);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
     }
@@ -48,8 +61,7 @@
     header{
       position:fixed;top:0;left:0;right:0;z-index:99;
       display:flex;justify-content:space-between;align-items:center;
-      /* --hpad keeps the nav on the same gutter/max-width rail as .shell */
-      padding:1rem var(--hpad);
+      padding:1rem;
       padding-top:calc(1rem + env(safe-area-inset-top));
     }
     header::before{
@@ -57,7 +69,7 @@
       position:absolute;
       inset:0;
       background:#fff;
-      border-bottom:1px solid #E6E4E0;
+      border-bottom:1px solid var(--hair);
       opacity:0;
       transition:opacity 0.2s ease;
     }
@@ -80,14 +92,14 @@
       background:var(--blue);
       border:none;
       cursor:pointer;
-      transition:transform 0.2s,box-shadow 0.2s;
+      transition:transform 0.2s,box-shadow 0.2s,background 0.2s,color 0.2s;
     }
     /* Hover is a pointer affordance, not a tap affordance: gate it so taps
        do not leave a stuck lifted/glowing button on touch devices. */
     @media(hover:hover) and (pointer:fine){
       .join-btn:hover{
         transform:translateY(-2px);
-        box-shadow:0 8px 24px rgba(37,175,244,0.4);
+        box-shadow:0 8px 20px rgba(37,175,244,0.34);
       }
     }
 
@@ -115,12 +127,16 @@
       content:'';
       position:absolute;
       inset:0;
+      /* Light hero: the photograph stays, but the scrim is inverted so the
+         copy sits on a white base that dissolves into the image, and the
+         bottom edge meets the white page with no seam. */
       background:linear-gradient(
         to top,
-        rgba(10,11,13,1) 0%,
-        rgba(10,11,13,0.7) 30%,
-        rgba(10,11,13,0.3) 60%,
-        rgba(10,11,13,0.4) 100%
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,0.97) 34%,
+        rgba(255,255,255,0.62) 52%,
+        rgba(255,255,255,0.22) 72%,
+        rgba(255,255,255,0.44) 100%
       );
       pointer-events:none;
     }
@@ -129,6 +145,8 @@
       padding:2rem 1.25rem;
       padding-bottom:calc(2rem + env(safe-area-inset-bottom));
     }
+    /* Mobile hero sits on the photograph: the badge is a blue FILL with white
+       on it, never blue text on a light ground (blue text on white is 2.5:1). */
     .badge{
       display:inline-block;
       padding:0.35rem 0.75rem;
@@ -136,7 +154,8 @@
       font-weight:700;
       letter-spacing:0.15em;
       text-transform:uppercase;
-      color:var(--blue);
+      color:#fff;
+      background:var(--blue);
       border:2px solid var(--blue);
       margin-bottom:1rem;
     }
@@ -153,7 +172,7 @@
     }
     .hero-content>p{
       font-size:0.9rem;
-      color:rgba(255,255,255,0.7);
+      color:var(--gray);
       line-height:1.5;
       margin-bottom:1.5rem;
       max-width:320px;
@@ -171,12 +190,12 @@
       background:var(--blue);
       border:none;
       cursor:pointer;
-      transition:transform 0.2s,box-shadow 0.2s;
+      transition:transform 0.2s,box-shadow 0.2s,background 0.2s,color 0.2s;
     }
     @media(hover:hover) and (pointer:fine){
       .cta:hover{
         transform:translateY(-2px);
-        box-shadow:0 12px 32px rgba(37,175,244,0.5);
+        box-shadow:0 10px 26px rgba(37,175,244,0.4);
       }
     }
     .cta svg{width:16px;height:16px}
@@ -184,7 +203,7 @@
     /* MODAL (carried from live site, unchanged) */
     .overlay{
       position:fixed;inset:0;
-      background:rgba(0,0,0,0.8);
+      background:rgba(10,10,10,0.62);
       backdrop-filter:blur(12px);
       -webkit-backdrop-filter:blur(12px);
       z-index:200;
@@ -197,7 +216,7 @@
       position:fixed;
       bottom:0;left:0;right:0;
       background:#fff;
-      border-top:1px solid #eee;
+      border-top:1px solid var(--hair);
       padding:1.5rem;
       padding-bottom:calc(2rem + env(safe-area-inset-bottom));
       z-index:201;
@@ -213,7 +232,7 @@
     .sheet-bar{
       width:40px;
       height:4px;
-      background:#ddd;
+      background:var(--edge);
       margin:0 auto 1.5rem;
     }
     .sheet h2{
@@ -234,7 +253,7 @@
       font-size:1rem;
       font-family:inherit;
       background:#fff;
-      border:2px solid #E6E4E0;
+      border:2px solid var(--edge);
       color:var(--dark);
       outline:none;
       margin-bottom:0.75rem;
@@ -259,7 +278,7 @@
     @media(hover:hover) and (pointer:fine){
       .sheet button[type=submit]:hover{
         transform:translateY(-1px);
-        box-shadow:0 8px 24px rgba(37,175,244,0.4);
+        box-shadow:0 8px 20px rgba(37,175,244,0.34);
       }
     }
     .sheet .note{
@@ -276,8 +295,8 @@
       a,button,input[type=submit],.cta,.join-btn,.cs-link{
         cursor:url('cursors/cursor-pointer-32.png') 16 0,pointer;
       }
-      header{padding:1.5rem var(--hpad)}
-      header.scrolled{padding:0.6rem var(--hpad);padding-top:calc(0.6rem + env(safe-area-inset-top))}
+      header{padding:1.5rem 3rem}
+      header.scrolled{padding:0.6rem 3rem;padding-top:calc(0.6rem + env(safe-area-inset-top))}
       .logo{width:220px}
       .join-btn{padding:0.75rem 1.5rem;font-size:0.85rem}
 
@@ -296,12 +315,15 @@
         margin-left:auto;
       }
       .hero::after{
+        /* 768-1023 puts the copy on top of the photo, so the veil has to stay
+           near-solid across the whole text column before it falls away. */
         background:linear-gradient(
           to right,
-          rgba(10,11,13,1) 0%,
-          rgba(10,11,13,0.8) 30%,
-          rgba(10,11,13,0.2) 60%,
-          rgba(10,11,13,0.1) 100%
+          rgba(255,255,255,1) 0%,
+          rgba(255,255,255,0.99) 46%,
+          rgba(255,255,255,0.84) 62%,
+          rgba(255,255,255,0.3) 84%,
+          rgba(255,255,255,0.12) 100%
         );
       }
       .hero-content{
@@ -323,9 +345,9 @@
            the viewport swallowing clicks on whatever CTA scrolled under it. */
         visibility:hidden;
         pointer-events:none;
-        border:1px solid #eee;
+        border:1px solid var(--hair);
         padding:2rem;
-        box-shadow:0 2px 6px rgba(0,0,0,0.30),0 28px 56px -16px rgba(0,0,0,0.45);
+        box-shadow:0 1px 2px rgba(16,60,88,0.10),0 24px 48px -20px rgba(16,60,88,0.22);
       }
       .sheet.on{
         transform:translate(-50%,-50%) scale(1);
@@ -337,15 +359,13 @@
     }
 
     @media(min-width:1024px){
-      header{padding:2rem var(--hpad)}
-      header.scrolled{padding:0.75rem var(--hpad);padding-top:calc(0.75rem + env(safe-area-inset-top))}
+      header{padding:2rem 4rem}
+      header.scrolled{padding:0.75rem 4rem;padding-top:calc(0.75rem + env(safe-area-inset-top))}
       .logo{width:280px}
 
       .hero-img{width:50%}
       .hero-content{padding:5rem;max-width:550px}
-      /* 'Superpowers' is 6.83em wide as one unbreakable word: hold it to the
-         copy column so it stops running off the right edge below 1440. */
-      .hero-content h1{font-size:clamp(3.2rem,5vw,4.5rem)}
+      .hero-content h1{font-size:4.5rem}
     }
 
     @media(min-width:1280px){
@@ -358,12 +378,18 @@
        Tokens from design-system/colors_and_type.css
        ============================================================ */
     :root{
-      --card:#14161A; --hair:#2B2E35;
+      /* Blue is a SURFACE, never a trim. Sections are solid #25AFF4, white, or
+         a pale wash of the same blue; the few functional rules that remain
+         (form field, list separator, footer) are ink at low alpha, so no line
+         on the page is a grey and no surface is outlined in blue. */
+      --card:#FFFFFF;
+      --hair:rgba(10,10,10,0.10);
+      --edge:rgba(10,10,10,0.16);
       --ease:cubic-bezier(0.4,0,0.2,1);
+      /* One horizontal grid for the whole page: header, hero and every card
+         are inset by this and nothing else (HIG Layout: "Align components with
+         one another to make them easier to scan"). */
       --gut:clamp(1.25rem,4.5vw,4rem);
-      /* gutter + the centring offset .shell gets from its 90rem cap, so the fixed
-         header lands on exactly the same left/right rail as every content card */
-      --hpad:calc(var(--gut) + max(0px,(100% - 90rem)/2));
     }
     /* logo.png ships with ~30% transparent padding top+bottom; crop it so the scrolled bar hugs the art while the art keeps its original size */
     .logo{width:180px;height:auto;margin-top:-26px;margin-bottom:-27px;transition:width 0.2s ease,margin 0.2s ease}
@@ -377,11 +403,14 @@
       header.scrolled .logo{width:190px;margin-top:-28px;margin-bottom:-29px}
     }
     ::selection{background:var(--blue);color:#fff}
-    a{color:var(--blue)}
-    @media(hover:hover) and (pointer:fine){a:hover{color:#fff}}
+    /* Ink links with a blue hover: brand blue on white is 2.5:1, which is under
+       the 4.5:1 HIG asks for at small sizes, so blue is carried by the hover
+       and by fills, never by 13px link text. */
+    a{color:var(--ink)}
+    @media(hover:hover) and (pointer:fine){a:hover{color:var(--blue)}}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
     .shell{max-width:90rem;margin:0 auto;padding-inline:var(--gut)}
-    .h2{font-weight:900;letter-spacing:-0.03em;line-height:1.05;font-size:clamp(2rem,4.6vw,3.6rem);color:#fff;text-wrap:balance}
+    .h2{font-weight:900;letter-spacing:-0.03em;line-height:1.05;font-size:clamp(2rem,4.6vw,3.6rem);color:var(--dark);text-wrap:balance}
     .sub{color:var(--gray);font-weight:500;line-height:1.55;font-size:clamp(0.95rem,1.4vw,1.1rem);text-wrap:pretty}
     .sec-head{display:flex;flex-direction:column;gap:0.9rem;margin-bottom:clamp(2.5rem,5vw,4rem)}
     @media(min-width:900px){
@@ -398,17 +427,17 @@
 
     /* Keyframes */
     @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-    /* The remote reads as static at a 12px bob against a 660px object: 30px is the
-       first amplitude you actually notice. Labels ride the same curve (pillbob). */
-    @keyframes floatyC{0%,100%{transform:translate(-50%,-52%) translateY(0)}50%{transform:translate(-50%,-52%) translateY(-30px)}}
-    @keyframes pillbob{0%,100%{transform:translate(var(--tx,0px),var(--ty,-50%)) translateY(0)}
-      50%{transform:translate(var(--tx,0px),var(--ty,-50%)) translateY(-30px)}}
+    /* The product in the ripple scene reads as static at 12px, so the travel is
+       nearly tripled and the beat moved onto the page's 4s step. */
+    @keyframes floatyC{0%,100%{transform:translate(-50%,-52%) translateY(16px)}50%{transform:translate(-50%,-52%) translateY(-18px)}}
     @keyframes floatyX{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
     @keyframes sway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-11px) rotate(2deg)}}
     @keyframes swayneg{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-9px) rotate(-2deg)}}
-    /* Mirrors cuestep: fast attack, then a flat hold, which is what makes the
-       ripple read as discrete steps instead of a continuous smear. */
-    @keyframes ringflash{0%,55%,100%{opacity:0.1}15%{opacity:0.92}}
+    /* Same shape and same 2s period as the three scroll-cue dots (cuestep):
+       one bright step, then back to rest. The rings are then delayed in three
+       phases, 0 / 0.25s / 0.5s, exactly like the dots, so the ripple steps
+       outward in threes instead of smearing. */
+    @keyframes ringflash{0%,55%,100%{opacity:0.14}15%{opacity:1}}
     @keyframes rockit{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
     @keyframes hornswing{0%,100%{transform:rotate(-34deg)}50%{transform:rotate(34deg)}}
     @keyframes wavepulse{0%,100%{opacity:0.14}45%{opacity:1}}
@@ -432,25 +461,30 @@
       transform:translate(-50%,130%);
       width:min(720px,calc(100% - 1.5rem));
       margin-bottom:calc(0.9rem + env(safe-area-inset-bottom));
-      background:rgba(23,25,30,0.92);
-      border:1px solid var(--hair);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,0.06),0 14px 34px rgba(0,0,0,0.45);
-      backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      /* The launch bar is another solid blue surface, not a white box with a
+         line around it, so the floating layer reads as one material with the
+         hero and the closing card. */
+      background:var(--blue);
+      border:none;
+      box-shadow:0 2px 6px rgba(6,58,86,0.14),0 16px 32px -12px rgba(6,58,86,0.30);
       display:flex;align-items:center;justify-content:space-between;gap:1rem;
       padding:0.7rem 0.7rem 0.7rem 1.2rem;
       transition:transform 0.28s ease;
     }
     .bar.on{transform:translate(-50%,0)}
     body.lock .bar{transform:translate(-50%,130%)}
-    .bar p{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.75);line-height:1.35}
+    .bar p{font-size:0.82rem;font-weight:600;color:#fff;line-height:1.35}
     .bar p strong{color:#fff;font-weight:800}
-    .bar .join-btn{flex-shrink:0}
+    .bar .join-btn{flex-shrink:0;background:#fff;color:var(--ink)}
+    @media(hover:hover) and (pointer:fine){
+      .bar .join-btn:hover{box-shadow:0 8px 20px rgba(6,58,86,0.30)}
+    }
 
     /* S1 WHAT YOU CAN BUILD */
     .build{padding:clamp(2rem,4vw,3.5rem) 0 0}
     .build{display:none}
-    .uc-ledger{max-width:66rem;margin:0 auto;border-top:1px solid #1F1F1F}
-    .ucr{display:grid;grid-template-columns:clamp(132px,30vw,300px) minmax(0,1fr);gap:clamp(1rem,3.5vw,2.8rem);align-items:center;padding:clamp(1rem,2.4vw,1.9rem) 0;border-bottom:1px solid #1F1F1F}
+    .uc-ledger{max-width:66rem;margin:0 auto;border-top:1px solid var(--hair)}
+    .ucr{display:grid;grid-template-columns:clamp(132px,30vw,300px) minmax(0,1fr);gap:clamp(1rem,3.5vw,2.8rem);align-items:center;padding:clamp(1rem,2.4vw,1.9rem) 0;border-bottom:1px solid var(--hair)}
     @media(min-width:768px){
       /* Three identical rows read as a template. Vary weight and side instead. */
       .ucr:nth-child(1){grid-template-columns:clamp(200px,40vw,420px) minmax(0,1fr);padding:clamp(1.4rem,3vw,2.6rem) 0}
@@ -461,11 +495,17 @@
       .ucr:nth-child(1) .ucr-title{font-size:clamp(1.5rem,3.2vw,2.5rem)}
     }
     .ucr-media{aspect-ratio:16/9;overflow:hidden}
-    .ucr-media video,.ucr-media img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.92)}
-    .ucr-title{font-size:clamp(1.15rem,2.5vw,1.85rem);font-weight:800;letter-spacing:-0.01em;color:#fff;margin:0}
+    /* The 0.92 knock-down existed to stop bright frames punching a hole in a
+       near-black page. On white the media should run at full value. */
+    .ucr-media video,.ucr-media img{width:100%;height:100%;object-fit:cover;display:block;filter:none}
+    .uc-num{font-size:0.7rem;font-weight:700;letter-spacing:0.15em;color:var(--blue)}
+    .ucr-title{font-size:clamp(1.15rem,2.5vw,1.85rem);font-weight:800;letter-spacing:-0.01em;color:var(--dark);margin:0.2rem 0 0}
     .uc-badges{display:flex;flex-wrap:wrap;gap:0.5rem 1.1rem;margin-top:0.75rem}
-    .ucb{display:inline-flex;align-items:center;gap:0.45rem;font-size:0.7rem;font-weight:700;color:#fff;letter-spacing:0.01em;white-space:nowrap}
+    .ucb{display:inline-flex;align-items:center;gap:0.45rem;font-size:0.7rem;font-weight:700;color:var(--dark);letter-spacing:0.01em;white-space:nowrap}
     .bsq{width:20px;height:20px;background:var(--blue);display:inline-grid;place-items:center;flex:none}
+    /* The Matter chip is a white tile carrying a black mark. It has to keep
+       its own edge now that the page behind it is white too. */
+    .bsq[style*="#FFFFFF"]{box-shadow:inset 0 0 0 1px var(--edge)}
     .bsq svg{width:17px;height:17px;display:block}
     .bsq img{display:block}
     .bsq img.binv{height:13px;width:auto;filter:brightness(0) invert(1)}
@@ -475,121 +515,157 @@
     .msym img{width:60px;height:13px;max-width:none;display:block}
 
     /* S2 SMART HOME */
-    .smart{position:relative;padding-top:var(--smart-top,110px);overflow:hidden}
+    .smart{position:relative;padding-top:var(--smart-top,53px);overflow:hidden}
     .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:var(--cue-gap,11px);padding:0}
     /* Per-instance cue spacing, baked from the live tuner (owner approved) */
-    #smart > .scroll-cue{padding-top:var(--cue-pad,26px);padding-bottom:var(--cue-pad,27px)}
-    #apps > .scroll-cue{padding-top:0;padding-bottom:30px}
-    #code > .scroll-cue{padding-top:0;padding-bottom:22px}
+    #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
+    #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
+    #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
     @media(min-width:1024px){
       #smart > .scroll-cue{padding-top:35px;padding-bottom:32px}
       #apps > .scroll-cue{padding-top:0;padding-bottom:27px}
-      #code > .scroll-cue{padding-top:9px;padding-bottom:0;transform:translateX(1px)}
+      /* 1px optical nudge, done with padding rather than a transform: the
+         transform shifted a full-width flex box and pushed the document 1px
+         wider than the viewport. */
+      #code > .scroll-cue{padding-top:9px;padding-bottom:0;padding-left:2px}
     }
+    #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
+    #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
+    #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
     .scroll-cue b{width:var(--cue-dot,7px);height:var(--cue-dot,7px);background:var(--blue);animation:cuestep 2s infinite}
     .scroll-cue b:nth-child(2){animation-delay:0.25s}
     .scroll-cue b:nth-child(3){animation-delay:0.5s}
     @keyframes cuestep{0%,55%,100%{opacity:0.16}15%{opacity:1}}
-    @keyframes cuestepwhite{0%,55%,100%{opacity:0.42}15%{opacity:1}}
-    /* section eyebrows are gone: the heading now sits straight under the dots */
+    @keyframes cuestepw{0%,55%,100%{opacity:0.4}15%{opacity:1}}
     .smart-h{margin-top:0;text-align:center;padding-inline:var(--gut)}
-    .proto-row{margin-top:var(--radios-gap,0.9rem);text-align:center;color:var(--blue);font-weight:700;font-size:0.85rem;letter-spacing:0.22em}
+    .proto-row{margin-top:var(--radios-gap,15px);text-align:center;color:var(--ink);font-weight:700;font-size:0.85rem;letter-spacing:0.22em}
     @media(min-width:640px){
       .smart-h{position:relative;z-index:40;margin-top:0}
       .proto-row{position:relative;z-index:40;margin-top:0.8rem;
-        margin-bottom:var(--scene-pull,calc(min(1200px,94vw) * -0.035))}
+        margin-bottom:var(--scene-pull,-40px)}
     }
-    /* --rh/--rw are the rendered size of the remote cutout. Every callout label
-       is anchored in these units, so the labels track the remote at any width. */
-    .ripple-scene{position:relative;height:clamp(560px,58vw,820px);overflow:hidden;pointer-events:none;
-      --rh:clamp(400px,46vw,660px);--rw:calc(var(--rh) * 0.71916)}
-    .ripple-svg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(1600px,118vw);height:auto;pointer-events:none}
-    /* Same 2s period and same three phases as the .scroll-cue dots, so the rings
-       read as the page's one rhythm: three stepped beats, radiating outward. */
+    .ripple-scene{position:relative;height:clamp(560px,58vw,820px);overflow:hidden;pointer-events:none}
+    /* Field: a blue wash under the product so a white remote has a ground to
+       sit on instead of dissolving into the page. HIG Materials: a material
+       "helps visually separate foreground elements ... from background
+       elements". Derived from #25AFF4 only, never a neutral grey. */
+    .ripple-svg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(1600px,118vw);height:auto;pointer-events:none;z-index:2}
+    /* Three phase groups on the dots' own 2s beat: rings 1/4/7 fire, then
+       2/5/8, then 3/6. Reads as three outward steps, not a smear. */
     .ripple-svg .pulse{animation:ringflash 2s infinite}
-    .remote-float{position:absolute;left:50%;top:50%;z-index:10;transform:translate(-50%,-52%);animation:floatyC 6s ease-in-out infinite}
-    .ripple-remote{height:var(--rh);width:auto;display:block;filter:drop-shadow(0 34px 64px rgba(0,0,0,0.55))}
+    .remote-float{position:absolute;left:50%;top:50%;z-index:10;transform:translate(-50%,-52%);animation:floatyC 4s ease-in-out infinite}
+    /* On the blue wash the silhouette carries itself, so the lift is a single
+       tight contact shadow rather than a big dark halo. */
+    .ripple-remote{height:var(--remote-h,660px);width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.16)) drop-shadow(0 16px 26px rgba(16,60,88,0.14))}
     .smart-fade{position:absolute;left:0;right:0;z-index:30;pointer-events:none}
-    .smart-fade.top{top:0;height:220px;background:linear-gradient(to bottom,#0A0B0D 12%,rgba(10,11,13,0))}
-    .smart-fade.bot{bottom:0;height:200px;background:linear-gradient(to top,#0A0B0D 15%,rgba(10,11,13,0))}
-    /* Callout labels, not floating chips. Each --x/--y is a point ON the remote's
-       silhouette, read off the cutout's alpha bounds and written in remote-relative
-       units (--rw/--rh) so the anchor holds at every width. --tx/--ty then park the
-       label against that edge with a few px of overlap so it reads as attached, and
-       the shared bob keeps the contact from breaking while the remote floats. */
-    .pill{
+    .smart-fade.top{top:0;height:220px;background:linear-gradient(to bottom,#FFFFFF 12%,rgba(255,255,255,0))}
+    .smart-fade.bot{bottom:0;height:200px;background:linear-gradient(to top,#FFFFFF 15%,rgba(255,255,255,0))}
+    /* Labels belong to the product, so above 768 they are positioned inside a
+       box that IS the remote (same clamp, same aspect ratio, same anchor), and
+       each one is set to overlap the silhouette at its own height. Below 768
+       the box spans the scene and the original placement is kept. */
+    .pill{translate:-50% -50%;
       position:absolute;z-index:35;left:var(--x);top:var(--y);
-      transform:translate(var(--tx,0px),var(--ty,-50%));
       background:var(--blue);color:#fff;font-weight:800;
       font-size:clamp(0.72rem,1vw,0.92rem);letter-spacing:0.12em;
-      padding:0.78em 1.25em;box-shadow:0 14px 30px rgba(0,0,0,0.4);
+      padding:0.78em 1.25em;box-shadow:0 2px 5px rgba(16,60,88,0.16);
       white-space:nowrap;
-      animation:pillbob 6s ease-in-out infinite;
     }
     .eco{
-      position:absolute;z-index:35;left:50%;top:50%;
-      transform:translate(calc(-50% + var(--dx,0px)),calc(-50% + var(--dy,0px)));
+      position:absolute;z-index:35;left:var(--x);top:var(--y);translate:-50% -50%;
       display:flex;flex-direction:column;align-items:center;gap:0.6rem;
-      color:#fff;text-align:center;
-      filter:drop-shadow(0 10px 24px rgba(0,0,0,0.55));
+      color:var(--dark);text-align:center;
+      filter:none;
     }
-    .eco .inv{height:clamp(40px,4.4vw,62px);width:auto;display:block;filter:brightness(0) invert(1)}
+    /* Was forced to white for the dark canvas. On white the same marks have to
+       go the other way: knock them to ink instead of knocking them out. */
+    .eco .inv{height:clamp(40px,4.4vw,62px);width:auto;display:block;filter:brightness(0)}
+    /* The Google Home and Apple Home tiles are white-backed artwork. The tight
+       first shadow is standing in for an edge so the tile does not dissolve. */
+    .eco .hk{filter:drop-shadow(0 0 1px rgba(16,60,88,0.30)) drop-shadow(0 4px 10px rgba(16,60,88,0.10))}
     .eco-wide .inv{height:clamp(22px,2.2vw,30px)}
     .eco .genico{width:clamp(42px,4.6vw,62px);height:clamp(42px,4.6vw,62px);display:block}
+    @media(min-width:768px){
+      /* The marks were spread to the viewport edges, leaving the scene sparse on
+         desktop. Pull the whole constellation toward the remote it belongs to. */
+      /* The ecosystem marks sit outside the labels now that the labels have
+         moved onto the product, so they are pushed back out to keep clear of
+         them (HIG Layout: "Make controls easier to use by providing enough
+         space around them and grouping them in logical sections"). */
+    }
     .eco .nm{font-size:clamp(0.78rem,1.05vw,1rem);font-weight:700;letter-spacing:0.01em;white-space:nowrap}
     .eco .tile{width:66px;height:66px;background:#FFFFFF;display:grid;place-items:center}
     .eco .tile img,.eco .tile svg{width:40px;height:40px;display:block}
     .eco .lockup{height:clamp(46px,4.6vw,66px);width:auto}
     .eco .hk{height:clamp(46px,4.8vw,66px);width:auto}
-    /* IR sits off the top-right shoulder (the emitter end), WiFi and Bluetooth ride
-       the long left and right edges, USB-C hangs off the bottom tip by the port. */
-    #p-ir{--x:calc(50% - 0.12115 * var(--rw));--y:calc(50% - 0.43916 * var(--rh));--tx:-12px}
-    #p-wifi{--x:calc(50% - 0.25620 * var(--rw));--y:calc(50% - 0.075 * var(--rh));--tx:calc(-100% + 14px)}
-    #p-bt{--x:calc(50% + 0.18402 * var(--rw));--y:calc(50% - 0.05293 * var(--rh));--tx:-14px}
-    #p-usb{--x:calc(50% + 0.38426 * var(--rw));--y:calc(50% + 0.41413 * var(--rh));--tx:-5px}
-    #e-ha{--dx:379.1px;--dy:26.5px;--fd:6s;--fdel:0.5s}
-    #e-matter{--dx:91.9px;--dy:368.7px;--fd:6s;--fdel:0.6s}
-    #e-gh{--dx:-322.3px;--dy:201.4px;--fd:6s;--fdel:0.8s}
-    #e-alexa{--dx:-291.1px;--dy:-244.3px;--fd:6s;--fdel:0.9s}
-    #e-ah{--dx:142.4px;--dy:-352.3px;--fd:6s;--fdel:1.2s}
+    #p-ir{--x:50.27%;--y:13.59%;--fd:6s}
+    #p-wifi{--x:41.76%;--y:46.07%;--fd:6s;--fdel:0.3s}
+    #p-bt{--x:57.34%;--y:35.73%;}
+    #p-usb{--x:53.79%;--y:86.24%;}
+    #e-ha{--x:35.18%;--y:32.78%;--fd:6s;--fdel:0.5s}
+    #e-matter{--x:58.27%;--y:24.58%;--fd:6s;--fdel:0.6s}
+    #e-gh{--x:36.78%;--y:62.29%;--fd:6s;--fdel:0.8s}
+    #e-alexa{--x:65.74%;--y:54.27%;--fd:6s;--fdel:0.9s}
+    #e-ah{--x:44.64%;--y:82.45%;--fd:6s;--fdel:1.2s}
     @media(max-width:899px){
-      /* Narrow screens: the remote fills most of the scene, so IR moves above the
-         tip and the side labels take shallower anchor points to stay on screen. */
-      #p-ir{--x:calc(50% - 0.21274 * var(--rw));--y:calc(50% - 0.51341 * var(--rh));
-        --tx:-10%;--ty:calc(-100% + 8px)}
-      #p-wifi{--x:calc(50% - 0.23614 * var(--rw));--y:calc(50% - 0.05988 * var(--rh));
-        --tx:calc(-100% + 10px)}
-      #p-bt{--x:calc(50% + 0.09942 * var(--rw));--y:calc(50% - 0.16 * var(--rh));--tx:-10px}
+      #p-ir{--x:42%;--y:7%}
+      #p-wifi{--x:4%;--y:33%}
+      #p-bt{--x:56%;--y:38%}
+      #p-usb{--x:58%;--y:76%}
       #e-ha{--x:4%;--y:16%}
       #e-matter{--x:63%;--y:22%}
       #e-gh{--x:5%;--y:62%}
       #e-alexa{--x:72%;--y:56%}
       #e-ah{--x:36%;--y:80%}
     }
+    /* Pill positions above 768: percentages of the REMOTE box, measured off the
+       photograph's alpha silhouette so each label overlaps the edge it names.
+       Declared last so they win over both blocks above at the same specificity. */
     .smart-copy{position:relative;z-index:31;text-align:center;max-width:38ch;margin:0 auto;padding:0 1.25rem clamp(1.5rem,3vw,2.5rem);color:var(--gray);font-weight:500;line-height:1.6;font-size:clamp(0.95rem,1.3vw,1.1rem)}
 
     /* S3 COMMUNITY APPS */
     /* Bottom of the apps band sets the gap above the YOUR CODE cue.
        Below 768 the remote cutout stops 9px short of the band's clip edge,
        so the section padding is 9px smaller there to land on the same gap. */
-    .apps{padding:0 0 5px}
-    @media(min-width:768px){.apps{padding-bottom:14px}}
+    /* Bottom padding now has to clear the product itself, not the clip edge:
+       the cutout is no longer cropped by the band, so the band ends below it. */
+    .apps{padding:0 0 40px}
+    @media(min-width:768px){.apps{padding-bottom:58px}}
     .apps-head{align-items:center;text-align:center;margin-bottom:var(--apps-head-gap,3px)}
     .apps-head .sub{max-width:44ch}
-    .apps-break{position:relative;width:100vw;left:50%;transform:translateX(-50%);overflow:hidden;padding:clamp(1rem,2.4vw,1.5rem) 0 clamp(2rem,3vw,3rem);--sh:72px}
+    /* No overflow clip on the band itself: the clip belongs to the marquee rows
+       and nothing else, so no product shadow can be sliced by it. */
+    .apps-break{position:relative;width:100vw;left:50%;transform:translateX(-50%);padding:clamp(1rem,2.4vw,1.5rem) 0 clamp(2rem,3vw,3rem);--sh:72px}
+    .rows-wrap{position:relative}
     @media(min-width:768px){.apps-break{--sh:96px}}
     .strip-row{display:flex;width:max-content;animation:marq 72s linear infinite;will-change:transform}
     .strip-row img{height:var(--sh);width:auto;display:block;margin-right:calc(var(--sh) * 0.27084)}
     .row-1{animation-duration:96s;animation-direction:reverse;margin-bottom:20px}
     .row-2{animation-duration:72s}
-    .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-top:var(--nowrun-top,0px);margin-bottom:var(--nowrun-gap,34px);pointer-events:none}
-    @media(min-width:768px){.nowrun-wrap{margin-bottom:var(--nowrun-gap,58px)}}
+    .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-top:var(--nowrun-top,19px);margin-bottom:var(--nowrun-gap,68px);pointer-events:none}
+    @media(min-width:768px){.nowrun-wrap{margin-bottom:var(--nowrun-gap,68px)}}
     .rows-zone{position:relative}
+    .strips-clip{overflow:hidden}
     .nowrun{width:min(320px,80vw);height:auto;animation:floaty 6s ease-in-out infinite}
     .nowrun .st{stroke:#FFFFFF;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
     .nowrun g[id^="app-"]{transition:opacity 0.35s ease}
-    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;pointer-events:none;filter:drop-shadow(0 14px 22px rgba(0,0,0,0.45)) drop-shadow(0 48px 90px rgba(0,0,0,0.35))}
-    @media(min-width:768px){.apps-remote{height:var(--apps-remote-h,300px)}}
+    /* NOW RUNNING stays a white card, but it now has to read as an object
+       floating above a white plane: firmer edge, softer and shallower shadow. */
+    .nowrun rect[stroke]{stroke:rgba(10,10,10,0.13);stroke-width:1.5}
+    .nowrun feDropShadow{flood-color:#103C58;flood-opacity:0.09}
+    .nowrun text[fill="#9A9A9A"]{fill:var(--gray)}
+    /* The product used to live inside .apps-break, which clips the marquee, so
+       its shadow was sliced off in a straight line. The clip now lives on the
+       strip rows only; the remote sits in an unclipped overlay above them. */
+    .apps-stage{position:absolute;inset:0;z-index:6;pointer-events:none}
+    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,334px);width:auto;display:block;pointer-events:none;
+      filter:drop-shadow(0 1px 2px rgba(16,60,88,0.18)) drop-shadow(0 14px 24px rgba(16,60,88,0.16))}
+    /* Blue field behind the cutout, as light rather than as a box: over the blue
+       tiles it is invisible (blue on blue), over the white gaps it becomes the
+       ground the white shell is read against. */
+    @media(min-width:768px){
+      .apps-remote{height:300px}
+    }
     .prog-line{text-align:center;margin-top:clamp(1rem,2vw,1.75rem);color:var(--gray);font-weight:700;font-size:clamp(1rem,1.6vw,1.25rem);letter-spacing:-0.01em}
     .plat-row{display:flex;justify-content:center;align-items:flex-start;gap:clamp(1.6rem,4.5vw,4rem);margin-top:1.5rem;flex-wrap:wrap}
     /* 4 across only while they comfortably fit, otherwise a clean 2x2. Never 3+1. */
@@ -598,78 +674,121 @@
     }
     .plat{display:flex;flex-direction:column;align-items:center;gap:0.75rem;width:clamp(6.4rem,10vw,8rem)}
     .plat img{width:clamp(54px,6vw,74px);height:auto;display:block}
-    .plat span{font-size:0.85rem;font-weight:700;color:#fff;letter-spacing:0.02em}
+    .plat span{font-size:0.85rem;font-weight:700;color:var(--dark);letter-spacing:0.02em}
 
-    /* S4 YOUR CODE */
-    .code{padding:0 0 clamp(3.5rem,7vw,6.5rem)}
+    /* S4 YOUR CODE. Solid brand blue, full bleed, same flat material as the
+       hero and the closing card: the page alternates blue fields and white
+       fields instead of relying on outlines to separate anything. */
+    .code{padding:clamp(2rem,4vw,3rem) 0 clamp(3.5rem,7vw,6.5rem);}
+    #connDot{fill:var(--blue)}
     .code-grid{position:relative;max-width:76rem;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.95fr) clamp(30px,6vw,190px) minmax(0,1.15fr);gap:0 clamp(0.3rem,1vw,1rem);align-items:start}
     .code-h{max-width:13ch}
     .flash-target{position:relative;z-index:2;width:fit-content;margin:clamp(1.8rem,3.5vw,3.6rem) auto clamp(2.8rem,4.5vw,4.5rem)}
+    /* The white remote sits straight on the blue field, so its silhouette is
+       carried by the surface behind it and the shadow can stay a contact
+       shadow instead of a halo. */
     .flash-target .remote{height:clamp(220px,32vw,430px);width:auto;display:block}
-    .ledstrip{position:absolute;left:50%;top:calc(100% + 14px);transform:translateX(-50%);width:clamp(86px,12vw,126px);height:auto;filter:drop-shadow(0 8px 18px rgba(0,0,0,0.5))}
+    .ledstrip{position:absolute;left:50%;top:calc(100% + 14px);transform:translateX(-50%);width:clamp(86px,12vw,126px);height:auto}
+    /* On the blue field an unlit cell is the blue knocked back; a lit one is
+       white. Nothing here is a grey housing any more. */
+    .ledstrip > g > rect{fill:rgba(10,10,10,0.06);stroke:rgba(10,10,10,0.18)}
+    .ledstrip > g > rect:first-of-type{fill:rgba(10,10,10,0.10)}
+    .ledstrip .l1 rect,.ledstrip .l2 rect,.ledstrip .l3 rect,.ledstrip .l4 rect{fill:var(--blue)}
     .ledstrip .l1{animation:led1 4s linear infinite}
     .ledstrip .l2{animation:led2 4s linear infinite}
     .ledstrip .l3{animation:led3 4s linear infinite}
     .ledstrip .l4{animation:led4 4s linear infinite}
     .conn-col{display:block;padding-top:2.5rem}
     .conn-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;display:block;z-index:1}
+    /* On the blue field the trace is white. Declared here (after the .code
+       block) so this ID rule is the one that wins. */
+    #connPath{stroke:#9A9A9A;opacity:0.85}
     .dot{animation:dotgo 4s ease-in-out infinite}
     .dotv{offset-path:path('M 104 10 C 104 90 44 100 44 230');animation:dotgo 4s ease-in-out infinite}
     .editor-svg{width:min(520px,100%);height:auto;display:block;margin-left:auto}
-    .code-line{text-align:center;margin-top:clamp(2.5rem,5vw,3.5rem);color:var(--gray);font-weight:600;font-size:clamp(0.9rem,1.3vw,1.05rem)}
+    /* The editor window is a white app window in both themes. Only its lift
+       changes: a black 38% halo reads as grime on white, so it is halved and
+       the window gets a hairline so its light edges stay defined. */
+    .editor-svg #winshadow feDropShadow{flood-color:#063A56;flood-opacity:0.22}
+    .editor-svg #bshadow feDropShadow{flood-color:#063A56;flood-opacity:0.20}
+    /* Syntax colour is the brand blue, unmodified. */
+    .editor-svg tspan[fill="#9A9A9A"]{fill:var(--gray)}
+    .code-line{text-align:center;margin-top:clamp(2.5rem,5vw,3.5rem);color:rgba(255,255,255,0.9);font-weight:600;font-size:clamp(0.9rem,1.3vw,1.05rem)}
 
     /* S5 + S6 cards */
     .cardsec{padding:0}
-    .diy-card,.board-card{position:relative;background:var(--card);border:1px solid var(--hair);overflow:hidden;padding:clamp(1.8rem,4.5vw,4.5rem)}
-    .board-card{margin-top:clamp(1.25rem,2.5vw,2rem)}
+    /* Two panels, two states of the same colour and no outline on either: a
+       pale wash of the brand blue, then the brand blue at full strength. */
+    .diy-card{background:var(--blue)}
+    .diy-card .h2,.diy-card .eyebrow,.diy-card .sub,.diy-card p{color:#fff}
+    .diy-card .ghost{opacity:1;mix-blend-mode:normal}
+    .diy-card .ghost *{stroke:#66C7F7!important;stroke-opacity:1!important;fill:none!important}
+    .diy-card,.board-card{position:relative;overflow:hidden;padding:clamp(1.8rem,4.5vw,4.5rem)}
+    .board-card{background:var(--blue);margin-top:clamp(1.25rem,2.5vw,2rem)}
     .diy-grid{display:grid;gap:2.5rem;position:relative;z-index:2}
     @media(min-width:1280px){.diy-grid{grid-template-columns:0.62fr 1.38fr;align-items:center;gap:1.5rem}}
-    .diy-copy .h2{margin-top:0.9rem;font-size:clamp(1.9rem,3.4vw,3rem)}
-    .code-h{margin-top:0.9rem}
-    .board-h{margin-top:0.9rem;font-size:clamp(1.9rem,3.4vw,3rem)}
+    .diy-copy .h2{margin-top:0;font-size:clamp(1.9rem,3.4vw,3rem)}
+    .code-h{margin-top:0}
+    .board-h{margin-top:0;font-size:clamp(1.9rem,3.4vw,3rem)}
     .inside-sub{max-width:30ch}
     .diy-copy .sub{max-width:32ch;margin-top:1rem}
     .diy-scene{position:relative;translate:var(--diy-x,0px) var(--diy-y,0px);display:flex;align-items:center;justify-content:center;gap:0}
     @media(min-width:1280px){.diy-scene{justify-content:flex-end}}
     .remote-rockwrap{translate:var(--diy-remote-x,-24px) 0;position:relative;flex:0 0 auto;z-index:2}
-    .rock-remote{height:var(--diy-remote-h,360px));width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 20px 38px rgba(0,0,0,0.55))}
-    .waves{flex:0 0 auto;width:var(--diy-waves-w,clamp(44px,8vw,120px));margin:0 var(--diy-waves-x,-2px) var(--diy-waves-y,34px)}
+    /* Same problem as S4: white shell, white card. A soft blue field sits under
+       it so the silhouette has something to be read against. */
+    .rock-remote{height:var(--diy-remote-h,360px);width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.20)) drop-shadow(0 12px 20px rgba(16,60,88,0.16))}
+    .waves{flex:0 0 auto;width:var(--diy-waves-w,120px);margin:0 var(--diy-waves-x,-2px) var(--diy-waves-y,34px)}
     .waves .w1{animation:wavepulse 2s ease-in-out infinite}
     .waves .w2{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.305s}
     .waves .w3{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.61s}
     .rig{flex:0 0 auto;width:clamp(180px,38vw,470px);height:auto}
-    @media(min-width:1280px){.rig{width:var(--diy-rig-w,clamp(340px,30vw,430px))}}
+    @media(min-width:1280px){.rig{width:var(--diy-rig-w,430px)}}
 
     #horn{animation:hornswing 4s ease-in-out infinite;transform-origin:196px 170px;transform-box:view-box}
     .bled{animation:bledblink 4s ease-in-out infinite}
-    .ghost{position:absolute;z-index:1;opacity:0.05;pointer-events:none}
+    .rig #rigShadow feDropShadow{flood-color:#103C58;flood-opacity:0.13}
+    .rig #svShadow feDropShadow{flood-color:#103C58;flood-opacity:0.12}
+    /* Ghost component doodles were white-on-ink. On white they become brand
+       blue at low alpha: pattern, not grey. */
+    .ghost{position:absolute;z-index:1;opacity:0.18;pointer-events:none}
+    .ghost [stroke="#FFFFFF"]{stroke:var(--blue)}
     @media(max-width:767.98px){.ghost{display:none}}
     #gh-res{width:400px;left:-100px;bottom:-30px;transform:rotate(-10deg)}
     #gh-chip{width:300px;right:-80px;top:-90px;transform:rotate(12deg)}
     #gh-bread{width:430px;left:30%;top:-140px;transform:rotate(-4deg)}
     #gh-servo{width:330px;right:10%;bottom:-120px;transform:rotate(8deg)}
 
-    /* S6 THE BOARD */
+    /* S6 THE BOARD, on the solid blue panel: everything white, the dark PCB
+       photograph carrying the contrast. */
     .board-grid{display:grid;gap:2rem;position:relative;z-index:2}
     @media(min-width:1024px){.board-grid{grid-template-columns:1.05fr 0.95fr}.board-card{min-height:440px}}
+    .board-card .h2{color:#fff}
     .esp-display{font-size:clamp(3rem,6.6vw,5.8rem);font-weight:900;letter-spacing:-0.03em;line-height:1;color:#fff;margin-top:2rem}
-    .esp-sub{color:var(--gray);font-weight:500;max-width:34ch;margin-top:1rem;line-height:1.55}
+    .esp-sub{color:rgba(255,255,255,0.94);font-weight:500;max-width:34ch;margin-top:1rem;line-height:1.55}
     .stat-row{display:flex;gap:clamp(2.5rem,6vw,5rem);margin-top:clamp(2rem,4vw,3.4rem);font-variant-numeric:tabular-nums}
     @media(max-width:767.98px){.stat-row{flex-wrap:wrap}}
     .stat b{display:block;font-size:clamp(1.9rem,4.4vw,3.8rem);font-weight:900;letter-spacing:-0.03em;color:#fff;line-height:1}
-    .stat span{display:block;margin-top:0.55rem;color:var(--gray);font-weight:600;font-size:0.9rem}
+    .stat span{display:block;margin-top:0.55rem;color:rgba(255,255,255,0.94);font-weight:600;font-size:0.9rem}
     .stat b{white-space:nowrap}
-    .os-line{margin-top:clamp(1.6rem,5vw,4.5rem);color:var(--gray);font-size:0.85rem;font-weight:500;max-width:46ch;line-height:1.55}
+    .os-line{margin-top:clamp(1.6rem,5vw,4.5rem);color:rgba(255,255,255,0.9);font-size:0.85rem;font-weight:500;max-width:46ch;line-height:1.55}
     .board-visual{display:block;position:absolute;top:0;right:0;width:min(52%,560px);height:100%;z-index:1;pointer-events:none}
     @media(max-width:1023px){.board-visual{width:min(58%,340px);right:-14%}.board-grid{gap:0}.board-grid > div:first-child{max-width:36rem}}
-    .board-visual img{position:absolute;top:4%;right:-4%;width:92%;height:auto;--tilt:6deg;animation:driftdn 6s ease-in-out infinite;filter:drop-shadow(0 24px 44px rgba(0,0,0,0.45))}
-    .board-visual::after{content:'';position:absolute;left:-10%;right:-10%;bottom:-6%;height:26%;background:linear-gradient(to bottom,rgba(20,22,26,0),#14161A 82%)}
+    /* The board is a dark object on a blue panel, so it needs no field and
+       almost no shadow: at 24% the halo was clipped by the panel edge and read
+       as a smear along it. */
+    .board-visual img{position:absolute;top:4%;right:-4%;width:92%;height:auto;--tilt:6deg;animation:driftdn 6s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(6,58,86,0.22))}
+    /* The photo has to clear the ground under the espressif signature, which
+       sits at 84-93% of the panel height straight over the dark PCB, so it
+       dissolves into the blue before it reaches the mark. */
+    .board-visual::after{content:'';position:absolute;left:-10%;right:-10%;bottom:-6%;height:46%;background:linear-gradient(to bottom,rgba(37,175,244,0) 0%,rgba(37,175,244,0.72) 40%,var(--blue) 62%)}
     .esp-sig{position:relative;z-index:3;margin-top:1.3rem}
     @media(min-width:1024px){.esp-sig{position:absolute;right:clamp(1.8rem,4vw,4rem);bottom:clamp(1.8rem,4vw,3rem);margin:0;text-align:right}}
-    .esp-sig .cap{font-size:0.68rem;letter-spacing:0.2em;font-weight:700;color:var(--gray);text-transform:uppercase;margin-bottom:0.5rem}
+    .esp-sig .cap{font-size:0.68rem;letter-spacing:0.2em;font-weight:700;color:rgba(255,255,255,0.9);text-transform:uppercase;margin-bottom:0.5rem}
     .esp-sig .mark{display:flex;align-items:center;gap:0.55rem}
     @media(min-width:1024px){.esp-sig .mark{justify-content:flex-end}}
     .esp-sig svg{width:25px;height:25px;display:block}
+    .esp-sig svg path{fill:#fff}
     .esp-sig .name{font-weight:700;font-size:1.05rem;color:#fff;letter-spacing:0.01em}
 
     /* S7 WHAT'S INSIDE */
@@ -682,21 +801,26 @@
       .tier1 .spec-card:first-child h3{font-size:1.45rem;letter-spacing:-0.015em}
       .tier1 .spec-card:first-child p{font-size:0.95rem;max-width:34ch}
     }
-    .spec-card{background:#fff;color:var(--dark);padding:1.7rem 1.5rem 1.9rem}
+    /* These were white chips punched out of a black page: the brightest thing
+       on the screen. On a white page the same job needs the opposite value, so
+       they invert to ink. They are the one dark block on the page and they land
+       right before the blue closing card, which gives the end of the scroll a
+       proper crescendo instead of another sheet of white. */
+    .spec-card{background:var(--dark);color:#fff;padding:1.7rem 1.5rem 1.9rem}
     .spec-card h3{font-size:1.08rem;font-weight:800;letter-spacing:-0.01em;margin-bottom:0.55rem}
-    .spec-card p{font-size:0.88rem;color:#565656;line-height:1.5;font-weight:500}
+    .spec-card p{font-size:0.88rem;color:rgba(255,255,255,0.76);line-height:1.5;font-weight:500}
     .tier2{display:grid;gap:1.7rem 2rem;margin-top:clamp(2.5rem,5vw,4rem)}
     @media(min-width:640px){.tier2{grid-template-columns:1fr 1fr}}
     @media(min-width:1024px){.tier2{grid-template-columns:repeat(3,1fr);gap:2rem 2.5rem}}
     .t2{border-top:1px solid var(--hair);padding-top:1.05rem}
-    .t2 b{display:block;color:#fff;font-weight:800;font-size:0.95rem;letter-spacing:-0.01em}
+    .t2 b{display:block;color:var(--dark);font-weight:800;font-size:0.95rem;letter-spacing:-0.01em}
     .t2 span{display:block;margin-top:0.35rem;color:var(--gray);font-size:0.85rem;line-height:1.5;font-weight:500}
 
     /* S8 READY + FOOTER */
     .ready-sec{padding:clamp(2.5rem,5vw,4rem) 0 clamp(4rem,7vw,6rem)}
     .ready-card{position:relative;background:var(--blue);text-align:center;padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,4vw,4rem)}
     .ready-card h2{font-size:clamp(2.5rem,6.4vw,4.6rem);font-weight:900;letter-spacing:-0.03em;color:#fff;line-height:1;text-wrap:balance}
-    .rsub{margin-top:1.1rem;color:var(--dark);font-weight:600;font-size:clamp(1rem,1.5vw,1.15rem)}
+    .rsub{margin-top:1.1rem;color:#fff;font-weight:600;font-size:clamp(1rem,1.5vw,1.15rem)}
     .ready-cta{display:flex;flex-direction:column;align-items:center;gap:1.5rem;margin-top:2.8rem}
     @media(min-width:640px){.ready-cta{flex-direction:row;justify-content:center;gap:2.4rem}}
     .btn-white{
@@ -706,13 +830,13 @@
       color:var(--dark);background:#fff;border:none;cursor:pointer;
       transition:transform 0.2s,box-shadow 0.2s;
     }
-    @media(hover:hover) and (pointer:fine){.btn-white:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(10,11,13,0.35)}}
+    @media(hover:hover) and (pointer:fine){.btn-white:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(8,52,78,0.28)}}
     .btn-white svg{width:16px;height:16px}
-    .cs-ink{display:inline-flex;align-items:center;gap:0.5rem;color:var(--dark);font-weight:800;font-size:0.95rem;text-decoration:none;letter-spacing:0.02em;transition:color 0.2s,transform 0.2s}
-    @media(hover:hover) and (pointer:fine){.cs-ink:hover{color:#fff;transform:translateY(-2px)}}
+    .cs-ink{display:inline-flex;align-items:center;gap:0.5rem;color:#fff;font-weight:800;font-size:0.95rem;text-decoration:none;letter-spacing:0.02em;transition:color 0.2s,transform 0.2s}
+    @media(hover:hover) and (pointer:fine){.cs-ink:hover{color:var(--ink);transform:translateY(-2px)}}
     .cs-ink svg{width:14px;height:14px}
     .pop-badge{position:absolute;z-index:5;border:none;background:none;padding:0}
-    .pop-badge img{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 26px rgba(0,0,0,0.3))}
+    .pop-badge img{display:block;width:100%;height:auto;filter:drop-shadow(0 5px 12px rgba(6,58,86,0.32))}
     .pop-badge.gone{animation:popout 0.22s ease forwards;pointer-events:none}
     .pop-badge.back{animation:popin 0.34s cubic-bezier(0.34,1.56,0.64,1)}
     #b1{width:84px;left:-26px;top:12%}
@@ -727,64 +851,71 @@
       #b4{width:52px;right:-12px;bottom:24%}
       #b5{width:44px;left:8%;bottom:-13px}
     }
-    footer{padding:3.5rem var(--gut) calc(3rem + env(safe-area-inset-bottom));text-align:center;border-top:1px solid #1A1A1A}
-    .f-logo{width:46px;height:46px;margin:0 auto 1.2rem;display:block}
+    footer{padding:3.5rem var(--gut) calc(3rem + env(safe-area-inset-bottom));text-align:center;border-top:1px solid var(--hair)}
+    .f-logo{width:var(--f-logo-w,116px);height:auto;margin:0 auto 1.2rem;display:block}
     .f-line{color:var(--gray);font-size:0.8rem;font-weight:500}
     .f-links{display:flex;gap:2rem;justify-content:center;margin-top:1.15rem}
-    .f-links a{color:var(--blue);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.03em;transition:color 0.2s}
-    @media(hover:hover) and (pointer:fine){.f-links a:hover{color:#fff}}
+    .f-links a{color:var(--ink);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.03em;transition:color 0.2s}
+    @media(hover:hover) and (pointer:fine){.f-links a:hover{color:var(--dark)}}
     .f-ig{display:inline-flex;align-items:center}
     .f-ig svg{display:block}
 
     /* Reduced motion */
     @media (prefers-reduced-motion:reduce){
-      .loop,.fl,.fl2,.strip-row,.rock-remote,.nowrun,.pulse,.remote-float,.pill,.w1,.w2,.w3,.bled,#horn,.board-visual img,
+      .loop,.fl,.fl2,.strip-row,.rock-remote,.nowrun,.pulse,.w1,.w2,.w3,.bled,#horn,.board-visual img,
       .ledstrip .l1,.ledstrip .l2,.ledstrip .l3,.ledstrip .l4,.pop-badge img{animation:none!important}
       .dot,.dotv{display:none}
       .rv,[data-rvg]>*{opacity:1!important;transform:none!important;transition:none!important}
     }
 
-    /* HERO CARD, desktop only. Mobile keeps the full-bleed photo hero:
+    /* HERO, desktop only. Mobile keeps the full-bleed photo hero:
        .hero-shell is display:contents below 1024px, so it has no layout there. */
     .hero-shell{display:contents}
     .hero-duo{display:none}
     @media(min-width:1024px){
-      /* Navbar integrated with the card grid: same 40px gutters, no white band,
-         hides on scroll down and returns on scroll up (kode pattern). */
-      header{padding:30px var(--hpad);transition:transform .28s ease,opacity .28s ease}
-      header.scrolled{padding:30px var(--hpad)}
+      /* Navbar on the same gutter as every card below it (HIG Layout:
+         "Align components with one another to make them easier to scan"). */
+      header{padding:30px var(--gut);transition:transform .28s ease,opacity .28s ease;
+        max-width:90rem;margin-inline:auto}
+      header.scrolled{padding:30px var(--gut)}
       header::before{display:none}
       header.hide{transform:translateY(-110%)}
       .logo{width:230px}
       .join-btn{padding:0.85rem 1.7rem;font-size:0.9rem}
+      /* Over the blue hero the mark and the button invert; past it they go back
+         to brand blue on white. Toggled by JS on the hero's own position, not on
+         a scroll distance, so it can never be blue-on-blue. */
+      header.overhero .logo{filter:brightness(0) invert(1)}
+      header.overhero .join-btn{background:#fff;color:var(--ink)}
+      header.overhero .join-btn:hover{box-shadow:0 8px 20px rgba(8,52,78,0.28)}
 
-      /* The hero is a full-bleed solid brand-blue field, the bookend to the closing
-         blue card. No panel, no border, no gradient: the content sits on the colour.
-         .hero-shell survives only as the alignment rail (same 90rem/gutter maths as
-         .shell), so the remotes and copy keep their exact centre-anchored positions. */
+      /* THE HERO IS A SOLID BRAND-BLUE FIELD, full bleed, no card, no border,
+         no gradient: the same flat #25AFF4 as the closing card so the page is
+         bookended by one material. White cutouts finally have a ground. */
       .hero{display:block;height:100svh;padding:108px var(--gut) 40px;background:var(--blue)}
-      .hero-shell{position:relative;display:flex;align-items:center;width:100%;height:100%;
-        max-width:calc(90rem - 2 * var(--gut));margin-inline:auto}
-      /* Contact shadow only. The old blue stage-light glow is pointless on blue. */
-      .hero-duo::after{content:'';position:absolute;z-index:-1;left:50%;bottom:-2.5%;
-        width:calc(var(--floor-w,112)*1%);height:30px;
-        transform:translateX(-50%);opacity:var(--floor-o,1);pointer-events:none;
-        background:radial-gradient(closest-side,rgba(4,44,70,0.42) 0%,rgba(4,44,70,0) 100%);
-        filter:blur(6px)}
-
-      /* Type and controls flip to the white-on-blue treatment the closing card uses. */
-      .hero-content h1 span{color:#fff}
-      .hero-content>p{color:rgba(255,255,255,0.95);font-weight:600}
-      .hero .badge{color:#fff;border-color:#fff}
-      .hero .cta{color:var(--dark);background:#fff}
-      .hero .cta:hover{box-shadow:0 12px 32px rgba(4,44,70,0.4)}
-      /* Nav over the blue field: white mark, white button with ink label.
-         .on-hero is toggled from the scroll handler, tracking the hero's height. */
-      header.on-hero .logo{filter:brightness(0) invert(1)}
-      header.on-hero .join-btn{background:#fff;color:var(--dark)}
-      header.on-hero .join-btn:hover{box-shadow:0 8px 24px rgba(4,44,70,0.4)}
+      /* Same measure as .shell: max-width 90rem minus the two gutters, centred.
+         The hero copy therefore starts and ends on the exact column as every
+         card below it at every width. */
+      .hero-shell{position:relative;display:flex;align-items:center;
+        width:100%;max-width:calc(90rem - 2 * var(--gut));height:100%;
+        margin-inline:auto;border:none;overflow:visible}
       .hero::after{display:none}
       .hero-img{display:none}
+
+      /* Everything in the hero is white on blue. */
+      .hero-content h1,.hero-content h1 span{color:#fff}
+      .hero-content>p{color:rgba(255,255,255,0.94)}
+      .badge{background:transparent;border-color:rgba(255,255,255,0.75);color:#fff}
+      /* Primary action on a blue field: white fill, ink label. Highest contrast
+         pairing available on this surface. */
+      .cta{background:#fff;color:var(--ink)}
+      .cta:hover{box-shadow:0 12px 28px rgba(8,52,78,0.3)}
+      /* One scroll-indicator language for the whole page: the same three dots,
+         same 2s three-step chase, knocked to white on the blue. */
+      .hero .scroll-cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:3}
+      /* Same component, same 2s three-step chase; only the resting value is
+         lifted because the dots are white on blue rather than blue on white. */
+      .hero .scroll-cue b{background:#fff;animation-name:cuestepw}
 
       /* The duo keeps the source photo's exact composition (container = the original
          cutout's 470x856 frame, each remote at its photographed position and scale);
@@ -794,32 +925,31 @@
       .hero-duo{display:block;position:absolute;left:50%;top:50%;
         transform:translateX(calc(-100% - var(--pair-gap,64px))) translateY(var(--duo-y,-53%));
         height:var(--duo-h,81%);aspect-ratio:470/856}
-      /* Shadows retuned for the blue ground: a deep blue-ink cast reads as light
-         falling on colour, where the old flat black just dirtied the field. */
+      /* Shadows retuned for a blue ground: the same hue at depth, so the lift
+         reads as light on blue instead of a grey stain. */
       .duo-a{position:absolute;left:2.13%;top:1.17%;height:97.66%;width:auto;
-        filter:drop-shadow(0 2px 5px rgba(4,40,64,0.28)) drop-shadow(0 22px 34px rgba(4,40,64,0.4));
+        filter:drop-shadow(0 1px 2px rgba(6,58,86,0.28)) drop-shadow(0 18px 30px rgba(6,58,86,0.26));
         animation:bobA 6s ease-in-out infinite}
       .duo-b{position:absolute;left:55.32%;top:10.28%;height:86.1%;width:auto;
-        filter:drop-shadow(0 2px 5px rgba(4,40,64,0.28)) drop-shadow(0 22px 34px rgba(4,40,64,0.4));
+        filter:drop-shadow(0 1px 2px rgba(6,58,86,0.28)) drop-shadow(0 18px 30px rgba(6,58,86,0.26));
         animation:bobB 6s ease-in-out 3s infinite}
 
       .hero-content{position:relative;left:auto;top:-28px;margin-left:calc(50% + var(--pair-gap,64px));
         padding:0;max-width:min(500px,40%)}
       /* Smaller desktops: tighten the gap and shrink the remotes so the pair
          keeps real margin on both sides instead of touching the card edges. */
+      /* The headline is one unbreakable 11-character word, so the type scale
+         and the copy column have to move together or "Superpowers" runs off
+         the screen between 1024 and 1339 (HIG Typography: "Make sure your
+         app's layout adapts to all font sizes"). */
+      .hero-content h1{font-size:clamp(2.6rem,5vw,4.5rem)}
       @media(max-width:1339px){
         .hero-duo{--pair-gap:44px;height:72%}
-        .hero-content{--pair-gap:44px;max-width:min(440px,38%)}
+        .hero-content{--pair-gap:44px;max-width:min(460px,40%)}
       }
-      /* One scroll-indicator language on the page: the same three-dot chase the
-         sections use, in white so it reads on the blue. */
-      .hero .scroll-cue{position:absolute;left:50%;bottom:18px;
-        transform:translateX(-50%);z-index:2}
-      /* Same component, same 2s three-step chase: only the resting opacity lifts,
-         because 0.16 white disappears against the blue. */
-      .hero .scroll-cue b{background:#fff;animation-name:cuestepwhite}
       .hero-content>p{max-width:420px}
     }
+    /* Below 1024 the hero is the photograph again and carries no cue. */
     .hero .scroll-cue{display:none}
     @media(min-width:1024px){.hero .scroll-cue{display:flex}}
     @keyframes bobA{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(-0.9deg)}}
@@ -1028,7 +1158,9 @@
           <text x="94" y="94" font-size="14" font-weight="500" fill="#9A9A9A" font-family="Montserrat, sans-serif">Swing the remote, hit the snare</text>
         </g>
       </svg></div>
+    <div class="rows-wrap">
     <div class="rows-zone">
+      <div class="strips-clip">
       <div class="strip-row row-1 loop" aria-hidden="true">
         <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
         <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
@@ -1037,7 +1169,11 @@
         <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
         <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
       </div>
+      </div>
+      <div class="apps-stage">
       <img class="apps-remote" src="assets/photo-cutouts/product-02.webp" alt="OpenMote remote, head on" width="256" height="900" loading="lazy" decoding="async">
+      </div>
+    </div>
     </div>
   </div>
   <ul class="sr-only">
@@ -1184,7 +1320,7 @@
           </div>
           <div class="waves" aria-hidden="true">
             <svg viewBox="0 0 360 240" width="100%">
-              <g fill="none" stroke="#25AFF4" stroke-linecap="round">
+              <g fill="none" stroke="#FFFFFF" stroke-linecap="round">
                 <path class="w1 loop" d="M 96 84 a 52 52 0 0 1 0 72" stroke-width="13"></path>
                 <path class="w2 loop" d="M 156 62 a 82 82 0 0 1 0 116" stroke-width="13"></path>
                 <path class="w3 loop" d="M 216 40 a 112 112 0 0 1 0 160" stroke-width="13"></path>
@@ -1362,7 +1498,7 @@
 </section>
 
 <footer data-screen-label="Footer">
-  <img class="f-logo" src="design-system/logos/LogoMarkOpenmote.svg" alt="OpenMote mark" width="250" height="250" loading="lazy" decoding="async">
+  <img class="f-logo" src="img/footer-logo.png" alt="OpenMote" width="932" height="770" loading="lazy" decoding="async">
   <p class="f-line">&#169; 2026 Hat &amp; Hammer &#183; Los Angeles</p>
   <div class="f-links">
     <a href="https://www.instagram.com/openmote.io" target="_blank" rel="noopener" aria-label="OpenMote on Instagram" class="f-ig"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></a>
@@ -1408,6 +1544,17 @@ document.addEventListener('keydown',e=>e.key==='Escape'&&closeModal());
 
 // Header scroll effect
 const header=document.querySelector('header');
+// Over the solid blue hero the mark and button invert. Driven by the hero's own
+// box so the swap always happens exactly at the blue-to-white edge.
+const heroEl=document.querySelector('.hero');
+function updHeaderOverHero(){
+  if(!heroEl)return;
+  const over=window.innerWidth>=1024&&heroEl.getBoundingClientRect().bottom>110;
+  header.classList.toggle('overhero',over);
+}
+updHeaderOverHero();
+window.addEventListener('scroll',updHeaderOverHero,{passive:true});
+window.addEventListener('resize',updHeaderOverHero);
 // Desktop: kode-style header hide on scroll down, return on scroll up
 let lastY=0;window.headerHidden=false;
 window.addEventListener('scroll',()=>{
@@ -1427,16 +1574,6 @@ window.addEventListener('scroll',()=>{
     header.classList.remove('scrolled');
   }
 },{passive:true});
-// Desktop hero is a solid blue field: the nav wears its white treatment for
-// exactly as long as it is sitting on that blue, then returns to brand blue.
-const heroEl=document.querySelector('.hero');
-function syncHeroNav(){
-  const h=heroEl?heroEl.offsetHeight:0;
-  header.classList.toggle('on-hero',window.innerWidth>=1024&&window.scrollY<h-100);
-}
-syncHeroNav();
-window.addEventListener('scroll',syncHeroNav,{passive:true});
-window.addEventListener('resize',syncHeroNav);
 
 function handleJoin(e) {
   e.preventDefault();
