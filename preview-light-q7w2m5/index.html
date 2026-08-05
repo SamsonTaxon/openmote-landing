@@ -551,7 +551,7 @@
        box that IS the remote (same clamp, same aspect ratio, same anchor), and
        each one is set to overlap the silhouette at its own height. Below 768
        the box spans the scene and the original placement is kept. */
-    .pill{translate:-50% -50%;
+    .pill{translate:var(--anchor,none);
       position:absolute;z-index:35;left:var(--x);top:var(--y);
       background:var(--blue);color:#fff;font-weight:800;
       font-size:clamp(0.72rem,1vw,0.92rem);letter-spacing:0.12em;
@@ -559,7 +559,7 @@
       white-space:nowrap;
     }
     .eco{
-      position:absolute;z-index:35;left:var(--x);top:var(--y);translate:-50% -50%;
+      position:absolute;z-index:35;left:var(--x);top:var(--y);translate:var(--anchor,none);
       display:flex;flex-direction:column;align-items:center;gap:0.6rem;
       color:var(--dark);text-align:center;
       filter:none;
@@ -595,10 +595,10 @@
     #e-alexa{--x:65.74%;--y:54.27%;--fd:6s;--fdel:0.9s}
     #e-ah{--x:44.64%;--y:82.45%;--fd:6s;--fdel:1.2s}
     @media(max-width:899px){
-      #p-ir{--x:42%;--y:7%}
-      #p-wifi{--x:4%;--y:33%}
-      #p-bt{--x:56%;--y:38%}
-      #p-usb{--x:58%;--y:76%}
+      #p-ir{--x:31%;--y:9%}
+      #p-wifi{--x:3%;--y:43%}
+      #p-bt{--x:55%;--y:36%}
+      #p-usb{--x:77%;--y:77%}
       #e-ha{--x:4%;--y:16%}
       #e-matter{--x:63%;--y:22%}
       #e-gh{--x:5%;--y:62%}
@@ -740,7 +740,7 @@
        blue at low alpha: pattern, not grey. */
     .ghost{position:absolute;z-index:1;opacity:0.18;pointer-events:none}
     .ghost [stroke="#FFFFFF"]{stroke:var(--blue)}
-    @media(max-width:767.98px){.ghost{display:none}}
+    
     #gh-res{width:400px;left:-100px;bottom:-30px;transform:rotate(-10deg)}
     #gh-chip{width:300px;right:-80px;top:-90px;transform:rotate(12deg)}
     #gh-bread{width:430px;left:30%;top:-140px;transform:rotate(-4deg)}
@@ -870,6 +870,9 @@
       #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
       #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
     }
+    /* Samson's dragged positions are centre-anchored and desktop-only.
+       Below 1024 the original top-left coordinates apply unchanged. */
+    @media(min-width:1024px){.eco,.pill{--anchor:-50% -50%}}
     /* Reduced motion */
     @media (prefers-reduced-motion:reduce){
       .loop,.fl,.fl2,.strip-row,.rock-remote,.nowrun,.pulse,.w1,.w2,.w3,.bled,#horn,.board-visual img,
