@@ -201,10 +201,14 @@
       padding-bottom:calc(2rem + env(safe-area-inset-bottom));
       z-index:201;
       transform:translateY(100%);
-      transition:transform 0.34s cubic-bezier(0.4,0,0.2,1);
+      /* visibility is belt-and-braces: if a transform ever fails to apply, the
+         closed sheet still cannot be seen or touched. Same pattern as .overlay. */
+      visibility:hidden;
+      pointer-events:none;
+      transition:transform 0.34s cubic-bezier(0.4,0,0.2,1),visibility 0.34s;
       color:var(--dark);
     }
-    .sheet.on{transform:translateY(0)}
+    .sheet.on{transform:translateY(0);visibility:visible;pointer-events:auto}
     .sheet-bar{
       width:40px;
       height:4px;
@@ -355,7 +359,6 @@
       --ease:cubic-bezier(0.4,0,0.2,1);
       --gut:clamp(1.25rem,4.5vw,4rem);
     }
-    html{overflow-x:hidden}
     /* logo.png ships with ~30% transparent padding top+bottom; crop it so the scrolled bar hugs the art while the art keeps its original size */
     .logo{width:180px;height:auto;margin-top:-26px;margin-bottom:-27px;transition:width 0.2s ease,margin 0.2s ease}
     header.scrolled .logo{width:150px;margin-top:-22px;margin-bottom:-23px}
