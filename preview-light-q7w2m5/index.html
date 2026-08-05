@@ -127,16 +127,12 @@
       content:'';
       position:absolute;
       inset:0;
-      /* Light hero: the photograph stays, but the scrim is inverted so the
-         copy sits on a white base that dissolves into the image, and the
-         bottom edge meets the white page with no seam. */
       background:linear-gradient(
         to top,
-        rgba(255,255,255,1) 0%,
-        rgba(255,255,255,0.97) 34%,
-        rgba(255,255,255,0.62) 52%,
-        rgba(255,255,255,0.22) 72%,
-        rgba(255,255,255,0.44) 100%
+        rgba(10,11,13,1) 0%,
+        rgba(10,11,13,0.7) 30%,
+        rgba(10,11,13,0.3) 60%,
+        rgba(10,11,13,0.4) 100%
       );
       pointer-events:none;
     }
@@ -172,7 +168,7 @@
     }
     .hero-content>p{
       font-size:0.9rem;
-      color:var(--gray);
+      color:rgba(255,255,255,0.7);
       line-height:1.5;
       margin-bottom:1.5rem;
       max-width:320px;
@@ -518,20 +514,11 @@
     .smart{position:relative;padding-top:var(--smart-top,53px);overflow:hidden}
     .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:var(--cue-gap,11px);padding:0}
     /* Per-instance cue spacing, baked from the live tuner (owner approved) */
-    #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
-    #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
-    #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
     @media(min-width:1024px){
-      #smart > .scroll-cue{padding-top:35px;padding-bottom:32px}
-      #apps > .scroll-cue{padding-top:0;padding-bottom:27px}
-      /* 1px optical nudge, done with padding rather than a transform: the
+          /* 1px optical nudge, done with padding rather than a transform: the
          transform shifted a full-width flex box and pushed the document 1px
          wider than the viewport. */
-      #code > .scroll-cue{padding-top:9px;padding-bottom:0;padding-left:2px}
-    }
-    #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
-    #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
-    #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
+      }
     .scroll-cue b{width:var(--cue-dot,7px);height:var(--cue-dot,7px);background:var(--blue);animation:cuestep 2s infinite}
     .scroll-cue b:nth-child(2){animation-delay:0.25s}
     .scroll-cue b:nth-child(3){animation-delay:0.5s}
@@ -556,7 +543,7 @@
     .remote-float{position:absolute;left:50%;top:50%;z-index:10;transform:translate(-50%,-52%);animation:floatyC 4s ease-in-out infinite}
     /* On the blue wash the silhouette carries itself, so the lift is a single
        tight contact shadow rather than a big dark halo. */
-    .ripple-remote{height:var(--remote-h,660px);width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.16)) drop-shadow(0 16px 26px rgba(16,60,88,0.14))}
+    .ripple-remote{height:var(--remote-h,clamp(400px,46vw,660px));width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.16)) drop-shadow(0 16px 26px rgba(16,60,88,0.14))}
     .smart-fade{position:absolute;left:0;right:0;z-index:30;pointer-events:none}
     .smart-fade.top{top:0;height:220px;background:linear-gradient(to bottom,#FFFFFF 12%,rgba(255,255,255,0))}
     .smart-fade.bot{bottom:0;height:200px;background:linear-gradient(to top,#FFFFFF 15%,rgba(255,255,255,0))}
@@ -658,7 +645,7 @@
        its shadow was sliced off in a straight line. The clip now lives on the
        strip rows only; the remote sits in an unclipped overlay above them. */
     .apps-stage{position:absolute;inset:0;z-index:6;pointer-events:none}
-    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,334px);width:auto;display:block;pointer-events:none;
+    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;display:block;pointer-events:none;
       filter:drop-shadow(0 1px 2px rgba(16,60,88,0.18)) drop-shadow(0 14px 24px rgba(16,60,88,0.16))}
     /* Blue field behind the cutout, as light rather than as a box: over the blue
        tiles it is invisible (blue on blue), over the white gaps it becomes the
@@ -734,16 +721,16 @@
     .diy-copy .sub{max-width:32ch;margin-top:1rem}
     .diy-scene{position:relative;translate:var(--diy-x,0px) var(--diy-y,0px);display:flex;align-items:center;justify-content:center;gap:0}
     @media(min-width:1280px){.diy-scene{justify-content:flex-end}}
-    .remote-rockwrap{translate:var(--diy-remote-x,-24px) 0;position:relative;flex:0 0 auto;z-index:2}
+    .remote-rockwrap{translate:var(--diy-remote-x,0px) 0;position:relative;flex:0 0 auto;z-index:2}
     /* Same problem as S4: white shell, white card. A soft blue field sits under
        it so the silhouette has something to be read against. */
-    .rock-remote{height:var(--diy-remote-h,360px);width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.20)) drop-shadow(0 12px 20px rgba(16,60,88,0.16))}
-    .waves{flex:0 0 auto;width:var(--diy-waves-w,120px);margin:0 var(--diy-waves-x,-2px) var(--diy-waves-y,34px)}
+    .rock-remote{height:var(--diy-remote-h,clamp(160px,21vw,330px));width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.20)) drop-shadow(0 12px 20px rgba(16,60,88,0.16))}
+    .waves{flex:0 0 auto;width:var(--diy-waves-w,clamp(44px,8vw,120px));margin:0 var(--diy-waves-x,-2px) var(--diy-waves-y,34px)}
     .waves .w1{animation:wavepulse 2s ease-in-out infinite}
     .waves .w2{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.305s}
     .waves .w3{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.61s}
     .rig{flex:0 0 auto;width:clamp(180px,38vw,470px);height:auto}
-    @media(min-width:1280px){.rig{width:var(--diy-rig-w,430px)}}
+    @media(min-width:1280px){.rig{width:var(--diy-rig-w,clamp(340px,30vw,430px))}}
 
     #horn{animation:hornswing 4s ease-in-out infinite;transform-origin:196px 170px;transform-box:view-box}
     .bled{animation:bledblink 4s ease-in-out infinite}
@@ -860,6 +847,29 @@
     .f-ig{display:inline-flex;align-items:center}
     .f-ig svg{display:block}
 
+    @media(min-width:1024px){:root{--remote-h:660px;--apps-remote-h:334px;--diy-remote-h:360px;--diy-waves-w:120px;--diy-rig-w:430px;--diy-remote-x:-24px;--smart-top:53px;--radios-gap:15px;--nowrun-gap:68px;--nowrun-top:19px;--apps-head-gap:3px;--f-logo-w:116px;}}
+
+    /* MOBILE HERO IS UNTOUCHABLE: below 1024 it keeps the original dark
+       treatment regardless of the light theme used by the rest of the page. */
+    @media(max-width:1023.98px){
+      .hero-content h1{color:#fff}
+      .hero-content h1 span{color:var(--blue)}
+      .hero-content>p{color:rgba(255,255,255,0.7)}
+      .badge{color:var(--blue);border-color:var(--blue);background:transparent}
+      .logo{filter:none}
+      .hero .scroll-cue b{background:#fff}
+    }
+    @media(min-width:1024px){
+      #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
+      #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
+      #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
+      #smart > .scroll-cue{padding-top:35px;padding-bottom:32px}
+      #apps > .scroll-cue{padding-top:0;padding-bottom:27px}
+      #code > .scroll-cue{padding-top:9px;padding-bottom:0;padding-left:2px}
+      #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
+      #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
+      #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
+    }
     /* Reduced motion */
     @media (prefers-reduced-motion:reduce){
       .loop,.fl,.fl2,.strip-row,.rock-remote,.nowrun,.pulse,.w1,.w2,.w3,.bled,#horn,.board-visual img,
