@@ -1090,11 +1090,11 @@
     /* iOS fixed-bar fix: backdrop-filter on a position:fixed element makes
        Safari detach it during scroll. Solid surface on touch devices. */
     @media (hover:none) and (pointer:coarse){
+      /* keep the brand-blue surface; only the backdrop-filter is the iOS problem */
       .bar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
-        background:#FFFFFF;border:1px solid var(--edge,#D3D9E1);
-        will-change:auto;transform:translate(-50%,0);
+        background:var(--blue);border:0;
+        box-shadow:0 10px 30px rgba(16,60,88,0.22);
         bottom:max(0px,env(safe-area-inset-bottom))}
-      .bar.on{transform:translate(-50%,0)}
     }
 
     /* ---- labels ride the remote ----
@@ -1858,9 +1858,15 @@ function handleJoin(e) {
   var hero = document.querySelector('.hero');
   var ready = document.getElementById('ready');
   var heroGone = false, endNear = false;
-  function updBar(){ var on=(window.innerWidth>=1024?window.headerHidden:heroGone)&&!endNear; bar.classList.toggle('on', on); }
+  function updBar(){
+    // On phones iOS shrinks the viewport as the toolbars collapse, so a 100svh
+    // hero can leave the screen sooner than it looks. Require a real scroll past it.
+    var pastHero = heroGone && window.scrollY > (hero.offsetHeight * 0.9);
+    var on=(window.innerWidth>=1024?window.headerHidden:pastHero)&&!endNear;
+    bar.classList.toggle('on', on); }
   window.updBar=updBar;
   new IntersectionObserver(function(es){ heroGone = !es[0].isIntersecting; updBar(); }).observe(hero);
+  window.addEventListener('scroll', updBar, {passive:true});
   new IntersectionObserver(function(es){ endNear = es[0].isIntersecting; updBar(); }, {threshold:0.1}).observe(ready);
 })();
 </script>
