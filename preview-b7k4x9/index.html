@@ -1138,6 +1138,17 @@
       .plat img{width:clamp(34px,11vw,64px)}
       .plat span{font-size:clamp(0.58rem,2.4vw,0.8rem);line-height:1.2}
     }
+
+    /* ---- MOBILE CTA: match the live site exactly ----
+       openmote.io has no floating bottom bar. The nav is fixed at the top,
+       always visible, with its background fading in after 50px. Copy that:
+       no bar to mistime, nothing to drift on iOS. ---- */
+    @media(max-width:1023.98px){
+      .bar{display:none!important}
+      header{position:fixed;top:0;left:0;right:0;z-index:99;
+        transform:none!important;opacity:1!important}
+      header.hide{transform:none!important}
+    }
   </style>
 </head>
 <body>
