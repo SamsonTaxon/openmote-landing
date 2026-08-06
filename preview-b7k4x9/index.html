@@ -23,7 +23,11 @@
   <link rel="preload" as="image" href="img/hero-remote-b.webp" media="(min-width:768px)" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Fonts load without blocking first paint: text renders in the fallback
+       and swaps when Montserrat lands (display=swap in the URL). -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -545,14 +549,14 @@
     /* Three phase groups on the dots' own 2s beat: rings 1/4/7 fire, then
        2/5/8, then 3/6. Reads as three outward steps, not a smear. */
     .ripple-svg .pulse{animation:ringflash 2s infinite}
-    /* Phones and tablets get STATIC rings. Each animated ring group becomes
-       its own compositor layer, and the outer ones are ~2300px squares:
-       eight of those overcommit the iPhone GPU, and Safari responds by
-       dropping unrelated layers mid-scroll, so text, images and whole
-       sections blink out for a moment. Static rings collapse back into one
-       plain raster. Opacity 0.5 sits at the pulse's visual midpoint. */
-    @media (hover:none) and (pointer:coarse){
-      .ripple-svg .pulse{animation:none!important;opacity:0.5}
+    /* Phones keep the pulse but drop rings 4-8: on a sub-768 viewport those
+       arcs sit entirely outside the scene's visible box (checked against the
+       clip geometry), yet each one still cost a compositor layer up to
+       ~2300px square. Hiding them is pixel-identical on phones and frees
+       the GPU memory whose exhaustion made Safari drop random layers
+       mid-scroll. */
+    @media(max-width:767.98px){
+      .ripple-svg .pulse:nth-of-type(n+4){display:none}
     }
     .remote-float{position:absolute;left:50%;top:50%;z-index:10;transform:translate(-50%,-52%);animation:floatyC 4s ease-in-out infinite}
     /* On the blue wash the silhouette carries itself, so the lift is a single
@@ -1054,6 +1058,17 @@
     }
 
 
+    /* Touch devices carry one tight shadow per cutout instead of stacked
+       wide Gaussians: every tile repaint re-runs those blurs, and halving
+       the blur work is what keeps fast-scroll repaints instant. The look
+       shifts from a soft halo to a crisp lift; geometry is untouched. */
+    @media (hover:none) and (pointer:coarse){
+      .ripple-remote{filter:drop-shadow(0 4px 10px rgba(16,60,88,0.18))}
+      .apps-remote{filter:drop-shadow(0 4px 10px rgba(16,60,88,0.20))}
+      .rock-remote{filter:drop-shadow(0 4px 8px rgba(16,60,88,0.20))}
+      .board-visual img{filter:drop-shadow(0 4px 8px rgba(6,58,86,0.20))}
+    }
+
     /* iOS fixed-bar fix: backdrop-filter on a position:fixed element makes
        Safari detach it during scroll. Solid surface on touch devices. */
     @media (hover:none) and (pointer:coarse){
@@ -1130,8 +1145,8 @@
   <div class="hero-shell">
   <img src="img/hero.webp" alt="" class="hero-img" width="675" height="1200" fetchpriority="high">
   <div class="hero-duo" aria-hidden="true">
-    <img src="img/hero-remote-a.webp" alt="" class="duo-a" width="221" height="851">
-    <img src="img/hero-remote-b.webp" alt="" class="duo-b" width="215" height="752">
+    <img src="img/hero-remote-a.webp" alt="" class="duo-a" width="381" height="1260">
+    <img src="img/hero-remote-b.webp" alt="" class="duo-b" width="330" height="1090">
   </div>
   <div class="scroll-cue" aria-hidden="true"><b></b><b></b><b></b></div>
   <div class="hero-content">
@@ -1220,11 +1235,11 @@
       <img class="inv" src="assets/logos/matter.svg" alt="Matter" width="1280" height="275" decoding="async">
     </div>
     <div class="eco" id="e-gh">
-      <img class="hk" src="assets/logos/googlehome-app.webp" alt="" decoding="async">
+      <img class="hk" src="assets/logos/googlehome-app.webp" alt="" width="244" height="244" decoding="async">
       <span class="nm">Google Home</span>
     </div>
     <div class="eco" id="e-alexa">
-      <img class="hk" src="assets/logos/alexa-app.webp" alt="" decoding="async">
+      <img class="hk" src="assets/logos/alexa-app.webp" alt="" width="244" height="244" decoding="async">
       <span class="nm">Amazon Alexa</span>
     </div>
     <div class="eco" id="e-ah">
@@ -1368,7 +1383,7 @@
               <g transform="translate(22 22) scale(4.35)"><path d="M12.926 19.324a7.6 7.6 0 00-2.983-6.754 7.44 7.44 0 00-3.828-1.554.697.697 0 01-.606-.731.674.674 0 01.743-.617 8.97 8.97 0 018 9.805 7.828 7.828 0 01-.298 1.542l1.989.56a11.039 11.039 0 001.714-.651 12.159 12.159 0 00.217-2.343A12.57 12.57 0 007.212 6.171a5.53 5.53 0 00-2 0 4.354 4.354 0 00-2.16 1.337 4.274 4.274 0 001.909 6.856 9.896 9.896 0 001.074.195 4.011 4.011 0 013.337 3.954 3.965 3.965 0 01-.64 2.16l1.371.88a10.182 10.182 0 002.057.342 7.52 7.52 0 00.754-2.628m.16 4.73A13.073 13.073 0 01.001 10.983 12.982 12.982 0 013.83 1.737l.743.697a12.067 12.067 0 000 17.141 12.067 12.067 0 0017.141 0l.697.697a12.97 12.97 0 01-9.336 3.726M24 10.993A10.993 10.993 0 0012.949 0c-.389 0-.766 0-1.143.057l-.252.732a18.912 18.912 0 0111.588 11.576l.731-.263c0-.366.069-.732.069-1.143m-1.269 5.165A17.53 17.53 0 007.818 1.27a11.119 11.119 0 00-2.457 1.77v1.635A13.919 13.919 0 0119.268 18.57h1.634a11.713 11.713 0 001.771-2.446M7.92 17.884a1.691 1.691 0 11-1.69-1.691 1.691 1.691 0 011.69 1.691" fill="#FFFFFF"></path></g></g>
             <g transform="translate(590 34) rotate(7)"><rect width="136" height="136" fill="#F5822A"></rect>
               <g transform="translate(20 20) scale(4.0)"><path d="M12 23.992c1.25.211 7.051-3.743 9.113-8.217.253-.686.61-1.198.746-2.5.21-2.016-.41-3.912-1.59-5.419-.987-1.163-2.305-2.004-3.88-2.532l.683-2.583a1.371 1.371 0 1 0-.76-.189L15.64 5.1c-1.109-.288-2.328-.437-3.64-.444m5.978 11.667c-1.548 1.346-2.525 1.488-3.045 1.467-.274-.034-.75-.558-.919-1.104-.188-.612-.28-1.282-.273-2.2-.199-2.476 1.465-5.624 3.937-6.041 1.003-.186 2.39.493 2.889 2.088.506 1.422-.645 4.147-2.589 5.79zM12 4.656c-1.315.007-2.538.156-3.65.447l-.675-2.56A1.37 1.37 0 0 0 6.962 0a1.372 1.372 0 0 0-.044 2.742L7.6 5.328c-1.57.528-2.885 1.367-3.871 2.528-1.179 1.507-1.8 3.403-1.588 5.419.136 1.302.492 1.814.745 2.5 2.062 4.474 7.862 8.428 9.113 8.217m-1.507-9.507c.007.92-.086 1.589-.274 2.201-.167.546-.644 1.07-.918 1.104-.52.021-1.498-.121-3.045-1.467-1.944-1.643-3.095-4.368-2.589-5.79.5-1.595 1.886-2.274 2.889-2.088 2.471.417 4.136 3.565 3.937 6.04zm6.45-2.19a1.24 1.24 0 1 0 0 2.48 1.24 1.24 0 0 0 0-2.48zm.416 1.149a.325.325 0 1 1 0-.65.325.325 0 0 1 0 .65zM7.25 12.294a1.24 1.24 0 1 0 0 2.48 1.24 1.24 0 0 0 0-2.48zm-.418 1.15a.325.325 0 1 1 0-.65.325.325 0 0 1 0 .65z" fill="#FFFFFF"></path></g></g>
-            <g transform="translate(806 42) rotate(13)"><image href="assets/platform-circuitpython.svg" width="124" height="124"></image></g>
+            <g transform="translate(806 42) rotate(13)"><image href="assets/platform-circuitpython.webp" width="124" height="124"></image></g>
           </g>
           <g filter="url(#winshadow)">
             <rect x="40" y="150" width="920" height="1080" fill="#FFFFFF"></rect>
@@ -1406,7 +1421,7 @@
       <div class="plat"><img src="assets/platform-arduino.svg" alt="" width="120" height="120" decoding="async"><span>Arduino</span></div>
       <div class="plat"><img src="assets/platform-espressif.svg" alt="" width="120" height="120" decoding="async"><span>ESP-IDF</span></div>
       <div class="plat"><img src="assets/platform-platformio.svg" alt="" width="120" height="120" decoding="async"><span>PlatformIO</span></div>
-      <div class="plat"><img src="assets/platform-circuitpython.svg" alt="" width="120" height="120" decoding="async"><span>CircuitPython</span></div>
+      <div class="plat"><img src="assets/platform-circuitpython.webp" alt="" width="120" height="120" decoding="async"><span>CircuitPython</span></div>
     </div>
   </div>
 </section>
@@ -1471,7 +1486,7 @@
               </filter>
             </defs>
             <g filter="url(#rigShadow)">
-              <image href="assets/esp32-devkitc.svg" x="0" y="139" width="470" height="232" transform="rotate(-90 235 255)"></image>
+              <image href="assets/esp32-devkitc.webp" x="0" y="139" width="470" height="232" transform="rotate(-90 235 255)"></image>
             </g>
             <rect class="bled loop" x="290" y="135" width="17" height="13" fill="#25AFF4" opacity="0.35"></rect>
             <g fill="none" stroke-width="6" stroke-linecap="round">
