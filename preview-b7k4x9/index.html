@@ -8,9 +8,9 @@
   <meta name="description" content="OpenMote turns the classic motion remote into a programmable universal remote for everything. Works with Home Assistant, Matter, and Arduino. Launching on Crowd Supply September 1.">
   <meta name="theme-color" content="#FFFFFF">
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
-  <link rel="preload" as="image" href="img/hero.webp" media="(max-width:1023px)" fetchpriority="high">
-  <link rel="preload" as="image" href="img/hero-remote-a.webp" media="(min-width:1024px)" fetchpriority="high">
-  <link rel="preload" as="image" href="img/hero-remote-b.webp" media="(min-width:1024px)" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero.webp" media="(max-width:767.98px)" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero-remote-a.webp" media="(min-width:768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero-remote-b.webp" media="(min-width:768px)" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -44,9 +44,8 @@
     html{
       scroll-behavior:auto;
       -webkit-overflow-scrolling:touch;
-      /* must live on the root: it propagates to the viewport. On <body> it turns
-         body into a dead scroll container that swallows every wheel event. */
-      overscroll-behavior-y:none;
+      /* no overscroll-behavior here: on the root it disables iOS rubber-band
+         scrolling and pull-to-refresh, which reads as broken scroll feel. */
     }
     body{
       font-family:'Montserrat',sans-serif;
@@ -405,6 +404,11 @@
     /* Reveals */
     .rv,[data-rvg]>*{opacity:0;transform:translateY(24px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease)}
     .rv.in,[data-rvg].in>*{opacity:1;transform:translateY(0)}
+    @media (prefers-reduced-motion:reduce){
+      .rv,[data-rvg]>*{opacity:1;transform:none;transition:none}
+      .loop,.fl,.fl2,.remote-float,.nowrun,.rock-remote,#horn,.bled,
+      .board-visual img,.duo-a,.duo-b,.scroll-cue b{animation:none!important}
+    }
 
     /* Off-screen pause for every infinite loop */
     .la:not(.live) .loop{animation-play-state:paused!important}
@@ -414,7 +418,6 @@
     /* The product in the ripple scene reads as static at 12px, so the travel is
        nearly tripled and the beat moved onto the page's 4s step. */
     @keyframes floatyC{0%,100%{transform:translate(-50%,-52%) translateY(16px)}50%{transform:translate(-50%,-52%) translateY(-18px)}}
-    @keyframes floatyX{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
     @keyframes sway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-11px) rotate(2deg)}}
     @keyframes swayneg{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-9px) rotate(-2deg)}}
     /* Same shape and same 2s period as the three scroll-cue dots (cuestep):
@@ -501,12 +504,6 @@
     /* S2 SMART HOME */
     .smart{position:relative;padding-top:var(--smart-top,110px);overflow:hidden}
     .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:var(--cue-gap,11px);padding:0}
-    /* Per-instance cue spacing, baked from the live tuner (owner approved) */
-    @media(min-width:1024px){
-          /* 1px optical nudge, done with padding rather than a transform: the
-         transform shifted a full-width flex box and pushed the document 1px
-         wider than the viewport. */
-      }
     .scroll-cue b{width:var(--cue-dot,7px);height:var(--cue-dot,7px);background:var(--blue);animation:cuestep 2s infinite}
     .scroll-cue b:nth-child(2){animation-delay:0.25s}
     .scroll-cue b:nth-child(3){animation-delay:0.5s}
@@ -540,14 +537,14 @@
        each one is set to overlap the silhouette at its own height. Below 768
        the box spans the scene and the original placement is kept. */
     .pill{translate:var(--anchor,none);
-      position:absolute;z-index:35;left:var(--x);top:var(--y);
+      position:absolute;z-index:35;
       background:var(--blue);color:#fff;font-weight:800;
       font-size:clamp(0.72rem,1vw,0.92rem);letter-spacing:0.12em;
       padding:0.78em 1.25em;box-shadow:0 2px 5px rgba(16,60,88,0.16);
       white-space:nowrap;
     }
     .eco{
-      position:absolute;z-index:35;left:var(--x);top:var(--y);translate:var(--anchor,none);
+      position:absolute;z-index:35;translate:var(--anchor,none);
       display:flex;flex-direction:column;align-items:center;gap:0.6rem;
       color:var(--dark);text-align:center;
       filter:none;
@@ -560,43 +557,14 @@
     .eco .hk{filter:drop-shadow(0 0 1px rgba(16,60,88,0.30)) drop-shadow(0 4px 10px rgba(16,60,88,0.10))}
     .eco-wide .inv{height:clamp(22px,2.2vw,30px)}
     .eco .genico{width:clamp(42px,4.6vw,62px);height:clamp(42px,4.6vw,62px);display:block}
-    @media(min-width:768px){
-      /* The marks were spread to the viewport edges, leaving the scene sparse on
-         desktop. Pull the whole constellation toward the remote it belongs to. */
-      /* The ecosystem marks sit outside the labels now that the labels have
-         moved onto the product, so they are pushed back out to keep clear of
-         them (HIG Layout: "Make controls easier to use by providing enough
-         space around them and grouping them in logical sections"). */
-    }
     .eco .nm{font-size:clamp(0.78rem,1.05vw,1rem);font-weight:700;letter-spacing:0.01em;white-space:nowrap}
     .eco .tile{width:66px;height:66px;background:#FFFFFF;display:grid;place-items:center}
     .eco .tile img,.eco .tile svg{width:40px;height:40px;display:block}
     .eco .lockup{height:clamp(46px,4.6vw,66px);width:auto}
     .eco .hk{height:clamp(46px,4.8vw,66px);width:auto}
-    #p-ir{--x:53.13%;--y:13.59%;--fd:6s}
-    #p-wifi{--x:26.73%;--y:48.76%;--fd:6s;--fdel:0.3s}
-    #p-bt{--x:75.92%;--y:36.27%;}
-    #p-usb{--x:55.09%;--y:89.27%;}
-    #e-ha{--x:17.4%;--y:31.71%;--fd:6s;--fdel:0.5s}
-    #e-matter{--x:70.28%;--y:24.21%;--fd:6s;--fdel:0.6s}
-    #e-gh{--x:22.05%;--y:64.24%;--fd:6s;--fdel:0.8s}
-    #e-alexa{--x:87.79%;--y:57.84%;--fd:6s;--fdel:0.9s}
-    #e-ah{--x:31.78%;--y:84.23%;--fd:6s;--fdel:1.2s}
-    @media(max-width:899px){
-      #p-ir{--x:31%;--y:4%}
-      #p-wifi{--x:3%;--y:38%}
-      #p-bt{--x:55%;--y:31%}
-      #p-usb{--x:77%;--y:72%}
-      #e-ha{--x:4%;--y:16%}
-      #e-matter{--x:63%;--y:22%}
-      #e-gh{--x:5%;--y:62%}
-      #e-alexa{--x:72%;--y:56%}
-      #e-ah{--x:36%;--y:80%}
-    }
-    /* Pill positions above 768: percentages of the REMOTE box, measured off the
-       photograph's alpha silhouette so each label overlaps the edge it names.
-       Declared last so they win over both blocks above at the same specificity. */
-    .smart-copy{position:relative;z-index:31;text-align:center;max-width:38ch;margin:0 auto;padding:0 1.25rem clamp(1.5rem,3vw,2.5rem);color:var(--gray);font-weight:500;line-height:1.6;font-size:clamp(0.95rem,1.3vw,1.1rem)}
+    /* Pill and ecosystem-mark positions live in the two LABEL POSITIONS blocks
+       further down: percentages of the remote-sized anchor box, one set per
+       breakpoint, dragged on the live tuner and baked here. */
 
     /* S3 COMMUNITY APPS */
     /* Bottom of the apps band sets the gap above the YOUR CODE cue.
@@ -633,7 +601,7 @@
        its shadow was sliced off in a straight line. The clip now lives on the
        strip rows only; the remote sits in an unclipped overlay above them. */
     .apps-stage{position:absolute;inset:0;z-index:6;pointer-events:none}
-    .apps-remote{position:absolute;left:50.53%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;display:block;pointer-events:none;
+    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;display:block;pointer-events:none;
       filter:drop-shadow(0 1px 2px rgba(16,60,88,0.18)) drop-shadow(0 14px 24px rgba(16,60,88,0.16))}
     /* Blue field behind the cutout, as light rather than as a box: over the blue
        tiles it is invisible (blue on blue), over the white gaps it becomes the
@@ -679,7 +647,6 @@
        block) so this ID rule is the one that wins. */
     #connPath{stroke:#9A9A9A;opacity:0.85}
     .dot{animation:dotgo 4s ease-in-out infinite}
-    .dotv{offset-path:path('M 104 10 C 104 90 44 100 44 230');animation:dotgo 4s ease-in-out infinite}
     .editor-svg{width:min(520px,100%);height:auto;display:block;margin-left:auto}
     /* The editor window is a white app window in both themes. Only its lift
        changes: a black 38% halo reads as grime on white, so it is halved and
@@ -688,7 +655,6 @@
     .editor-svg #bshadow feDropShadow{flood-color:#063A56;flood-opacity:0.20}
     /* Syntax colour is the brand blue, unmodified. */
     .editor-svg tspan[fill="#9A9A9A"]{fill:var(--gray)}
-    .code-line{text-align:center;margin-top:clamp(2.5rem,5vw,3.5rem);color:rgba(255,255,255,0.9);font-weight:600;font-size:clamp(0.9rem,1.3vw,1.05rem)}
 
     /* S5 + S6 cards */
     .cardsec{padding:0}
@@ -752,11 +718,14 @@
     /* The board is a dark object on a blue panel, so it needs no field and
        almost no shadow: at 24% the halo was clipped by the panel edge and read
        as a smear along it. */
-    .board-visual img{position:absolute;top:4%;right:-4%;width:92%;height:auto;--tilt:6deg;animation:driftdn 6s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(6,58,86,0.22))}
-    /* The photo has to clear the ground under the espressif signature, which
-       sits at 84-93% of the panel height straight over the dark PCB, so it
-       dissolves into the blue before it reaches the mark. */
-    .board-visual::after{content:'';position:absolute;left:-10%;right:-10%;bottom:-6%;height:46%;background:linear-gradient(to bottom,rgba(37,175,244,0) 0%,rgba(37,175,244,0.72) 40%,var(--blue) 62%)}
+    /* The photo dissolves before its own bottom edge so it can never show a
+       raw cut, and the fade rides the image itself: a container-anchored
+       gradient drifted out of alignment with the floating animation and let
+       the dark PCB smear past it (and left a hard cut on mobile, where the
+       image is much shorter than the container). */
+    .board-visual img{position:absolute;top:4%;right:-4%;width:92%;height:auto;--tilt:6deg;animation:driftdn 6s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(6,58,86,0.22));
+      -webkit-mask-image:linear-gradient(to bottom,#000 52%,transparent 88%);
+      mask-image:linear-gradient(to bottom,#000 52%,transparent 88%)}
     .esp-sig{position:relative;z-index:3;margin-top:1.3rem}
     @media(min-width:1024px){.esp-sig{position:absolute;right:clamp(1.8rem,4vw,4rem);bottom:clamp(1.8rem,4vw,3rem);margin:0;text-align:right}}
     .esp-sig .cap{font-size:0.68rem;letter-spacing:0.2em;font-weight:700;color:rgba(255,255,255,0.9);text-transform:uppercase;margin-bottom:0.5rem}
@@ -846,18 +815,11 @@
       .hero-content>p{color:rgba(255,255,255,0.7)}
       .badge{color:var(--blue);border-color:var(--blue);background:transparent}
       .logo{filter:none}
-      .hero .scroll-cue b{background:#fff}
     }
     @media(min-width:1024px){
-      #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
-      #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
-      #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
-      #smart > .scroll-cue{padding-top:35px;padding-bottom:32px}
-      #apps > .scroll-cue{padding-top:0;padding-bottom:27px}
-      #code > .scroll-cue{padding-top:9px;padding-bottom:0;padding-left:2px}
-      #smart > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}
-      #apps > .scroll-cue{padding-top:0px;padding-bottom:27px;margin-top:0px;margin-bottom:0px}
-      #code > .scroll-cue{padding-top:0px;padding-bottom:0px;margin-top:-91px;margin-bottom:0px}
+      #smart > .scroll-cue{padding:0;margin:0}
+      #apps > .scroll-cue{padding:0 0 27px;margin:0}
+      #code > .scroll-cue{padding:0 0 0 2px;margin:-91px 0 0}
     }
     /* Samson's dragged positions are centre-anchored and desktop-only.
        Below 1024 the original top-left coordinates apply unchanged. */
@@ -993,7 +955,6 @@
     @media(min-width:768px){.hero .scroll-cue{display:flex}}
     @keyframes bobA{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(-0.9deg)}}
     @keyframes bobB{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(0.7deg)}}
-    @media (prefers-reduced-motion:reduce){.duo-a,.duo-b{animation:none!important}}
     /* Custom cursor must win over any later bare cursor:pointer declarations */
     @media(min-width:768px){
       a,button,input,select,label,[role=button],[onclick],.cta,.join-btn,.cs-link,.pop-badge{
@@ -1047,43 +1008,16 @@
 
     /* ---- BAKED FROM THE CONTROL PANEL (per breakpoint) ---- */
     @media(max-width:767.98px){
-      #p-wifi{--x:31.36%;--y:48.54%}
-      #p-ir{--x:50%;--y:20.09%}
-      #p-bt{--x:64.9%;--y:34.89%}
-      #p-usb{--x:69.07%;--y:76.27%}
-      #e-ha{--x:25.52%;--y:37.04%}
-      #e-matter{--x:63.03%;--y:26.82%}
-      #e-gh{--x:35.93%;--y:66.14%}
-      #e-alexa{--x:72.76%;--y:48.54%}
-      #e-ah{--x:47.12%;--y:79.66%}
-      .apps-remote{left:50%;top:50%}
       .smart-h{translate:0px 33px}
       .proto-row{translate:-17px 42px}
       #apps > .scroll-cue{display:none}
       #code > .scroll-cue{display:none}
-      :root{--smart-top:13px;--apps-remote-h:255px;--sec-apps-bot:-66px;--sec-code-bot:58px;}
+      /* --sec-apps-bot 0: the tuner wrote -66px here, but negative padding is
+         invalid and always rendered as 0. Baked to what actually renders. */
+      :root{--smart-top:13px;--apps-remote-h:255px;--sec-apps-bot:0px;--sec-code-bot:58px;}
     }
     @media(min-width:768px){
-      #p-wifi{--x:41.87%;--y:47.72%}
-      #p-ir{--x:50.53%;--y:13.3%}
-      #p-bt{--x:56.13%;--y:34.89%}
-      #p-usb{--x:61.35%;--y:82.52%}
-      #e-ha{--x:37.22%;--y:34.89%}
-      #e-matter{--x:56.13%;--y:24.15%}
-      #e-gh{--x:41.87%;--y:66.32%}
-      #e-alexa{--x:62.01%;--y:51.76%}
-      #e-ah{--x:47.4%;--y:82.52%}
-      .apps-remote{left:50%;top:50%}
       :root{--sec-code-bot:58px;}
-    }
-
-    /* platform logos: always one row of four, squeezed rather than wrapped */
-    .plat-row{flex-wrap:nowrap!important}
-    @media(max-width:767.98px){
-      .plat-row{gap:clamp(0.35rem,2.4vw,1.4rem)}
-      .plat{width:auto;max-width:23vw;gap:0.5rem}
-      .plat img{width:clamp(34px,11vw,64px)}
-      .plat span{font-size:clamp(0.58rem,2.5vw,0.8rem);text-align:center;line-height:1.2}
     }
 
 
@@ -1135,6 +1069,7 @@
     .plat span{display:block;width:100%;text-align:center}
     @media(max-width:767.98px){
       .plat-row{gap:0;max-width:min(100%,26rem);margin-inline:auto}
+      .plat{gap:0.5rem}
       .plat img{width:clamp(34px,11vw,64px)}
       .plat span{font-size:clamp(0.58rem,2.4vw,0.8rem);line-height:1.2}
     }
@@ -1187,10 +1122,15 @@
   <div class="ripple-scene">
     <svg class="ripple-svg" viewBox="0 0 1600 1000" aria-hidden="true">
       <defs>
+        <!-- Rings must hit ZERO alpha before the scene's overflow clip on both
+             edges: opaque ring pixels at the clip line paint a 1px seam while
+             the composited layer scrolls. 0.35 / 0.645 sit just past the clip
+             lines at every viewport from 320 up to ~2560 wide. -->
         <linearGradient id="fadeDown" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#FFFFFF" stop-opacity="1"></stop>
+          <stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0"></stop>
+          <stop offset="0.47" stop-color="#FFFFFF" stop-opacity="1"></stop>
           <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.65"></stop>
-          <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop>
+          <stop offset="0.645" stop-color="#FFFFFF" stop-opacity="0"></stop>
         </linearGradient>
         <mask id="ringMask" maskUnits="userSpaceOnUse" x="-400" y="-400" width="2400" height="1800">
           <rect x="-400" y="-400" width="2400" height="1800" fill="url(#fadeDown)"></rect>
@@ -1318,13 +1258,15 @@
     <div class="rows-wrap">
     <div class="rows-zone">
       <div class="strips-clip">
+      <!-- Not lazy: each late-loading strip changes the row's max-content width,
+           which re-bases the translateX(-50%) loop and makes the marquee jump. -->
       <div class="strip-row row-1 loop" aria-hidden="true">
-        <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
-        <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
+        <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" decoding="async">
+        <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" decoding="async">
       </div>
       <div class="strip-row row-2 loop" aria-hidden="true">
-        <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
-        <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" loading="lazy" decoding="async">
+        <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" decoding="async">
+        <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" decoding="async">
       </div>
       </div>
       <div class="apps-stage">
@@ -1697,40 +1639,39 @@ function closeModal(){
   document.body.style.top='';
   window.scrollTo(0,scrollPos);
 }
-document.addEventListener('keydown',e=>e.key==='Escape'&&closeModal());
+// Escape only acts while the sheet is open: an unconditional closeModal()
+// scrolled the page back to a stale saved position on every stray Escape.
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.querySelector('.sheet').classList.contains('on'))closeModal();
+});
 
-// Header scroll effect
+// Header state. One rAF-batched scroll handler instead of three separate
+// listeners, so scrolling never runs layout reads more than once per frame.
 const header=document.querySelector('header');
-// Over the solid blue hero the mark and button invert. Driven by the hero's own
-// box so the swap always happens exactly at the blue-to-white edge.
 const heroEl=document.querySelector('.hero');
-function updHeaderOverHero(){
-  if(!heroEl)return;
-  const over=window.innerWidth>=1024&&heroEl.getBoundingClientRect().bottom>110;
-  header.classList.toggle('overhero',over);
-}
-updHeaderOverHero();
-window.addEventListener('scroll',updHeaderOverHero,{passive:true});
-window.addEventListener('resize',updHeaderOverHero);
-// Desktop: kode-style header hide on scroll down, return on scroll up
-let lastY=0;window.headerHidden=false;
-window.addEventListener('scroll',()=>{
+let lastY=window.scrollY;window.headerHidden=false;
+let scrollQueued=false;
+function headerScrollWork(){
+  scrollQueued=false;
+  const y=window.scrollY;
+  // Over the solid blue hero the mark and button invert. Driven by the hero's
+  // own box so the swap always happens exactly at the blue-to-white edge.
+  // The blue hero starts at 768px, so the swap has to as well.
+  if(heroEl)header.classList.toggle('overhero',window.innerWidth>=768&&heroEl.getBoundingClientRect().bottom>110);
+  // Desktop: kode-style header hide on scroll down, return on scroll up
   if(window.innerWidth>=1024){
-    const y=window.scrollY;
     if(y>140&&y>lastY+4)header.classList.add('hide');
     else if(y<lastY-4||y<=140)header.classList.remove('hide');
-    lastY=y;
-  }else{header.classList.remove('hide');lastY=window.scrollY;}
+  }else header.classList.remove('hide');
+  header.classList.toggle('scrolled',y>50);
+  lastY=y;
   const hh=header.classList.contains('hide');
   if(hh!==window.headerHidden){window.headerHidden=hh;if(window.updBar)window.updBar();}
-},{passive:true});
-window.addEventListener('scroll',()=>{
-  if(window.scrollY>50){
-    header.classList.add('scrolled');
-  }else{
-    header.classList.remove('scrolled');
-  }
-},{passive:true});
+}
+function queueScrollWork(){if(!scrollQueued){scrollQueued=true;requestAnimationFrame(headerScrollWork)}}
+headerScrollWork();
+window.addEventListener('scroll',queueScrollWork,{passive:true});
+window.addEventListener('resize',queueScrollWork);
 
 function handleJoin(e) {
   e.preventDefault();
@@ -1772,7 +1713,9 @@ function handleJoin(e) {
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Rise-and-fade reveals, staggered children on [data-rvg]
+  // Rise-and-fade reveals, staggered children on [data-rvg].
+  // Positive bottom margin starts the fade just BEFORE the element scrolls in,
+  // so a fast flick never lands on a still-blank section.
   var ro = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(!e.isIntersecting) return;
@@ -1783,7 +1726,7 @@ function handleJoin(e) {
       t.classList.add('in');
       ro.unobserve(t);
     });
-  }, {threshold:0.12, rootMargin:'0px 0px -30px 0px'});
+  }, {threshold:0, rootMargin:'0px 0px 12% 0px'});
   document.querySelectorAll('.rv,[data-rvg]').forEach(function(el){ ro.observe(el); });
 
   // Pause every infinite loop while its section is off screen
@@ -1857,27 +1800,30 @@ function handleJoin(e) {
     document.getElementById('connDot').style.offsetPath = "path('" + d + "')";
   }
   if(connSvg){
-    var connRaf;
-    window.addEventListener('resize', function(){ cancelAnimationFrame(connRaf); connRaf = requestAnimationFrame(drawConn); });
+    // Redraw only when the WIDTH changes: iOS fires resize on every toolbar
+    // collapse mid-scroll, and a full redraw there is layout thrash and jank.
+    var connRaf, connW = window.innerWidth;
+    window.addEventListener('resize', function(){
+      if(window.innerWidth === connW) return;
+      connW = window.innerWidth;
+      cancelAnimationFrame(connRaf); connRaf = requestAnimationFrame(drawConn);
+    });
     var rmImg = document.querySelector('.flash-target .remote');
     if(rmImg){ rmImg.addEventListener('load', drawConn); }
     drawConn(); setTimeout(drawConn, 400); setTimeout(drawConn, 1400); setTimeout(drawConn, 3200);
   }
 
-  // Floating bottom bar: on past the hero, off near the end
+  // Floating bottom bar, desktop only (the CSS hides it below 1024): on while
+  // the header is hidden, off near the end. Both inputs push updBar when they
+  // change, so no scroll listener is needed at all.
   var bar = document.getElementById('bar');
-  var hero = document.querySelector('.hero');
   var ready = document.getElementById('ready');
-  var heroGone = false, endNear = false;
+  var endNear = false;
   function updBar(){
-    // On phones iOS shrinks the viewport as the toolbars collapse, so a 100svh
-    // hero can leave the screen sooner than it looks. Require a real scroll past it.
-    var pastHero = heroGone && window.scrollY > (hero.offsetHeight * 0.9);
-    var on=(window.innerWidth>=1024?window.headerHidden:pastHero)&&!endNear;
-    bar.classList.toggle('on', on); }
+    if(window.innerWidth < 1024){ bar.classList.remove('on'); return; }
+    bar.classList.toggle('on', window.headerHidden && !endNear);
+  }
   window.updBar=updBar;
-  new IntersectionObserver(function(es){ heroGone = !es[0].isIntersecting; updBar(); }).observe(hero);
-  window.addEventListener('scroll', updBar, {passive:true});
   new IntersectionObserver(function(es){ endNear = es[0].isIntersecting; updBar(); }, {threshold:0.1}).observe(ready);
 })();
 </script>
