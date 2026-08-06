@@ -430,6 +430,11 @@
     @keyframes wavepulse{0%,100%{opacity:0.14}45%{opacity:1}}
     @keyframes driftdn{0%,100%{transform:rotate(var(--tilt,-13deg)) translateY(0)}50%{transform:rotate(var(--tilt,-13deg)) translateY(-16px)}}
     @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    /* Same loop mirrored. Never use animation-direction:reverse for this:
+       WebKit demotes reversed transform animations off the GPU compositor,
+       so on iPhone the top row stepped along on the CPU while the forward
+       bottom row stayed smooth. */
+    @keyframes marqBack{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
     @keyframes dotgo{0%{offset-distance:0%;opacity:0}8%{opacity:1}52%{offset-distance:100%;opacity:1}58%{opacity:0;offset-distance:100%}100%{offset-distance:100%;opacity:0}}
     @keyframes led1{0%,52%{opacity:0}54%,96%{opacity:1}100%{opacity:0}}
     @keyframes led2{0%,62%{opacity:0}64%,96%{opacity:1}100%{opacity:0}}
@@ -583,7 +588,7 @@
     @media(min-width:768px){.apps-break{--sh:96px}}
     .strip-row{display:flex;width:max-content;animation:marq 72s linear infinite;will-change:transform}
     .strip-row img{height:var(--sh);width:auto;display:block;margin-right:calc(var(--sh) * 0.27084)}
-    .row-1{animation-duration:96s;animation-direction:reverse;margin-bottom:20px}
+    .row-1{animation-name:marqBack;animation-duration:96s;margin-bottom:20px}
     .row-2{animation-duration:72s}
     .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-top:var(--nowrun-top,0px);margin-bottom:var(--nowrun-gap,68px);pointer-events:none}
     @media(min-width:768px){.nowrun-wrap{margin-bottom:var(--nowrun-gap,68px)}}
