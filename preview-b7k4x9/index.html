@@ -8,6 +8,16 @@
   <meta name="description" content="OpenMote turns the classic motion remote into a programmable universal remote for everything. Works with Home Assistant, Matter, and Arduino. Launching on Crowd Supply September 1.">
   <meta name="theme-color" content="#FFFFFF">
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <script>
+    /* Diagnostic switch: /preview-b7k4x9/?calm renders the page with every
+       animation and transition dead, for A/B-ing scroll smoothness on a real
+       phone. Costs nothing when the flag is absent. */
+    if(location.search.indexOf('calm')>-1)document.documentElement.className+=' calm';
+  </script>
+  <style>
+    .calm *,.calm *::before,.calm *::after{animation:none!important;transition:none!important}
+    .calm .rv,.calm [data-rvg]>*{opacity:1!important;transform:none!important}
+  </style>
   <link rel="preload" as="image" href="img/hero.webp" media="(max-width:767.98px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/hero-remote-a.webp" media="(min-width:768px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/hero-remote-b.webp" media="(min-width:768px)" fetchpriority="high">
@@ -535,6 +545,15 @@
     /* Three phase groups on the dots' own 2s beat: rings 1/4/7 fire, then
        2/5/8, then 3/6. Reads as three outward steps, not a smear. */
     .ripple-svg .pulse{animation:ringflash 2s infinite}
+    /* Phones and tablets get STATIC rings. Each animated ring group becomes
+       its own compositor layer, and the outer ones are ~2300px squares:
+       eight of those overcommit the iPhone GPU, and Safari responds by
+       dropping unrelated layers mid-scroll, so text, images and whole
+       sections blink out for a moment. Static rings collapse back into one
+       plain raster. Opacity 0.5 sits at the pulse's visual midpoint. */
+    @media (hover:none) and (pointer:coarse){
+      .ripple-svg .pulse{animation:none!important;opacity:0.5}
+    }
     .remote-float{position:absolute;left:50%;top:50%;z-index:10;transform:translate(-50%,-52%);animation:floatyC 4s ease-in-out infinite}
     /* On the blue wash the silhouette carries itself, so the lift is a single
        tight contact shadow rather than a big dark halo. */
@@ -591,7 +610,11 @@
     .apps-break{position:relative;width:100vw;left:50%;transform:translateX(-50%);padding:clamp(1rem,2.4vw,1.5rem) 0 clamp(2rem,3vw,3rem);--sh:72px}
     .rows-wrap{position:relative}
     @media(min-width:768px){.apps-break{--sh:96px}}
-    .strip-row{display:flex;width:max-content;animation:marq 72s linear infinite;will-change:transform}
+    .strip-row{display:flex;width:max-content;animation:marq 72s linear infinite}
+    /* Commit the two big marquee layers only while their section is near the
+       viewport; permanent will-change kept ~19MB of GPU backing alive from
+       page load even when the band was screens away. */
+    .la.live .strip-row{will-change:transform}
     .strip-row img{height:var(--sh);width:auto;display:block;margin-right:calc(var(--sh) * 0.27084)}
     .row-1{animation-name:marqBack;animation-duration:96s;margin-bottom:20px}
     .row-2{animation-duration:72s}
