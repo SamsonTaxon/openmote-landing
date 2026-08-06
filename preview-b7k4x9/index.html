@@ -401,9 +401,14 @@
       .sec-head.split .sub{margin-bottom:0.4rem}
     }
 
-    /* Reveals */
-    .rv,[data-rvg]>*{opacity:0;transform:translateY(24px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease)}
-    .rv.in,[data-rvg].in>*{opacity:1;transform:translateY(0)}
+    /* Reveals, desktop only. On iOS the IntersectionObserver that triggers
+       them is starved during momentum scrolling, so a fast flick lands on
+       invisible sections that pop in late. Mobile renders everything
+       immediately, like a plain static page. */
+    @media(min-width:1024px){
+      .rv,[data-rvg]>*{opacity:0;transform:translateY(24px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease)}
+      .rv.in,[data-rvg].in>*{opacity:1;transform:translateY(0)}
+    }
     @media (prefers-reduced-motion:reduce){
       .rv,[data-rvg]>*{opacity:1;transform:none;transition:none}
       .loop,.fl,.fl2,.remote-float,.nowrun,.rock-remote,#horn,.bled,
@@ -1177,7 +1182,7 @@
       </g>
     </svg>
     <div class="remote-float">
-      <img class="ripple-remote" src="assets/photo-cutouts/product-01.webp" alt="OpenMote remote" width="1201" height="1676" loading="lazy" decoding="async">
+      <img class="ripple-remote" src="assets/photo-cutouts/product-01.webp" alt="OpenMote remote" width="1201" height="1676" decoding="async">
     </div>
     <div class="remote-anchor">
     <span class="pill" id="p-wifi">WIFI 2.4 GHZ</span>
@@ -1185,22 +1190,22 @@
     <span class="pill" id="p-bt">BLUETOOTH 5 LE</span>
     <span class="pill" id="p-usb">USB-C</span>
     <div class="eco" id="e-ha">
-      <img class="inv" src="assets/logos/homeassistant.svg" alt="" width="24" height="24" loading="lazy" decoding="async">
+      <img class="inv" src="assets/logos/homeassistant.svg" alt="" width="24" height="24" decoding="async">
       <span class="nm">Home Assistant</span>
     </div>
     <div class="eco eco-wide" id="e-matter">
-      <img class="inv" src="assets/logos/matter.svg" alt="Matter" width="1280" height="275" loading="lazy" decoding="async">
+      <img class="inv" src="assets/logos/matter.svg" alt="Matter" width="1280" height="275" decoding="async">
     </div>
     <div class="eco" id="e-gh">
-      <img class="hk" src="assets/logos/googlehome-app.webp" alt="" loading="lazy" decoding="async">
+      <img class="hk" src="assets/logos/googlehome-app.webp" alt="" decoding="async">
       <span class="nm">Google Home</span>
     </div>
     <div class="eco" id="e-alexa">
-      <img class="hk" src="assets/logos/alexa-app.webp" alt="" loading="lazy" decoding="async">
+      <img class="hk" src="assets/logos/alexa-app.webp" alt="" decoding="async">
       <span class="nm">Amazon Alexa</span>
     </div>
     <div class="eco" id="e-ah">
-      <img class="hk" src="assets/logos/homekit.svg" alt="" width="1024" height="1024" loading="lazy" decoding="async">
+      <img class="hk" src="assets/logos/homekit.svg" alt="" width="1024" height="1024" decoding="async">
       <span class="nm">Apple Home</span>
     </div>
     </div>
@@ -1263,19 +1268,21 @@
     <div class="rows-wrap">
     <div class="rows-zone">
       <div class="strips-clip">
-      <!-- Not lazy: each late-loading strip changes the row's max-content width,
-           which re-bases the translateX(-50%) loop and makes the marquee jump. -->
+      <!-- Raster, not SVG: Safari discards offscreen layers and re-rasterizing
+           vector strips on the way back is slow enough to watch. A bitmap blits
+           straight back. Not lazy: each late-loading strip changes the row's
+           max-content width, which re-bases the translateX(-50%) loop. -->
       <div class="strip-row row-1 loop" aria-hidden="true">
-        <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" decoding="async">
-        <img src="assets/app-strip-1.svg" alt="" width="2414" height="96" decoding="async">
+        <img src="assets/app-strip-1.webp" alt="" width="4828" height="192" decoding="async">
+        <img src="assets/app-strip-1.webp" alt="" width="4828" height="192" decoding="async">
       </div>
       <div class="strip-row row-2 loop" aria-hidden="true">
-        <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" decoding="async">
-        <img src="assets/app-strip-2.svg" alt="" width="2414" height="96" decoding="async">
+        <img src="assets/app-strip-2.webp" alt="" width="4828" height="192" decoding="async">
+        <img src="assets/app-strip-2.webp" alt="" width="4828" height="192" decoding="async">
       </div>
       </div>
       <div class="apps-stage">
-      <img class="apps-remote" src="assets/photo-cutouts/product-02.webp" alt="OpenMote remote, head on" width="256" height="900" loading="lazy" decoding="async">
+      <img class="apps-remote" src="assets/photo-cutouts/product-02.webp" alt="OpenMote remote, head on" width="256" height="900" decoding="async">
       </div>
     </div>
     </div>
@@ -1299,7 +1306,7 @@
           <h2 class="h2 code-h">Your Tools Already Work.</h2>
         </div>
         <div class="flash-target">
-          <img class="remote" src="assets/photo-cutouts/product-03.webp" alt="OpenMote standing upright" width="495" height="1719" loading="lazy" decoding="async">
+          <img class="remote" src="assets/photo-cutouts/product-03.webp" alt="OpenMote standing upright" width="495" height="1719" decoding="async">
           <svg class="ledstrip" viewBox="0 0 240 60" aria-hidden="true">
             <defs><filter id="ledGlowA"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter></defs>
             <g>
@@ -1373,10 +1380,10 @@
     </div>
     <p class="prog-line">Program It Like Any ESP32</p>
     <div class="plat-row">
-      <div class="plat"><img src="assets/platform-arduino.svg" alt="" width="120" height="120" loading="lazy" decoding="async"><span>Arduino</span></div>
-      <div class="plat"><img src="assets/platform-espressif.svg" alt="" width="120" height="120" loading="lazy" decoding="async"><span>ESP-IDF</span></div>
-      <div class="plat"><img src="assets/platform-platformio.svg" alt="" width="120" height="120" loading="lazy" decoding="async"><span>PlatformIO</span></div>
-      <div class="plat"><img src="assets/platform-circuitpython.svg" alt="" width="120" height="120" loading="lazy" decoding="async"><span>CircuitPython</span></div>
+      <div class="plat"><img src="assets/platform-arduino.svg" alt="" width="120" height="120" decoding="async"><span>Arduino</span></div>
+      <div class="plat"><img src="assets/platform-espressif.svg" alt="" width="120" height="120" decoding="async"><span>ESP-IDF</span></div>
+      <div class="plat"><img src="assets/platform-platformio.svg" alt="" width="120" height="120" decoding="async"><span>PlatformIO</span></div>
+      <div class="plat"><img src="assets/platform-circuitpython.svg" alt="" width="120" height="120" decoding="async"><span>CircuitPython</span></div>
     </div>
   </div>
 </section>
@@ -1420,7 +1427,7 @@
         </div>
         <div class="diy-scene">
           <div class="remote-rockwrap">
-            <img class="rock-remote loop" src="assets/photo-cutouts/product-02.webp" alt="OpenMote remote tilting" width="179" height="630" loading="lazy" decoding="async">
+            <img class="rock-remote loop" src="assets/photo-cutouts/product-02.webp" alt="OpenMote remote tilting" width="179" height="630" decoding="async">
           </div>
           <div class="waves" aria-hidden="true">
             <svg viewBox="0 0 360 240" width="100%">
@@ -1488,7 +1495,7 @@
   <div class="shell">
     <div class="board-card la">
       <div class="board-visual" aria-hidden="true">
-        <img src="assets/photo-cutouts/product-09-web.webp" alt="" width="1076" height="1527" loading="lazy" decoding="async" class="loop">
+        <img src="assets/photo-cutouts/product-09-web.webp" alt="" width="1076" height="1527" decoding="async" class="loop">
       </div>
       <div class="board-grid">
         <div>
@@ -1581,11 +1588,11 @@
 <section class="ready-sec" id="ready" data-screen-label="08 Ready To Build">
   <div class="shell">
     <div class="ready-card la">
-      <button class="pop-badge" id="b1" aria-label="Pop the gamepad badge"><img src="assets/badge-gamepad.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s"></button>
-      <button class="pop-badge" id="b2" aria-label="Pop the house badge"><img src="assets/badge-house.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.4s"></button>
-      <button class="pop-badge" id="b3" aria-label="Pop the wand badge"><img src="assets/badge-wand.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s;--fdel:1.6s"></button>
-      <button class="pop-badge" id="b4" aria-label="Pop the infrared badge"><img src="assets/badge-ir.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.8s"></button>
-      <button class="pop-badge" id="b5" aria-label="Pop the robot badge"><img src="assets/badge-robot.svg" alt="" width="96" height="96" loading="lazy" decoding="async" class="fl loop" style="--fd:6s;--fdel:0.3s"></button>
+      <button class="pop-badge" id="b1" aria-label="Pop the gamepad badge"><img src="assets/badge-gamepad.svg" alt="" width="96" height="96" decoding="async" class="fl loop" style="--fd:6s"></button>
+      <button class="pop-badge" id="b2" aria-label="Pop the house badge"><img src="assets/badge-house.svg" alt="" width="96" height="96" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.4s"></button>
+      <button class="pop-badge" id="b3" aria-label="Pop the wand badge"><img src="assets/badge-wand.svg" alt="" width="96" height="96" decoding="async" class="fl loop" style="--fd:6s;--fdel:1.6s"></button>
+      <button class="pop-badge" id="b4" aria-label="Pop the infrared badge"><img src="assets/badge-ir.svg" alt="" width="96" height="96" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.8s"></button>
+      <button class="pop-badge" id="b5" aria-label="Pop the robot badge"><img src="assets/badge-robot.svg" alt="" width="96" height="96" decoding="async" class="fl loop" style="--fd:6s;--fdel:0.3s"></button>
       <h2 class="rv">Ready To Build?</h2>
       <div class="ready-cta" data-rvg>
         <button class="btn-white" onclick="openModal()">
@@ -1602,7 +1609,7 @@
 </section>
 
 <footer data-screen-label="Footer">
-  <img class="f-logo" src="img/footer-logo.png" alt="OpenMote" width="932" height="770" loading="lazy" decoding="async">
+  <img class="f-logo" src="img/footer-logo.png" alt="OpenMote" width="932" height="770" decoding="async">
   <p class="f-line">&#169; 2026 Hat &amp; Hammer &#183; Los Angeles</p>
   <div class="f-links">
     <a href="https://www.instagram.com/openmote.io" target="_blank" rel="noopener" aria-label="OpenMote on Instagram" class="f-ig"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></a>
@@ -1734,10 +1741,12 @@ function handleJoin(e) {
   }, {threshold:0, rootMargin:'0px 0px 12% 0px'});
   document.querySelectorAll('.rv,[data-rvg]').forEach(function(el){ ro.observe(el); });
 
-  // Pause every infinite loop while its section is off screen
+  // Pause every infinite loop while its section is off screen. Wake a full
+  // viewport ahead: with only 60px of margin, iOS delivered the wake-up after
+  // the section was already on screen, so it arrived frozen and jolted alive.
   var lo = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ e.target.classList.toggle('live', e.isIntersecting); });
-  }, {rootMargin:'60px 0px'});
+  }, {rootMargin:'100% 0px'});
   document.querySelectorAll('.la').forEach(function(el){ lo.observe(el); });
 
   // Lazy video playback
