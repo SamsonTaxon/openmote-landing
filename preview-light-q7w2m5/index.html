@@ -310,18 +310,6 @@
         object-position:center;
         margin-left:auto;
       }
-      .hero::after{
-        /* 768-1023 puts the copy on top of the photo, so the veil has to stay
-           near-solid across the whole text column before it falls away. */
-        background:linear-gradient(
-          to right,
-          rgba(255,255,255,1) 0%,
-          rgba(255,255,255,0.99) 46%,
-          rgba(255,255,255,0.84) 62%,
-          rgba(255,255,255,0.3) 84%,
-          rgba(255,255,255,0.12) 100%
-        );
-      }
       .hero-content{
         position:absolute;
         left:0;
@@ -511,7 +499,7 @@
     .msym img{width:60px;height:13px;max-width:none;display:block}
 
     /* S2 SMART HOME */
-    .smart{position:relative;padding-top:var(--smart-top,53px);overflow:hidden}
+    .smart{position:relative;padding-top:var(--smart-top,110px);overflow:hidden}
     .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:var(--cue-gap,11px);padding:0}
     /* Per-instance cue spacing, baked from the live tuner (owner approved) */
     @media(min-width:1024px){
@@ -525,7 +513,7 @@
     @keyframes cuestep{0%,55%,100%{opacity:0.16}15%{opacity:1}}
     @keyframes cuestepw{0%,55%,100%{opacity:0.4}15%{opacity:1}}
     .smart-h{margin-top:0;text-align:center;padding-inline:var(--gut)}
-    .proto-row{margin-top:var(--radios-gap,15px);text-align:center;color:var(--ink);font-weight:700;font-size:0.85rem;letter-spacing:0.22em}
+    .proto-row{margin-top:var(--radios-gap,15px);margin-bottom:var(--scene-pull,0px);text-align:center;color:var(--ink);font-weight:700;font-size:0.85rem;letter-spacing:0.22em}
     @media(min-width:640px){
       .smart-h{position:relative;z-index:40;margin-top:0}
       .proto-row{position:relative;z-index:40;margin-top:0.8rem;
@@ -585,20 +573,20 @@
     .eco .tile img,.eco .tile svg{width:40px;height:40px;display:block}
     .eco .lockup{height:clamp(46px,4.6vw,66px);width:auto}
     .eco .hk{height:clamp(46px,4.8vw,66px);width:auto}
-    #p-ir{--x:50.27%;--y:13.59%;--fd:6s}
-    #p-wifi{--x:41.76%;--y:46.07%;--fd:6s;--fdel:0.3s}
-    #p-bt{--x:57.34%;--y:35.73%;}
-    #p-usb{--x:53.79%;--y:86.24%;}
-    #e-ha{--x:35.18%;--y:32.78%;--fd:6s;--fdel:0.5s}
-    #e-matter{--x:58.27%;--y:24.58%;--fd:6s;--fdel:0.6s}
-    #e-gh{--x:36.78%;--y:62.29%;--fd:6s;--fdel:0.8s}
-    #e-alexa{--x:65.74%;--y:54.27%;--fd:6s;--fdel:0.9s}
-    #e-ah{--x:44.64%;--y:82.45%;--fd:6s;--fdel:1.2s}
+    #p-ir{--x:53.13%;--y:13.59%;--fd:6s}
+    #p-wifi{--x:26.73%;--y:48.76%;--fd:6s;--fdel:0.3s}
+    #p-bt{--x:75.92%;--y:36.27%;}
+    #p-usb{--x:55.09%;--y:89.27%;}
+    #e-ha{--x:17.4%;--y:31.71%;--fd:6s;--fdel:0.5s}
+    #e-matter{--x:70.28%;--y:24.21%;--fd:6s;--fdel:0.6s}
+    #e-gh{--x:22.05%;--y:64.24%;--fd:6s;--fdel:0.8s}
+    #e-alexa{--x:87.79%;--y:57.84%;--fd:6s;--fdel:0.9s}
+    #e-ah{--x:31.78%;--y:84.23%;--fd:6s;--fdel:1.2s}
     @media(max-width:899px){
-      #p-ir{--x:31%;--y:9%}
-      #p-wifi{--x:3%;--y:43%}
-      #p-bt{--x:55%;--y:36%}
-      #p-usb{--x:77%;--y:77%}
+      #p-ir{--x:31%;--y:4%}
+      #p-wifi{--x:3%;--y:38%}
+      #p-bt{--x:55%;--y:31%}
+      #p-usb{--x:77%;--y:72%}
       #e-ha{--x:4%;--y:16%}
       #e-matter{--x:63%;--y:22%}
       #e-gh{--x:5%;--y:62%}
@@ -629,7 +617,7 @@
     .strip-row img{height:var(--sh);width:auto;display:block;margin-right:calc(var(--sh) * 0.27084)}
     .row-1{animation-duration:96s;animation-direction:reverse;margin-bottom:20px}
     .row-2{animation-duration:72s}
-    .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-top:var(--nowrun-top,19px);margin-bottom:var(--nowrun-gap,68px);pointer-events:none}
+    .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-top:var(--nowrun-top,0px);margin-bottom:var(--nowrun-gap,68px);pointer-events:none}
     @media(min-width:768px){.nowrun-wrap{margin-bottom:var(--nowrun-gap,68px)}}
     .rows-zone{position:relative}
     .strips-clip{overflow:hidden}
@@ -645,7 +633,7 @@
        its shadow was sliced off in a straight line. The clip now lives on the
        strip rows only; the remote sits in an unclipped overlay above them. */
     .apps-stage{position:absolute;inset:0;z-index:6;pointer-events:none}
-    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;display:block;pointer-events:none;
+    .apps-remote{position:absolute;left:50.53%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;display:block;pointer-events:none;
       filter:drop-shadow(0 1px 2px rgba(16,60,88,0.18)) drop-shadow(0 14px 24px rgba(16,60,88,0.16))}
     /* Blue field behind the cutout, as light rather than as a box: over the blue
        tiles it is invisible (blue on blue), over the white gaps it becomes the
@@ -653,11 +641,11 @@
     @media(min-width:768px){
       .apps-remote{height:300px}
     }
-    .prog-line{text-align:center;margin-top:clamp(1rem,2vw,1.75rem);color:var(--gray);font-weight:700;font-size:clamp(1rem,1.6vw,1.25rem);letter-spacing:-0.01em}
+    .prog-line{text-align:center;margin-top:var(--code-sub-gap,clamp(1rem,2vw,1.75rem));color:var(--gray);font-weight:700;font-size:clamp(1rem,1.6vw,1.25rem);letter-spacing:-0.01em}
     .plat-row{display:flex;justify-content:center;align-items:flex-start;gap:clamp(1.6rem,4.5vw,4rem);margin-top:1.5rem;flex-wrap:wrap}
     /* 4 across only while they comfortably fit, otherwise a clean 2x2. Never 3+1. */
     @media(max-width:559.98px){
-      .plat-row{display:grid;grid-template-columns:repeat(2,minmax(0,auto));justify-content:center;justify-items:center}
+      .plat-row{display:flex;flex-wrap:nowrap;justify-content:center;align-items:flex-start}
     }
     .plat{display:flex;flex-direction:column;align-items:center;gap:0.75rem;width:clamp(6.4rem,10vw,8rem)}
     .plat img{width:clamp(54px,6vw,74px);height:auto;display:block}
@@ -714,7 +702,7 @@
     .board-card{background:var(--blue);margin-top:clamp(1.25rem,2.5vw,2rem)}
     .diy-grid{display:grid;gap:2.5rem;position:relative;z-index:2}
     @media(min-width:1280px){.diy-grid{grid-template-columns:0.62fr 1.38fr;align-items:center;gap:1.5rem}}
-    .diy-copy .h2{margin-top:0;font-size:clamp(1.9rem,3.4vw,3rem)}
+    .diy-copy .h2{margin-top:0;margin-bottom:var(--diy-head-gap,0px);font-size:clamp(1.9rem,3.4vw,3rem)}
     .code-h{margin-top:0}
     .board-h{margin-top:0;font-size:clamp(1.9rem,3.4vw,3rem)}
     .inside-sub{max-width:30ch}
@@ -750,7 +738,7 @@
        photograph carrying the contrast. */
     .board-grid{display:grid;gap:2rem;position:relative;z-index:2}
     @media(min-width:1024px){.board-grid{grid-template-columns:1.05fr 0.95fr}.board-card{min-height:440px}}
-    .board-card .h2{color:#fff}
+    .board-card .h2{margin-bottom:var(--board-head-gap,0px);color:#fff}
     .esp-display{font-size:clamp(3rem,6.6vw,5.8rem);font-weight:900;letter-spacing:-0.03em;line-height:1;color:#fff;margin-top:2rem}
     .esp-sub{color:rgba(255,255,255,0.94);font-weight:500;max-width:34ch;margin-top:1rem;line-height:1.55}
     .stat-row{display:flex;gap:clamp(2.5rem,6vw,5rem);margin-top:clamp(2rem,4vw,3.4rem);font-variant-numeric:tabular-nums}
@@ -780,7 +768,7 @@
 
     /* S7 WHAT'S INSIDE */
     .inside{padding:clamp(4.5rem,9vw,8rem) 0 clamp(3rem,6vw,5rem)}
-    .tier1{display:grid;gap:1.25rem}
+    .tier1{display:grid;gap:1.25rem;margin-top:var(--inside-head-gap,0px)}
     @media(min-width:700px){.tier1{grid-template-columns:1fr 1fr}}
     @media(min-width:1100px){
       .tier1{grid-template-columns:1.55fr 1fr 1fr 1fr;gap:1.5rem}
@@ -847,11 +835,12 @@
     .f-ig{display:inline-flex;align-items:center}
     .f-ig svg{display:block}
 
-    @media(min-width:1024px){:root{--remote-h:660px;--apps-remote-h:334px;--diy-remote-h:360px;--diy-waves-w:120px;--diy-rig-w:430px;--diy-remote-x:-24px;--smart-top:53px;--radios-gap:15px;--nowrun-gap:68px;--nowrun-top:19px;--apps-head-gap:3px;--f-logo-w:116px;}}
+    @media(min-width:1024px){:root{--smart-top:53px;--radios-gap:15px;--nowrun-gap:68px;--apps-remote-h:334px;--apps-head-gap:3px;--nowrun-top:19px;--diy-remote-h:330px;--diy-remote-x:-24px;--diy-waves-w:120px;--diy-rig-w:430px;--f-logo-w:116px;}}
+    @media(min-width:1180px){:root{--remote-h:660px;}}
 
     /* MOBILE HERO IS UNTOUCHABLE: below 1024 it keeps the original dark
        treatment regardless of the light theme used by the rest of the page. */
-    @media(max-width:1023.98px){
+    @media(max-width:767.98px){
       .hero-content h1{color:#fff}
       .hero-content h1 span{color:var(--blue)}
       .hero-content>p{color:rgba(255,255,255,0.7)}
@@ -872,20 +861,57 @@
     }
     /* Samson's dragged positions are centre-anchored and desktop-only.
        Below 1024 the original top-left coordinates apply unchanged. */
-    @media(min-width:1024px){.eco,.pill{--anchor:-50% -50%}}
-    /* Reduced motion */
-    @media (prefers-reduced-motion:reduce){
-      .loop,.fl,.fl2,.strip-row,.rock-remote,.nowrun,.pulse,.w1,.w2,.w3,.bled,#horn,.board-visual img,
-      .ledstrip .l1,.ledstrip .l2,.ledstrip .l3,.ledstrip .l4,.pop-badge img{animation:none!important}
-      .dot,.dotv{display:none}
-      .rv,[data-rvg]>*{opacity:1!important;transform:none!important;transition:none!important}
+    .eco,.pill{--anchor:-50% -50%}
+
+    /* ---- MOBILE / TABLET COMPOSITION FIXES ---- */
+    @media(max-width:767.98px){
+      /* radiating scene: the remote was oversized for the section */
+      .ripple-remote{height:330px}
+      /* DIY scene: parts were tiny. Proportion them to the card instead. */
+      .diy-card{padding:1.6rem 1rem 1.9rem}
+      .diy-scene{gap:3%;width:100%;justify-content:center;align-items:center;padding-left:6%}
+      .remote-rockwrap{flex:0 0 22%}
+      .rock-remote{height:auto;width:100%}
+      .waves{flex:0 0 13%;width:auto;margin:0 0 6%}
+      .rig{flex:0 0 60%;width:100%}
+      /* ghost artwork was stacking on itself - keep two, spread them */
+      .diy-card #gh-bread,.diy-card #gh-servo{display:none}
     }
+    @media(min-width:768px) and (max-width:1023.98px){
+      .diy-card #gh-servo{display:none}
+    }
+    /* apps remote was colliding with the cue dots that sit below it */
+    #code > .scroll-cue{position:relative;z-index:5}
+    @media(min-width:1024px) and (max-width:1179.98px){
+      .apps-break{padding-bottom:clamp(2.4rem,4vw,3.4rem)}
+    }
+
+    /* ---- PER-SECTION SPACING CONTROLS (defaults = exactly what was measured) ---- */
+    #smart{padding-top:var(--sec-smart-top,var(--smart-top,110px));padding-bottom:var(--sec-smart-bot,0px)}
+    #apps{padding-top:var(--sec-apps-top,0px);padding-bottom:var(--sec-apps-bot,40px)}
+    #code{padding-top:var(--sec-code-top,32px);padding-bottom:var(--sec-code-bot,56px)}
+    #diy{padding-top:var(--sec-diy-top,0px);padding-bottom:var(--sec-diy-bot,0px)}
+    #board{padding-top:var(--sec-board-top,0px);padding-bottom:var(--sec-board-bot,0px)}
+    #inside{padding-top:var(--sec-inside-top,72px);padding-bottom:var(--sec-inside-bot,48px)}
+    #build{padding-top:var(--sec-build-top,32px);padding-bottom:var(--sec-build-bot,0px)}
+    #ready{padding-top:var(--sec-ready-top,40px);padding-bottom:var(--sec-ready-bot,64px)}
+    @media(min-width:1024px){
+      #smart{padding-top:var(--sec-smart-top,var(--smart-top,53px));padding-bottom:var(--sec-smart-bot,0px)}
+      #apps{padding-top:var(--sec-apps-top,0px);padding-bottom:var(--sec-apps-bot,58px)}
+      #code{padding-top:var(--sec-code-top,48px);padding-bottom:var(--sec-code-bot,104px)}
+      #diy{padding-top:var(--sec-diy-top,0px);padding-bottom:var(--sec-diy-bot,0px)}
+      #board{padding-top:var(--sec-board-top,0px);padding-bottom:var(--sec-board-bot,0px)}
+      #inside{padding-top:var(--sec-inside-top,128px);padding-bottom:var(--sec-inside-bot,80px)}
+      #build{padding-top:var(--sec-build-top,56px);padding-bottom:var(--sec-build-bot,0px)}
+      #ready{padding-top:var(--sec-ready-top,64px);padding-bottom:var(--sec-ready-bot,96px)}
+    }
+
 
     /* HERO, desktop only. Mobile keeps the full-bleed photo hero:
        .hero-shell is display:contents below 1024px, so it has no layout there. */
     .hero-shell{display:contents}
     .hero-duo{display:none}
-    @media(min-width:1024px){
+    @media(min-width:768px){
       /* Navbar on the same gutter as every card below it (HIG Layout:
          "Align components with one another to make them easier to scan"). */
       header{padding:30px var(--gut);transition:transform .28s ease,opacity .28s ease;
@@ -940,10 +966,10 @@
         height:var(--duo-h,81%);aspect-ratio:470/856}
       /* Shadows retuned for a blue ground: the same hue at depth, so the lift
          reads as light on blue instead of a grey stain. */
-      .duo-a{position:absolute;left:2.13%;top:1.17%;height:97.66%;width:auto;
+      .duo-a{position:absolute;z-index:3;left:var(--duo-a-x,3%);top:var(--duo-a-y,5%);height:var(--duo-a-h,98%);width:auto;
         filter:drop-shadow(0 1px 2px rgba(6,58,86,0.28)) drop-shadow(0 18px 30px rgba(6,58,86,0.26));
         animation:bobA 6s ease-in-out infinite}
-      .duo-b{position:absolute;left:55.32%;top:10.28%;height:86.1%;width:auto;
+      .duo-b{position:absolute;z-index:2;left:var(--duo-b-x,47%);top:var(--duo-b-y,14%);height:var(--duo-b-h,85%);width:auto;
         filter:drop-shadow(0 1px 2px rgba(6,58,86,0.28)) drop-shadow(0 18px 30px rgba(6,58,86,0.26));
         animation:bobB 6s ease-in-out 3s infinite}
 
@@ -964,7 +990,7 @@
     }
     /* Below 1024 the hero is the photograph again and carries no cue. */
     .hero .scroll-cue{display:none}
-    @media(min-width:1024px){.hero .scroll-cue{display:flex}}
+    @media(min-width:768px){.hero .scroll-cue{display:flex}}
     @keyframes bobA{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(-0.9deg)}}
     @keyframes bobB{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(0.7deg)}}
     @media (prefers-reduced-motion:reduce){.duo-a,.duo-b{animation:none!important}}
@@ -1006,6 +1032,111 @@
        here is already aria-hidden or purely ornamental. */
     .scroll-cue,.waves,.ledstrip,.strip-row,.rows-zone,.conn-col,.rig{
       pointer-events:none;
+    }
+
+    /* ---- PER-CUE SPACING: additive only, never overrides existing rules ---- */
+    .hero .scroll-cue{translate:0 var(--cue-hero-y,0px)}
+    #smart > .scroll-cue{translate:0 var(--cue-smart-y,0px)}
+    #apps > .scroll-cue{translate:0 var(--cue-apps-y,0px)}
+    #code > .scroll-cue{translate:0 var(--cue-code-y,0px)}
+
+    /* headline and radios line always paint above the scene */
+    .smart-h{position:relative;z-index:60}
+    .proto-row{position:relative;z-index:60}
+
+
+    /* ---- BAKED FROM THE CONTROL PANEL (per breakpoint) ---- */
+    @media(max-width:767.98px){
+      #p-wifi{--x:31.36%;--y:48.54%}
+      #p-ir{--x:50%;--y:20.09%}
+      #p-bt{--x:64.9%;--y:34.89%}
+      #p-usb{--x:69.07%;--y:76.27%}
+      #e-ha{--x:25.52%;--y:37.04%}
+      #e-matter{--x:63.03%;--y:26.82%}
+      #e-gh{--x:35.93%;--y:66.14%}
+      #e-alexa{--x:72.76%;--y:48.54%}
+      #e-ah{--x:47.12%;--y:79.66%}
+      .apps-remote{left:50%;top:50%}
+      .smart-h{translate:0px 33px}
+      .proto-row{translate:-17px 42px}
+      #apps > .scroll-cue{display:none}
+      #code > .scroll-cue{display:none}
+      :root{--smart-top:13px;--apps-remote-h:255px;--sec-apps-bot:-66px;--sec-code-bot:58px;}
+    }
+    @media(min-width:768px){
+      #p-wifi{--x:41.87%;--y:47.72%}
+      #p-ir{--x:50.53%;--y:13.3%}
+      #p-bt{--x:56.13%;--y:34.89%}
+      #p-usb{--x:61.35%;--y:82.52%}
+      #e-ha{--x:37.22%;--y:34.89%}
+      #e-matter{--x:56.13%;--y:24.15%}
+      #e-gh{--x:41.87%;--y:66.32%}
+      #e-alexa{--x:62.01%;--y:51.76%}
+      #e-ah{--x:47.4%;--y:82.52%}
+      .apps-remote{left:50%;top:50%}
+      :root{--sec-code-bot:58px;}
+    }
+
+    /* platform logos: always one row of four, squeezed rather than wrapped */
+    .plat-row{flex-wrap:nowrap!important}
+    @media(max-width:767.98px){
+      .plat-row{gap:clamp(0.35rem,2.4vw,1.4rem)}
+      .plat{width:auto;max-width:23vw;gap:0.5rem}
+      .plat img{width:clamp(34px,11vw,64px)}
+      .plat span{font-size:clamp(0.58rem,2.5vw,0.8rem);text-align:center;line-height:1.2}
+    }
+
+
+    /* iOS fixed-bar fix: backdrop-filter on a position:fixed element makes
+       Safari detach it during scroll. Solid surface on touch devices. */
+    @media (hover:none) and (pointer:coarse){
+      .bar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+        background:#FFFFFF;border:1px solid var(--edge,#D3D9E1);
+        will-change:auto;transform:translate(-50%,0);
+        bottom:max(0px,env(safe-area-inset-bottom))}
+      .bar.on{transform:translate(-50%,0)}
+    }
+
+    /* ---- labels ride the remote ----
+       .remote-anchor is laid out by the same flow as .remote-float and sized
+       to the remote itself, so label positions are immune to scene changes. */
+    .remote-anchor{position:absolute;left:50%;top:50%;translate:-50% -52%;
+      height:var(--remote-h,clamp(400px,46vw,660px));aspect-ratio:1201/1676;
+      pointer-events:none;z-index:40}
+
+    /* ---- LABEL POSITIONS: % of the remote-sized anchor box ---- */
+    @media(max-width:767.98px){
+      #p-wifi{left:19.26%;top:47.52%;right:auto;bottom:auto}
+      #p-ir{left:50.00%;top:-0.76%;right:auto;bottom:auto}
+      #p-bt{left:74.57%;top:24.36%;right:auto;bottom:auto}
+      #p-usb{left:81.44%;top:94.58%;right:auto;bottom:auto}
+      #e-ha{left:9.63%;top:28.01%;right:auto;bottom:auto}
+      #e-matter{left:71.49%;top:10.66%;right:auto;bottom:auto}
+      #e-gh{left:26.79%;top:77.39%;right:auto;bottom:auto}
+      #e-alexa{left:87.53%;top:47.52%;right:auto;bottom:auto}
+      #e-ah{left:45.26%;top:100.33%;right:auto;bottom:auto}
+    }
+    @media(min-width:768px){
+      #p-wifi{left:22.49%;top:47.17%;right:auto;bottom:auto}
+      #p-ir{left:51.79%;top:4.40%;right:auto;bottom:auto}
+      #p-bt{left:70.74%;top:31.23%;right:auto;bottom:auto}
+      #p-usb{left:88.39%;top:90.40%;right:auto;bottom:auto}
+      #e-ha{left:6.77%;top:31.23%;right:auto;bottom:auto}
+      #e-matter{left:70.74%;top:17.88%;right:auto;bottom:auto}
+      #e-gh{left:22.49%;top:70.27%;right:auto;bottom:auto}
+      #e-alexa{left:90.62%;top:52.19%;right:auto;bottom:auto}
+      #e-ah{left:41.21%;top:90.40%;right:auto;bottom:auto}
+    }
+
+    /* platform row: icons evenly spaced, label centred under its own icon */
+    .plat-row{display:flex;flex-wrap:nowrap;justify-content:center;align-items:flex-start}
+    .plat{flex:1 1 0;min-width:0;max-width:none;display:flex;flex-direction:column;align-items:center;text-align:center}
+    .plat img{margin:0 auto;display:block}
+    .plat span{display:block;width:100%;text-align:center}
+    @media(max-width:767.98px){
+      .plat-row{gap:0;max-width:min(100%,26rem);margin-inline:auto}
+      .plat img{width:clamp(34px,11vw,64px)}
+      .plat span{font-size:clamp(0.58rem,2.4vw,0.8rem);line-height:1.2}
     }
   </style>
 </head>
@@ -1092,6 +1223,7 @@
     <div class="remote-float">
       <img class="ripple-remote" src="assets/photo-cutouts/product-01.webp" alt="OpenMote remote" width="1201" height="1676" loading="lazy" decoding="async">
     </div>
+    <div class="remote-anchor">
     <span class="pill" id="p-wifi">WIFI 2.4 GHZ</span>
     <span class="pill" id="p-ir">IR IN + OUT</span>
     <span class="pill" id="p-bt">BLUETOOTH 5 LE</span>
@@ -1114,6 +1246,7 @@
     <div class="eco" id="e-ah">
       <img class="hk" src="assets/logos/homekit.svg" alt="" width="1024" height="1024" loading="lazy" decoding="async">
       <span class="nm">Apple Home</span>
+    </div>
     </div>
     <div class="smart-fade top"></div>
     <div class="smart-fade bot"></div>
@@ -1227,7 +1360,7 @@
       <div class="conn-col" aria-hidden="true">
         <svg class="conn-svg" id="connD" fill="none">
           <path id="connPath" d="" stroke="#9A9A9A" stroke-width="7" stroke-linecap="butt" stroke-linejoin="miter" stroke-dasharray="13 26" opacity="0.65"></path>
-          <circle class="dot loop" id="connDot" r="9" fill="#25AFF4"></circle>
+          <rect class="dot loop" id="connDot" x="-9" y="-9" width="18" height="18" fill="#25AFF4"></rect>
         </svg>
       </div>
       <div class="code-editor rv">
@@ -1705,7 +1838,9 @@ function handleJoin(e) {
     // square corners, no radius: the run turns 90 degrees like a PCB trace
     var d = 'M ' + sx + ' ' + sy + ' H ' + xd + ' V ' + ey + ' H ' + ex;
     connSvg.setAttribute('viewBox', '0 0 ' + gr.width + ' ' + gr.height);
-    document.getElementById('connDot').setAttribute('r', gr.width < 700 ? 6 : 9);
+    var _d=document.getElementById('connDot'), _s = gr.width < 700 ? 6 : 9;
+    _d.setAttribute('x', -_s); _d.setAttribute('y', -_s);
+    _d.setAttribute('width', _s*2); _d.setAttribute('height', _s*2);
     document.getElementById('connPath').setAttribute('stroke-width', gr.width < 700 ? 5 : 7);
     document.getElementById('connPath').setAttribute('d', d);
     document.getElementById('connDot').style.offsetPath = "path('" + d + "')";
