@@ -7,7 +7,13 @@
   <title>OpenMote</title>
   <meta name="description" content="OpenMote turns the classic motion remote into a programmable universal remote for everything. Works with Home Assistant, Matter, and Arduino. Launching on Crowd Supply September 1.">
   <meta name="theme-color" content="#FFFFFF">
+  <!-- Safari ignores SVG favicons, and this site's catch-all serves HTML at
+       /favicon.ico and /apple-touch-icon.png, so iOS had NO valid icon and
+       showed a stale cached one. PNG fallbacks + a real touch icon fix it. -->
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
   <script>
     /* Diagnostic switch: /preview-b7k4x9/?calm renders the page with every
        animation and transition dead, for A/B-ing scroll smoothness on a real
