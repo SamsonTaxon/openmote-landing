@@ -7,8 +7,8 @@
 > a 6-axis IMU, haptic rumble, a speaker, a microphone, infrared send and
 > receive, 4 LEDs, USB-C, and a 1200 mAh battery, with WiFi and Bluetooth
 > 5 LE on a pre-certified WROOM module. It works with Home Assistant out of
-> the box and pairs as a standard Bluetooth HID gamepad. Bare board $59,
-> fully assembled remote $99. The Crowd Supply campaign is launching soon,
+> the box and pairs as a standard Bluetooth HID gamepad. The Crowd Supply
+> campaign is launching soon,
 > and the hardware design files will be open-sourced before units ship.
 
 Key facts:
@@ -19,20 +19,15 @@ Key facts:
 - Gaming: pairs as a real Bluetooth gamepad on PC, Mac, or phone, with true motion data from the accelerometer and gyroscope. In the Dolphin emulator it maps as an emulated Wii Remote with motion input, no sensor bar adapter or DolphinBar needed, and it works the same way in RetroArch.
 - Programming: Arduino IDE, ESP-IDF, PlatformIO, and CircuitPython. Program it like any ESP32. A Qwiic / STEMMA QT port adds I2C sensors with no soldering, and ESP-NOW lets boards talk to each other without a WiFi network.
 - Hardware: ESP32-S3-WROOM-1, dual core 240 MHz, 16MB flash, 8MB PSRAM, 3.2W Class-D amplifier (MAX98357A over I2S), PDM MEMS microphone, haptic motor, 4 indicator LEDs, USB-C charging at 500 mA, 12 buttons of which eleven are freely programmable.
-- Pricing: bare board $59, fully assembled remote $99 during the Crowd Supply campaign, with free US shipping for backers. The post-campaign price is expected to be $109.
 - Schematics, PCB layouts, BOM, and the OpenMote.h Arduino library will be published on GitHub before units ship.
 
 ## Product
 
-- [OpenMote landing page](https://openmote.io/): specs, pricing, waitlist signup
+- [OpenMote landing page](https://openmote.io/): specs and waitlist signup
 - [Crowd Supply pre-launch page](https://www.crowdsupply.com/hat-and-hammer/openmote): follow the campaign for launch notification
 
 ## Community
 
 - [Instagram @openmote.io](https://www.instagram.com/openmote.io): build demos and short-form videos
-
-## Optional
-
-- [Frequently asked questions](https://openmote.io/#faq): Home Assistant, emulators, shell fit, programming, and pricing answers
 
 Wii and Wii Remote are trademarks of Nintendo. OpenMote is an independent product from Hat & Hammer and is not affiliated with, endorsed by, or sponsored by Nintendo.
