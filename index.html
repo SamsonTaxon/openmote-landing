@@ -3,15 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>OpenMote</title>
-  <meta name="theme-color" content="#0a0a0a">
-  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <title>One Programmable Remote That Controls Everything | OpenMote</title>
+  <script>
+    /* Diagnostic switch: /preview-b7k4x9/?calm renders the page with every
+       animation and transition dead, for A/B-ing scroll smoothness on a real
+       phone. Costs nothing when the flag is absent. */
+    if(location.search.indexOf('calm')>-1)document.documentElement.className+=' calm';
+  </script>
+  <style>
+    .calm *,.calm *::before,.calm *::after{animation:none!important;transition:none!important}
+    .calm .rv,.calm [data-rvg]>*{opacity:1!important;transform:none!important}
+
+    /* ---- WAITLIST SURVEY (runs inside the existing sheet, after Loops succeeds) ---- */
+    .sv-steps{display:flex;gap:6px;justify-content:center;margin-bottom:1rem}
+    .sv-steps i{width:22px;height:3px;background:var(--edge);display:block}
+    .sv-steps i.on{background:var(--blue)}
+    .sv-choices{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:1rem}
+    .sv-choice{border:2px solid var(--edge);padding:0.7rem;cursor:pointer;background:#fff;text-align:center;
+      display:flex;flex-direction:column;align-items:center;gap:0.5rem;font-family:inherit}
+    .sv-choice.sel{border-color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue)}
+    @media(hover:hover) and (pointer:fine){.sv-choice:hover{border-color:var(--blue)}}
+    .sv-choice img{width:100%;height:88px;object-fit:contain;display:block}
+    .sv-choice b{font-size:0.82rem;font-weight:800;letter-spacing:-0.01em;line-height:1.2;color:var(--dark)}
+    .sv-choice span{font-size:0.68rem;color:var(--gray);font-weight:500;line-height:1.35}
+    .sv-val{text-align:center;font-size:2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.6rem}
+    .sv-range{width:100%;-webkit-appearance:none;background:transparent;margin:0}
+    .sv-range::-webkit-slider-runnable-track{height:4px;background:var(--edge)}
+    .sv-range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;background:var(--blue);
+      margin-top:-11px;cursor:pointer;border:0}
+    .sv-ticks{display:flex;justify-content:space-between;font-size:0.64rem;color:var(--gray);font-weight:700;margin-top:0.5rem;margin-bottom:1.2rem}
+    .sv-skip{display:block;width:100%;text-align:center;margin-top:0.7rem;font-size:0.75rem;color:var(--gray);
+      font-weight:600;background:none;border:0;cursor:pointer;font-family:inherit;text-decoration:underline}
+    .sv-tick{width:44px;height:44px;background:var(--blue);margin:0 auto 1rem;display:grid;place-items:center}
+    .sv-tick svg{width:22px;height:22px}
+    .sv-cs{display:block;width:100%;padding:1rem;font-size:0.95rem;font-weight:700;text-align:center;
+      text-decoration:none;color:#fff;background:var(--blue);margin-top:1rem}
+  </style>
+  <link rel="preload" as="image" href="img/hero.webp" media="(max-width:767.98px)" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero-remote-a.webp" media="(min-width:768px)" fetchpriority="high">
+  <link rel="preload" as="image" href="img/hero-remote-b.webp" media="(min-width:768px)" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Fonts load without blocking first paint: text renders in the fallback
+       and swaps when Montserrat lands (display=swap in the URL). -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -22,26 +59,39 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
+      /* PALETTE. Four brand values and nothing else: blue, ink, red, white.
+         Every other value on the page is one of those four moved in alpha or
+         mixed with white. No neutral greys, no invented hues.
+         Brand blue is never darkened, tinted or "adjusted for contrast": where
+         blue would be illegible as small text it becomes a FILL with white or
+         ink on top instead (HIG Typography: "consider using a larger type size,
+         increasing contrast by modifying the text or background colors"). */
       --blue:#25AFF4;
-      --gray:#9A9A9A;
-      --dark:#0a0a0a;
-      --light:#f5f5f5;
+      --ink:#0A0A0A;
+      --gray:rgba(10,10,10,0.66);  /* the same ink, held back: 6.4:1 on white */
+      --dark:#0A0A0A;
+      --bg:#FFFFFF;
+      /* One shadow colour for the whole page: the blue hue at deep value, so
+         lift reads as cool light rather than as grime on a white sheet. */
+      --sh-1:rgba(16,60,88,0.10);
+      --sh-2:rgba(16,60,88,0.07);
     }
     html{
       scroll-behavior:auto;
       -webkit-overflow-scrolling:touch;
+      /* no overscroll-behavior here: on the root it disables iOS rubber-band
+         scrolling and pull-to-refresh, which reads as broken scroll feel. */
     }
     body{
       font-family:'Montserrat',sans-serif;
-      background:var(--dark);
-      color:#fff;
+      background:var(--bg);
+      color:var(--dark);
       -webkit-font-smoothing:antialiased;
       overflow-x:hidden;
-      overscroll-behavior-y:none;
     }
     body.lock{overflow:hidden;position:fixed;width:100%;height:100%}
 
-    /* HEADER */
+    /* HEADER (carried from live site, unchanged) */
     header{
       position:fixed;top:0;left:0;right:0;z-index:99;
       display:flex;justify-content:space-between;align-items:center;
@@ -53,9 +103,9 @@
       position:absolute;
       inset:0;
       background:#fff;
-      border-bottom:1px solid #e5e5e5;
+      border-bottom:1px solid var(--hair);
       opacity:0;
-      transition:opacity 0.35s ease;
+      transition:opacity 0.2s ease;
     }
     header.scrolled::before{
       opacity:1;
@@ -76,14 +126,18 @@
       background:var(--blue);
       border:none;
       cursor:pointer;
-      transition:transform 0.2s,box-shadow 0.2s;
+      transition:transform 0.2s,box-shadow 0.2s,background 0.2s,color 0.2s;
     }
-    .join-btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 8px 24px rgba(37,175,244,0.4);
+    /* Hover is a pointer affordance, not a tap affordance: gate it so taps
+       do not leave a stuck lifted/glowing button on touch devices. */
+    @media(hover:hover) and (pointer:fine){
+      .join-btn:hover{
+        transform:translateY(-2px);
+        box-shadow:0 8px 20px rgba(37,175,244,0.34);
+      }
     }
 
-    /* HERO - Cinematic full bleed */
+    /* HERO (carried from live site, unchanged) */
     .hero{
       position:relative;
       height:100vh;
@@ -109,10 +163,10 @@
       inset:0;
       background:linear-gradient(
         to top,
-        rgba(10,10,10,1) 0%,
-        rgba(10,10,10,0.7) 30%,
-        rgba(10,10,10,0.3) 60%,
-        rgba(10,10,10,0.4) 100%
+        rgba(10,11,13,1) 0%,
+        rgba(10,11,13,0.7) 30%,
+        rgba(10,11,13,0.3) 60%,
+        rgba(10,11,13,0.4) 100%
       );
       pointer-events:none;
     }
@@ -121,6 +175,8 @@
       padding:2rem 1.25rem;
       padding-bottom:calc(2rem + env(safe-area-inset-bottom));
     }
+    /* Mobile hero sits on the photograph: the badge is a blue FILL with white
+       on it, never blue text on a light ground (blue text on white is 2.5:1). */
     .badge{
       display:inline-block;
       padding:0.35rem 0.75rem;
@@ -128,7 +184,8 @@
       font-weight:700;
       letter-spacing:0.15em;
       text-transform:uppercase;
-      color:var(--blue);
+      color:#fff;
+      background:var(--blue);
       border:2px solid var(--blue);
       margin-bottom:1rem;
     }
@@ -163,224 +220,49 @@
       background:var(--blue);
       border:none;
       cursor:pointer;
-      transition:transform 0.2s,box-shadow 0.2s;
+      transition:transform 0.2s,box-shadow 0.2s,background 0.2s,color 0.2s;
     }
-    .cta:hover{
-      transform:translateY(-2px);
-      box-shadow:0 12px 32px rgba(37,175,244,0.5);
+    @media(hover:hover) and (pointer:fine){
+      .cta:hover{
+        transform:translateY(-2px);
+        box-shadow:0 10px 26px rgba(37,175,244,0.4);
+      }
     }
     .cta svg{width:16px;height:16px}
 
-    /* USE CASES - Bold typography driven */
-    .use-cases{
-      padding:4rem 1.25rem;
-      background:#fff;
-      color:var(--dark);
-    }
-    .use-cases-header{
-      margin-bottom:2.5rem;
-    }
-    .use-cases-header h2{
-      font-size:0.75rem;
-      font-weight:700;
-      letter-spacing:0.2em;
-      text-transform:uppercase;
-      color:var(--blue);
-      margin-bottom:0.75rem;
-    }
-    .use-cases-header p{
-      font-size:1.6rem;
-      font-weight:800;
-      line-height:1.2;
-      letter-spacing:-0.02em;
-    }
-    .use-cases-grid{
-      display:flex;
-      flex-direction:column;
-      gap:1.5rem;
-    }
-    .use-case{
-      position:relative;
-      overflow:hidden;
-    }
-    .use-case video,
-    .use-case img{
-      width:100%;
-      aspect-ratio:16/9;
-      object-fit:cover;
-      display:block;
-      filter:brightness(0.9);
-    }
-    .use-case-overlay{
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-        to top,
-        rgba(10,10,10,0.95) 0%,
-        rgba(10,10,10,0) 60%
-      );
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-end;
-      padding:1.25rem;
-    }
-    .use-case-num{
-      font-size:0.7rem;
-      font-weight:700;
-      letter-spacing:0.15em;
-      color:var(--blue);
-      margin-bottom:0.35rem;
-    }
-    .use-case-title{
-      font-size:1.2rem;
-      font-weight:800;
-      letter-spacing:-0.01em;
-      color:#fff;
-    }
-
-    /* SPECS - Minimal list */
-    .specs-section{
-      padding:4rem 1.25rem;
-      background:var(--light);
-      color:var(--dark);
-    }
-    .specs-header{
-      margin-bottom:2rem;
-    }
-    .specs-header h2{
-      font-size:0.75rem;
-      font-weight:700;
-      letter-spacing:0.2em;
-      text-transform:uppercase;
-      color:var(--blue);
-      margin-bottom:0.75rem;
-    }
-    .specs-header p{
-      font-size:1.4rem;
-      font-weight:800;
-      line-height:1.25;
-      letter-spacing:-0.02em;
-    }
-    .specs-list{
-      display:flex;
-      flex-wrap:wrap;
-      gap:0.5rem;
-    }
-    .specs-list span{
-      padding:0.55rem 0.85rem;
-      font-size:0.75rem;
-      font-weight:600;
-      background:var(--blue);
-      color:#fff;
-    }
-
-    /* SHOWCASE - Full bleed image */
-    .showcase{
-      position:relative;
-    }
-    .showcase img{
-      width:100%;
-      height:auto;
-      display:block;
-    }
-    .showcase-overlay{
-      position:absolute;
-      inset:0;
-      background:linear-gradient(
-        to top,
-        rgba(10,10,10,1) 0%,
-        rgba(10,10,10,0) 50%
-      );
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-end;
-      padding:2rem 1.25rem;
-    }
-    .showcase-overlay strong{
-      display:block;
-      font-size:1.1rem;
-      font-weight:800;
-      margin-bottom:0.25rem;
-    }
-    .showcase-overlay span{
-      font-size:0.8rem;
-      color:rgba(255,255,255,0.7);
-    }
-
-    /* FINAL CTA */
-    .final{
-      padding:5rem 1.25rem;
-      text-align:center;
-      background:#fff;
-      color:var(--dark);
-    }
-    .final h2{
-      font-size:1.8rem;
-      font-weight:900;
-      letter-spacing:-0.02em;
-      margin-bottom:0.5rem;
-    }
-    .final>p{
-      font-size:1rem;
-      color:var(--gray);
-      margin-bottom:2rem;
-    }
-    .final .cta{
-      margin-bottom:1.5rem;
-    }
-    .cs-link{
-      display:inline-flex;
-      align-items:center;
-      gap:0.4rem;
-      font-size:0.85rem;
-      font-weight:600;
-      color:var(--gray);
-      text-decoration:none;
-      transition:color 0.2s;
-    }
-    .cs-link:hover{color:var(--dark)}
-    .cs-link svg{width:12px;height:12px}
-
-    /* FOOTER */
-    footer{
-      padding:2rem 1.25rem;
-      padding-bottom:calc(2rem + env(safe-area-inset-bottom));
-      text-align:center;
-      font-size:0.75rem;
-      color:var(--gray);
-      background:#fff;
-      border-top:1px solid #eee;
-    }
-
-    /* MODAL */
+    /* MODAL (carried from live site, unchanged) */
     .overlay{
       position:fixed;inset:0;
-      background:rgba(0,0,0,0.8);
+      background:rgba(10,10,10,0.62);
       backdrop-filter:blur(12px);
       -webkit-backdrop-filter:blur(12px);
       z-index:200;
       opacity:0;
       visibility:hidden;
-      transition:0.25s ease;
+      transition:opacity 0.25s ease,visibility 0.25s ease;
     }
     .overlay.on{opacity:1;visibility:visible}
     .sheet{
       position:fixed;
       bottom:0;left:0;right:0;
       background:#fff;
-      border-top:1px solid #eee;
+      border-top:1px solid var(--hair);
       padding:1.5rem;
       padding-bottom:calc(2rem + env(safe-area-inset-bottom));
       z-index:201;
       transform:translateY(100%);
-      transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      /* visibility is belt-and-braces: if a transform ever fails to apply, the
+         closed sheet still cannot be seen or touched. Same pattern as .overlay. */
+      visibility:hidden;
+      pointer-events:none;
+      transition:transform 0.34s cubic-bezier(0.4,0,0.2,1),visibility 0.34s;
       color:var(--dark);
     }
-    .sheet.on{transform:translateY(0)}
+    .sheet.on{transform:translateY(0);visibility:visible;pointer-events:auto}
     .sheet-bar{
       width:40px;
       height:4px;
-      background:#ddd;
+      background:var(--edge);
       margin:0 auto 1.5rem;
     }
     .sheet h2{
@@ -401,7 +283,7 @@
       font-size:1rem;
       font-family:inherit;
       background:#fff;
-      border:2px solid #e5e5e5;
+      border:2px solid var(--edge);
       color:var(--dark);
       outline:none;
       margin-bottom:0.75rem;
@@ -423,9 +305,11 @@
       cursor:pointer;
       transition:transform 0.2s,box-shadow 0.2s;
     }
-    .sheet button[type=submit]:hover{
-      transform:translateY(-1px);
-      box-shadow:0 8px 24px rgba(37,175,244,0.4);
+    @media(hover:hover) and (pointer:fine){
+      .sheet button[type=submit]:hover{
+        transform:translateY(-1px);
+        box-shadow:0 8px 20px rgba(37,175,244,0.34);
+      }
     }
     .sheet .note{
       font-size:0.7rem;
@@ -434,12 +318,12 @@
       margin-top:0.75rem;
     }
 
-    /* DESKTOP */
+    /* DESKTOP (carried hero/header/modal rules, unchanged) */
     @media(min-width:768px){
       /* Custom cursors - controller theme */
-      *{cursor:url('cursors/cursor-arrow.png') 0 0,auto}
+      *{cursor:url('cursors/cursor-arrow-32.png') 0 0,auto}
       a,button,input[type=submit],.cta,.join-btn,.cs-link{
-        cursor:url('cursors/cursor-pointer.png') 24 0,pointer;
+        cursor:url('cursors/cursor-pointer-32.png') 16 0,pointer;
       }
       header{padding:1.5rem 3rem}
       header.scrolled{padding:0.6rem 3rem;padding-top:calc(0.6rem + env(safe-area-inset-top))}
@@ -460,15 +344,6 @@
         object-position:center;
         margin-left:auto;
       }
-      .hero::after{
-        background:linear-gradient(
-          to right,
-          rgba(10,10,10,1) 0%,
-          rgba(10,10,10,0.8) 30%,
-          rgba(10,10,10,0.2) 60%,
-          rgba(10,10,10,0.1) 100%
-        );
-      }
       .hero-content{
         position:absolute;
         left:0;
@@ -479,57 +354,24 @@
       .hero-content>p{font-size:1.1rem;max-width:400px}
       .cta{padding:1.1rem 2rem;font-size:1rem}
 
-      .use-cases{padding:6rem 3rem}
-      .use-cases-header{
-        display:flex;
-        justify-content:space-between;
-        align-items:flex-end;
-        margin-bottom:3rem;
-      }
-      .use-cases-header p{font-size:2.2rem;max-width:500px}
-      .use-cases-grid{
-        display:grid;
-        grid-template-columns:repeat(3,1fr);
-        gap:1.5rem;
-      }
-      .use-case video,
-      .use-case img{aspect-ratio:4/3}
-      .use-case-overlay{padding:1.5rem}
-      .use-case-title{font-size:1.35rem}
-
-      .specs-section{padding:6rem 3rem}
-      .specs-header{
-        display:flex;
-        justify-content:space-between;
-        align-items:flex-end;
-        margin-bottom:2.5rem;
-      }
-      .specs-header p{font-size:1.9rem;max-width:450px}
-      .specs-list{gap:0.6rem}
-      .specs-list span{padding:0.65rem 1.1rem;font-size:0.8rem}
-
-      .showcase-overlay{padding:3rem}
-      .showcase-overlay strong{font-size:1.6rem}
-      .showcase-overlay span{font-size:1rem}
-
-      .final{padding:8rem 3rem}
-      .final h2{font-size:2.75rem}
-      .final>p{font-size:1.15rem}
-
-      footer{padding:2.5rem 3rem}
-
       .sheet{
         top:50%;left:50%;right:auto;bottom:auto;
         max-width:420px;width:calc(100% - 2rem);
         transform:translate(-50%,-50%) scale(0.95);
         opacity:0;
-        border:1px solid #eee;
+        /* opacity:0 alone still hit-tests: the closed dialog sat in the middle of
+           the viewport swallowing clicks on whatever CTA scrolled under it. */
+        visibility:hidden;
+        pointer-events:none;
+        border:1px solid var(--hair);
         padding:2rem;
-        box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);
+        box-shadow:0 1px 2px rgba(16,60,88,0.10),0 24px 48px -20px rgba(16,60,88,0.22);
       }
       .sheet.on{
         transform:translate(-50%,-50%) scale(1);
         opacity:1;
+        visibility:visible;
+        pointer-events:auto;
       }
       .sheet-bar{display:none}
     }
@@ -542,24 +384,1055 @@
       .hero-img{width:50%}
       .hero-content{padding:5rem;max-width:550px}
       .hero-content h1{font-size:4.5rem}
-
-      .use-cases{padding:8rem 4rem}
-      .use-cases-header p{font-size:2.5rem}
-
-      .specs-section{padding:8rem 4rem}
-      .specs-header p{font-size:2.2rem}
-
-      .final{padding:10rem 4rem}
-      .final h2{font-size:3.25rem}
     }
 
     @media(min-width:1280px){
-      .use-cases-grid{gap:2rem}
-      .specs-list{gap:0.75rem}
       .hero-img{width:45%}
       .hero-content{max-width:600px}
     }
+
+    /* ============================================================
+       REDESIGN BELOW THE HERO
+       Tokens from design-system/colors_and_type.css
+       ============================================================ */
+    :root{
+      /* Blue is a SURFACE, never a trim. Sections are solid #25AFF4, white, or
+         a pale wash of the same blue; the few functional rules that remain
+         (form field, list separator, footer) are ink at low alpha, so no line
+         on the page is a grey and no surface is outlined in blue. */
+      --card:#FFFFFF;
+      --hair:rgba(10,10,10,0.10);
+      --edge:rgba(10,10,10,0.16);
+      --ease:cubic-bezier(0.4,0,0.2,1);
+      /* One horizontal grid for the whole page: header, hero and every card
+         are inset by this and nothing else (HIG Layout: "Align components with
+         one another to make them easier to scan"). */
+      --gut:clamp(1.25rem,4.5vw,4rem);
+    }
+    /* logo.png ships with ~30% transparent padding top+bottom; crop it so the scrolled bar hugs the art while the art keeps its original size */
+    .logo{width:180px;height:auto;margin-top:-26px;margin-bottom:-27px;transition:width 0.2s ease,margin 0.2s ease}
+    header.scrolled .logo{width:150px;margin-top:-22px;margin-bottom:-23px}
+    @media(min-width:768px){
+      .logo{width:220px;margin-top:-32px;margin-bottom:-33px}
+      header.scrolled .logo{width:170px;margin-top:-25px;margin-bottom:-26px}
+    }
+    @media(min-width:1024px){
+      .logo{width:280px;margin-top:-41px;margin-bottom:-42px}
+      header.scrolled .logo{width:190px;margin-top:-28px;margin-bottom:-29px}
+    }
+    ::selection{background:var(--blue);color:#fff}
+    /* Ink links with a blue hover: brand blue on white is 2.5:1, which is under
+       the 4.5:1 HIG asks for at small sizes, so blue is carried by the hover
+       and by fills, never by 13px link text. */
+    a{color:var(--ink)}
+    @media(hover:hover) and (pointer:fine){a:hover{color:var(--blue)}}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    .shell{max-width:90rem;margin:0 auto;padding-inline:var(--gut)}
+    .h2{font-weight:900;letter-spacing:-0.03em;line-height:1.05;font-size:clamp(2rem,4.6vw,3.6rem);color:var(--dark);text-wrap:balance}
+    .sub{color:var(--gray);font-weight:500;line-height:1.55;font-size:clamp(0.95rem,1.4vw,1.1rem);text-wrap:pretty}
+    .sec-head{display:flex;flex-direction:column;gap:0.9rem;margin-bottom:clamp(2.5rem,5vw,4rem)}
+    @media(min-width:900px){
+      .sec-head.split{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:3rem}
+      .sec-head.split .sub{margin-bottom:0.4rem}
+    }
+
+    /* Reveals, desktop only. On iOS the IntersectionObserver that triggers
+       them is starved during momentum scrolling, so a fast flick lands on
+       invisible sections that pop in late. Mobile renders everything
+       immediately, like a plain static page. */
+    @media(min-width:1024px){
+      .rv,[data-rvg]>*{opacity:0;transform:translateY(24px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease)}
+      .rv.in,[data-rvg].in>*{opacity:1;transform:translateY(0)}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .rv,[data-rvg]>*{opacity:1;transform:none;transition:none}
+      .loop,.fl,.fl2,.remote-float,.nowrun,.rock-remote,#horn,.bled,
+      .board-visual img,.duo-a,.duo-b,.scroll-cue b{animation:none!important}
+    }
+
+    /* Off-screen pause for every infinite loop */
+    .la:not(.live) .loop{animation-play-state:paused!important}
+
+    /* Keyframes */
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    /* The product in the ripple scene reads as static at 12px, so the travel is
+       nearly tripled and the beat moved onto the page's 4s step. */
+    @keyframes floatyC{0%,100%{transform:translate(-50%,-52%) translateY(16px)}50%{transform:translate(-50%,-52%) translateY(-18px)}}
+    @keyframes sway{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-11px) rotate(2deg)}}
+    @keyframes swayneg{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-9px) rotate(-2deg)}}
+    /* Same shape and same 2s period as the three scroll-cue dots (cuestep):
+       one bright step, then back to rest. The rings are then delayed in three
+       phases, 0 / 0.25s / 0.5s, exactly like the dots, so the ripple steps
+       outward in threes instead of smearing. */
+    @keyframes ringflash{0%,55%,100%{opacity:0.14}15%{opacity:1}}
+    @keyframes rockit{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+    @keyframes hornswing{0%,100%{transform:rotate(-34deg)}50%{transform:rotate(34deg)}}
+    @keyframes wavepulse{0%,100%{opacity:0.14}45%{opacity:1}}
+    @keyframes driftdn{0%,100%{transform:rotate(var(--tilt,-13deg)) translateY(0)}50%{transform:rotate(var(--tilt,-13deg)) translateY(-16px)}}
+    @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    /* Same loop mirrored. Never use animation-direction:reverse for this:
+       WebKit demotes reversed transform animations off the GPU compositor,
+       so on iPhone the top row stepped along on the CPU while the forward
+       bottom row stayed smooth. */
+    @keyframes marqBack{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+    @keyframes dotgo{0%{offset-distance:0%;opacity:0}8%{opacity:1}52%{offset-distance:100%;opacity:1}58%{opacity:0;offset-distance:100%}100%{offset-distance:100%;opacity:0}}
+    @keyframes led1{0%,52%{opacity:0}54%,96%{opacity:1}100%{opacity:0}}
+    @keyframes led2{0%,62%{opacity:0}64%,96%{opacity:1}100%{opacity:0}}
+    @keyframes led3{0%,72%{opacity:0}74%,96%{opacity:1}100%{opacity:0}}
+    @keyframes led4{0%,82%{opacity:0}84%,96%{opacity:1}100%{opacity:0}}
+    @keyframes bledblink{0%,44%{opacity:0.35}50%,60%{opacity:1}66%,100%{opacity:0.35}}
+    @keyframes popout{30%{transform:scale(1.15)}100%{transform:scale(0);opacity:0}}
+    @keyframes popin{0%{transform:scale(0.2)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+    .fl{animation:sway var(--fd,6s) ease-in-out infinite;animation-delay:var(--fdel,0s)}
+    .fl2{animation:swayneg var(--fd,6s) ease-in-out infinite;animation-delay:var(--fdel,0s)}
+
+    /* Floating bottom bar */
+    .bar{
+      position:fixed;left:50%;bottom:0;z-index:90;
+      transform:translate(-50%,130%);
+      width:min(720px,calc(100% - 1.5rem));
+      margin-bottom:calc(0.9rem + env(safe-area-inset-bottom));
+      /* The launch bar is another solid blue surface, not a white box with a
+         line around it, so the floating layer reads as one material with the
+         hero and the closing card. */
+      background:var(--blue);
+      border:none;
+      box-shadow:0 2px 6px rgba(6,58,86,0.14),0 16px 32px -12px rgba(6,58,86,0.30);
+      display:flex;align-items:center;justify-content:space-between;gap:1rem;
+      padding:0.7rem 0.7rem 0.7rem 1.2rem;
+      transition:transform 0.28s ease;
+    }
+    .bar.on{transform:translate(-50%,0)}
+    body.lock .bar{transform:translate(-50%,130%)}
+    .bar p{font-size:0.82rem;font-weight:600;color:#fff;line-height:1.35}
+    .bar p strong{color:#fff;font-weight:800}
+    .bar .join-btn{flex-shrink:0;background:#fff;color:var(--ink)}
+    @media(hover:hover) and (pointer:fine){
+      .bar .join-btn:hover{box-shadow:0 8px 20px rgba(6,58,86,0.30)}
+    }
+
+    /* S1 WHAT YOU CAN BUILD */
+    .build{padding:clamp(2rem,4vw,3.5rem) 0 0}
+    .build{display:none}
+    .uc-ledger{max-width:66rem;margin:0 auto;border-top:1px solid var(--hair)}
+    .ucr{display:grid;grid-template-columns:clamp(132px,30vw,300px) minmax(0,1fr);gap:clamp(1rem,3.5vw,2.8rem);align-items:center;padding:clamp(1rem,2.4vw,1.9rem) 0;border-bottom:1px solid var(--hair)}
+    @media(min-width:768px){
+      /* Three identical rows read as a template. Vary weight and side instead. */
+      .ucr:nth-child(1){grid-template-columns:clamp(200px,40vw,420px) minmax(0,1fr);padding:clamp(1.4rem,3vw,2.6rem) 0}
+      .ucr:nth-child(2){grid-template-columns:minmax(0,1fr) clamp(160px,30vw,320px);padding:clamp(1rem,2.2vw,1.8rem) 0}
+      .ucr:nth-child(2) .ucr-media{grid-column:2;grid-row:1}
+      .ucr:nth-child(2) .ucr-body{grid-column:1;grid-row:1}
+      .ucr:nth-child(3){grid-template-columns:clamp(150px,26vw,260px) minmax(0,1fr);padding:clamp(1rem,2.2vw,1.8rem) 0}
+      .ucr:nth-child(1) .ucr-title{font-size:clamp(1.5rem,3.2vw,2.5rem)}
+    }
+    .ucr-media{aspect-ratio:16/9;overflow:hidden}
+    /* The 0.92 knock-down existed to stop bright frames punching a hole in a
+       near-black page. On white the media should run at full value. */
+    .ucr-media video,.ucr-media img{width:100%;height:100%;object-fit:cover;display:block;filter:none}
+    .uc-num{font-size:0.7rem;font-weight:700;letter-spacing:0.15em;color:var(--blue)}
+    .ucr-title{font-size:clamp(1.15rem,2.5vw,1.85rem);font-weight:800;letter-spacing:-0.01em;color:var(--dark);margin:0.2rem 0 0}
+    .uc-badges{display:flex;flex-wrap:wrap;gap:0.5rem 1.1rem;margin-top:0.75rem}
+    .ucb{display:inline-flex;align-items:center;gap:0.45rem;font-size:0.7rem;font-weight:700;color:var(--dark);letter-spacing:0.01em;white-space:nowrap}
+    .bsq{width:20px;height:20px;background:var(--blue);display:inline-grid;place-items:center;flex:none}
+    /* The Matter chip is a white tile carrying a black mark. It has to keep
+       its own edge now that the page behind it is white too. */
+    .bsq[style*="#FFFFFF"]{box-shadow:inset 0 0 0 1px var(--edge)}
+    .bsq svg{width:17px;height:17px;display:block}
+    .bsq img{display:block}
+    .bsq img.binv{height:13px;width:auto;filter:brightness(0) invert(1)}
+    .bsq.app{background:transparent}
+    .bsq.app img{width:20px;height:20px}
+    .msym{width:12px;height:13px;overflow:hidden;display:block}
+    .msym img{width:60px;height:13px;max-width:none;display:block}
+
+    /* S2 SMART HOME */
+    .smart{position:relative;padding-top:var(--smart-top,110px);overflow:hidden}
+    .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:var(--cue-gap,11px);padding:0}
+    .scroll-cue b{width:var(--cue-dot,7px);height:var(--cue-dot,7px);background:var(--blue);animation:cuestep 2s infinite}
+    .scroll-cue b:nth-child(2){animation-delay:0.25s}
+    .scroll-cue b:nth-child(3){animation-delay:0.5s}
+    @keyframes cuestep{0%,55%,100%{opacity:0.16}15%{opacity:1}}
+    @keyframes cuestepw{0%,55%,100%{opacity:0.4}15%{opacity:1}}
+    .smart-h{margin-top:0;text-align:center;padding-inline:var(--gut)}
+    .proto-row{margin-top:var(--radios-gap,15px);margin-bottom:var(--scene-pull,0px);text-align:center;color:var(--ink);font-weight:700;font-size:0.85rem;letter-spacing:0.22em}
+    @media(min-width:640px){
+      .smart-h{position:relative;z-index:40;margin-top:0}
+      .proto-row{position:relative;z-index:40;margin-top:0.8rem;
+        margin-bottom:var(--scene-pull,-40px)}
+    }
+    .ripple-scene{position:relative;height:clamp(560px,58vw,820px);overflow:hidden;pointer-events:none}
+    /* Field: a blue wash under the product so a white remote has a ground to
+       sit on instead of dissolving into the page. HIG Materials: a material
+       "helps visually separate foreground elements ... from background
+       elements". Derived from #25AFF4 only, never a neutral grey. */
+    .ripple-svg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:max(1600px,118vw);height:auto;pointer-events:none;z-index:2}
+    /* Three phase groups on the dots' own 2s beat: rings 1/4/7 fire, then
+       2/5/8, then 3/6. Reads as three outward steps, not a smear. */
+    .ripple-svg .pulse{animation:ringflash 2s infinite}
+    /* Phones keep the pulse but drop rings 4-8: on a sub-768 viewport those
+       arcs sit entirely outside the scene's visible box (checked against the
+       clip geometry), yet each one still cost a compositor layer up to
+       ~2300px square. Hiding them is pixel-identical on phones and frees
+       the GPU memory whose exhaustion made Safari drop random layers
+       mid-scroll. */
+    @media(max-width:767.98px){
+      .ripple-svg .pulse:nth-of-type(n+4){display:none}
+    }
+    .remote-float{position:absolute;left:50%;top:50%;z-index:10;transform:translate(-50%,-52%);animation:floatyC 4s ease-in-out infinite}
+    /* On the blue wash the silhouette carries itself, so the lift is a single
+       tight contact shadow rather than a big dark halo. */
+    .ripple-remote{height:var(--remote-h,clamp(400px,46vw,660px));width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.16)) drop-shadow(0 16px 26px rgba(16,60,88,0.14))}
+    .smart-fade{position:absolute;left:0;right:0;z-index:30;pointer-events:none}
+    .smart-fade.top{top:0;height:220px;background:linear-gradient(to bottom,#FFFFFF 12%,rgba(255,255,255,0))}
+    .smart-fade.bot{bottom:0;height:200px;background:linear-gradient(to top,#FFFFFF 15%,rgba(255,255,255,0))}
+    /* Labels belong to the product, so above 768 they are positioned inside a
+       box that IS the remote (same clamp, same aspect ratio, same anchor), and
+       each one is set to overlap the silhouette at its own height. Below 768
+       the box spans the scene and the original placement is kept. */
+    .pill{translate:var(--anchor,none);
+      position:absolute;z-index:35;
+      background:var(--blue);color:#fff;font-weight:800;
+      font-size:clamp(0.72rem,1vw,0.92rem);letter-spacing:0.12em;
+      padding:0.78em 1.25em;box-shadow:0 2px 5px rgba(16,60,88,0.16);
+      white-space:nowrap;
+    }
+    .eco{
+      position:absolute;z-index:35;translate:var(--anchor,none);
+      display:flex;flex-direction:column;align-items:center;gap:0.6rem;
+      color:var(--dark);text-align:center;
+      filter:none;
+    }
+    /* Was forced to white for the dark canvas. On white the same marks have to
+       go the other way: knock them to ink instead of knocking them out. */
+    .eco .inv{height:clamp(40px,4.4vw,62px);width:auto;display:block;filter:brightness(0)}
+    /* The Google Home and Apple Home tiles are white-backed artwork. The tight
+       first shadow is standing in for an edge so the tile does not dissolve. */
+    .eco .hk{filter:drop-shadow(0 0 1px rgba(16,60,88,0.30)) drop-shadow(0 4px 10px rgba(16,60,88,0.10))}
+    .eco-wide .inv{height:clamp(22px,2.2vw,30px)}
+    .eco .genico{width:clamp(42px,4.6vw,62px);height:clamp(42px,4.6vw,62px);display:block}
+    .eco .nm{font-size:clamp(0.78rem,1.05vw,1rem);font-weight:700;letter-spacing:0.01em;white-space:nowrap}
+    .eco .tile{width:66px;height:66px;background:#FFFFFF;display:grid;place-items:center}
+    .eco .tile img,.eco .tile svg{width:40px;height:40px;display:block}
+    .eco .lockup{height:clamp(46px,4.6vw,66px);width:auto}
+    .eco .hk{height:clamp(46px,4.8vw,66px);width:auto}
+    /* Pill and ecosystem-mark positions live in the two LABEL POSITIONS blocks
+       further down: percentages of the remote-sized anchor box, one set per
+       breakpoint, dragged on the live tuner and baked here. */
+
+    /* S3 COMMUNITY APPS */
+    /* Bottom of the apps band sets the gap above the YOUR CODE cue.
+       Below 768 the remote cutout stops 9px short of the band's clip edge,
+       so the section padding is 9px smaller there to land on the same gap. */
+    /* Bottom padding now has to clear the product itself, not the clip edge:
+       the cutout is no longer cropped by the band, so the band ends below it. */
+    .apps{padding:0 0 40px}
+    @media(min-width:768px){.apps{padding-bottom:58px}}
+    .apps-head{align-items:center;text-align:center;margin-bottom:var(--apps-head-gap,3px)}
+    .apps-head .sub{max-width:44ch}
+    /* No overflow clip on the band itself: the clip belongs to the marquee rows
+       and nothing else, so no product shadow can be sliced by it. */
+    .apps-break{position:relative;width:100vw;left:50%;transform:translateX(-50%);padding:clamp(1rem,2.4vw,1.5rem) 0 clamp(2rem,3vw,3rem);--sh:72px}
+    .rows-wrap{position:relative}
+    @media(min-width:768px){.apps-break{--sh:96px}}
+    .strip-row{display:flex;width:max-content;animation:marq 72s linear infinite}
+    /* Commit the two big marquee layers only while their section is near the
+       viewport; permanent will-change kept ~19MB of GPU backing alive from
+       page load even when the band was screens away. */
+    .la.live .strip-row{will-change:transform}
+    .strip-row img{height:var(--sh);width:auto;display:block;margin-right:calc(var(--sh) * 0.27084)}
+    .row-1{animation-name:marqBack;animation-duration:96s;margin-bottom:20px}
+    .row-2{animation-duration:72s}
+    .nowrun-wrap{display:flex;justify-content:center;position:relative;z-index:6;margin-top:var(--nowrun-top,0px);margin-bottom:var(--nowrun-gap,68px);pointer-events:none}
+    @media(min-width:768px){.nowrun-wrap{margin-bottom:var(--nowrun-gap,68px)}}
+    .rows-zone{position:relative}
+    .strips-clip{overflow:hidden}
+    .nowrun{width:min(320px,80vw);height:auto;animation:floaty 6s ease-in-out infinite}
+    .nowrun .st{stroke:#FFFFFF;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .nowrun g[id^="app-"]{transition:opacity 0.35s ease}
+    /* NOW RUNNING stays a white card, but it now has to read as an object
+       floating above a white plane: firmer edge, softer and shallower shadow. */
+    .nowrun rect[stroke]{stroke:rgba(10,10,10,0.13);stroke-width:1.5}
+    .nowrun feDropShadow{flood-color:#103C58;flood-opacity:0.09}
+    .nowrun text[fill="#9A9A9A"]{fill:var(--gray)}
+    /* The product used to live inside .apps-break, which clips the marquee, so
+       its shadow was sliced off in a straight line. The clip now lives on the
+       strip rows only; the remote sits in an unclipped overlay above them. */
+    .apps-stage{position:absolute;inset:0;z-index:6;pointer-events:none}
+    .apps-remote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:var(--apps-remote-h,210px);width:auto;display:block;pointer-events:none;
+      filter:drop-shadow(0 1px 2px rgba(16,60,88,0.18)) drop-shadow(0 14px 24px rgba(16,60,88,0.16))}
+    /* Blue field behind the cutout, as light rather than as a box: over the blue
+       tiles it is invisible (blue on blue), over the white gaps it becomes the
+       ground the white shell is read against. */
+    @media(min-width:768px){
+      .apps-remote{height:300px}
+    }
+    .prog-line{text-align:center;margin-top:var(--code-sub-gap,clamp(1rem,2vw,1.75rem));color:var(--gray);font-weight:700;font-size:clamp(1rem,1.6vw,1.25rem);letter-spacing:-0.01em}
+    .plat-row{display:flex;justify-content:center;align-items:flex-start;gap:clamp(1.6rem,4.5vw,4rem);margin-top:1.5rem;flex-wrap:wrap}
+    /* 4 across only while they comfortably fit, otherwise a clean 2x2. Never 3+1. */
+    @media(max-width:559.98px){
+      .plat-row{display:flex;flex-wrap:nowrap;justify-content:center;align-items:flex-start}
+    }
+    .plat{display:flex;flex-direction:column;align-items:center;gap:0.75rem;width:clamp(6.4rem,10vw,8rem)}
+    .plat img{width:clamp(54px,6vw,74px);height:auto;display:block}
+    .plat span{font-size:0.85rem;font-weight:700;color:var(--dark);letter-spacing:0.02em}
+
+    /* S4 YOUR CODE. Solid brand blue, full bleed, same flat material as the
+       hero and the closing card: the page alternates blue fields and white
+       fields instead of relying on outlines to separate anything. */
+    .code{padding:clamp(2rem,4vw,3rem) 0 clamp(3.5rem,7vw,6.5rem);}
+    #connDot{fill:var(--blue)}
+    .code-grid{position:relative;max-width:76rem;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.95fr) clamp(30px,6vw,190px) minmax(0,1.15fr);gap:0 clamp(0.3rem,1vw,1rem);align-items:start}
+    .code-h{max-width:13ch}
+    .flash-target{position:relative;z-index:2;width:fit-content;margin:clamp(1.8rem,3.5vw,3.6rem) auto clamp(2.8rem,4.5vw,4.5rem)}
+    /* The white remote sits straight on the blue field, so its silhouette is
+       carried by the surface behind it and the shadow can stay a contact
+       shadow instead of a halo. */
+    .flash-target .remote{height:clamp(220px,32vw,430px);width:auto;display:block}
+    .ledstrip{position:absolute;left:50%;top:calc(100% + 14px);transform:translateX(-50%);width:clamp(86px,12vw,126px);height:auto}
+    /* On the blue field an unlit cell is the blue knocked back; a lit one is
+       white. Nothing here is a grey housing any more. */
+    .ledstrip > g > rect{fill:rgba(10,10,10,0.06);stroke:rgba(10,10,10,0.18)}
+    .ledstrip > g > rect:first-of-type{fill:rgba(10,10,10,0.10)}
+    .ledstrip .l1 rect,.ledstrip .l2 rect,.ledstrip .l3 rect,.ledstrip .l4 rect{fill:var(--blue)}
+    .ledstrip .l1{animation:led1 4s linear infinite}
+    .ledstrip .l2{animation:led2 4s linear infinite}
+    .ledstrip .l3{animation:led3 4s linear infinite}
+    .ledstrip .l4{animation:led4 4s linear infinite}
+    .conn-col{display:block;padding-top:2.5rem}
+    .conn-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;display:block;z-index:1}
+    /* On the blue field the trace is white. Declared here (after the .code
+       block) so this ID rule is the one that wins. */
+    #connPath{stroke:#9A9A9A;opacity:0.85}
+    .dot{animation:dotgo 4s ease-in-out infinite}
+    .editor-svg{width:min(520px,100%);height:auto;display:block;margin-left:auto}
+    /* The editor window is a white app window in both themes. Only its lift
+       changes: a black 38% halo reads as grime on white, so it is halved and
+       the window gets a hairline so its light edges stay defined. */
+    .editor-svg #winshadow feDropShadow{flood-color:#063A56;flood-opacity:0.22}
+    .editor-svg #bshadow feDropShadow{flood-color:#063A56;flood-opacity:0.20}
+    /* Syntax colour is the brand blue, unmodified. */
+    .editor-svg tspan[fill="#9A9A9A"]{fill:var(--gray)}
+
+    /* S5 + S6 cards */
+    .cardsec{padding:0}
+    /* Two panels, two states of the same colour and no outline on either: a
+       pale wash of the brand blue, then the brand blue at full strength. */
+    .diy-card{background:var(--blue)}
+    .diy-card .h2,.diy-card .eyebrow,.diy-card .sub,.diy-card p{color:#fff}
+    .diy-card .ghost{opacity:1;mix-blend-mode:normal}
+    .diy-card .ghost *{stroke:#66C7F7!important;stroke-opacity:1!important;fill:none!important}
+    .diy-card,.board-card{position:relative;overflow:hidden;padding:clamp(1.8rem,4.5vw,4.5rem)}
+    .board-card{background:var(--blue);margin-top:clamp(1.25rem,2.5vw,2rem)}
+    .diy-grid{display:grid;gap:2.5rem;position:relative;z-index:2}
+    @media(min-width:1280px){.diy-grid{grid-template-columns:0.62fr 1.38fr;align-items:center;gap:1.5rem}}
+    .diy-copy .h2{margin-top:0;margin-bottom:var(--diy-head-gap,0px);font-size:clamp(1.9rem,3.4vw,3rem)}
+    .code-h{margin-top:0}
+    .board-h{margin-top:0;font-size:clamp(1.9rem,3.4vw,3rem)}
+    .inside-sub{max-width:30ch}
+    .diy-copy .sub{max-width:32ch;margin-top:1rem}
+    .diy-scene{position:relative;translate:var(--diy-x,0px) var(--diy-y,0px);display:flex;align-items:center;justify-content:center;gap:0}
+    @media(min-width:1280px){.diy-scene{justify-content:flex-end}}
+    .remote-rockwrap{translate:var(--diy-remote-x,0px) 0;position:relative;flex:0 0 auto;z-index:2}
+    /* Same problem as S4: white shell, white card. A soft blue field sits under
+       it so the silhouette has something to be read against. */
+    .rock-remote{height:var(--diy-remote-h,clamp(160px,21vw,330px));width:auto;display:block;animation:rockit 4s ease-in-out infinite;transform-origin:50% 96%;filter:drop-shadow(0 1px 2px rgba(16,60,88,0.20)) drop-shadow(0 12px 20px rgba(16,60,88,0.16))}
+    .waves{flex:0 0 auto;width:var(--diy-waves-w,clamp(44px,8vw,120px));margin:0 var(--diy-waves-x,-2px) var(--diy-waves-y,34px)}
+    .waves .w1{animation:wavepulse 2s ease-in-out infinite}
+    .waves .w2{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.305s}
+    .waves .w3{animation:wavepulse 2s ease-in-out infinite;animation-delay:0.61s}
+    .rig{flex:0 0 auto;width:clamp(180px,38vw,470px);height:auto}
+    @media(min-width:1280px){.rig{width:var(--diy-rig-w,clamp(340px,30vw,430px))}}
+
+    #horn{animation:hornswing 4s ease-in-out infinite;transform-origin:196px 170px;transform-box:view-box}
+    .bled{animation:bledblink 4s ease-in-out infinite}
+    .rig #rigShadow feDropShadow{flood-color:#103C58;flood-opacity:0.13}
+    .rig #svShadow feDropShadow{flood-color:#103C58;flood-opacity:0.12}
+    /* Ghost component doodles were white-on-ink. On white they become brand
+       blue at low alpha: pattern, not grey. */
+    .ghost{position:absolute;z-index:1;opacity:0.18;pointer-events:none}
+    .ghost [stroke="#FFFFFF"]{stroke:var(--blue)}
+    
+    #gh-res{width:400px;left:-100px;bottom:-30px;transform:rotate(-10deg)}
+    #gh-chip{width:300px;right:-80px;top:-90px;transform:rotate(12deg)}
+    #gh-bread{width:430px;left:30%;top:-140px;transform:rotate(-4deg)}
+    #gh-servo{width:330px;right:10%;bottom:-120px;transform:rotate(8deg)}
+
+    /* S6 THE BOARD, on the solid blue panel: everything white, the dark PCB
+       photograph carrying the contrast. */
+    .board-grid{display:grid;gap:2rem;position:relative;z-index:2}
+    @media(min-width:1024px){.board-grid{grid-template-columns:1.05fr 0.95fr}.board-card{min-height:440px}}
+    .board-card .h2{margin-bottom:var(--board-head-gap,0px);color:#fff}
+    .esp-display{font-size:clamp(3rem,6.6vw,5.8rem);font-weight:900;letter-spacing:-0.03em;line-height:1;color:#fff;margin-top:2rem}
+    .esp-sub{color:rgba(255,255,255,0.94);font-weight:500;max-width:34ch;margin-top:1rem;line-height:1.55}
+    .stat-row{display:flex;gap:clamp(2.5rem,6vw,5rem);margin-top:clamp(2rem,4vw,3.4rem);font-variant-numeric:tabular-nums}
+    @media(max-width:767.98px){.stat-row{flex-wrap:wrap}}
+    .stat b{display:block;font-size:clamp(1.9rem,4.4vw,3.8rem);font-weight:900;letter-spacing:-0.03em;color:#fff;line-height:1}
+    .stat span{display:block;margin-top:0.55rem;color:rgba(255,255,255,0.94);font-weight:600;font-size:0.9rem}
+    .stat b{white-space:nowrap}
+    .os-line{margin-top:clamp(1.6rem,5vw,4.5rem);color:rgba(255,255,255,0.9);font-size:0.85rem;font-weight:500;max-width:46ch;line-height:1.55}
+    .board-visual{display:block;position:absolute;top:0;right:0;width:min(52%,560px);height:100%;z-index:1;pointer-events:none}
+    @media(max-width:1023px){.board-visual{width:min(58%,340px);right:-14%}.board-grid{gap:0}.board-grid > div:first-child{max-width:36rem}}
+    /* The board is a dark object on a blue panel, so it needs no field and
+       almost no shadow: at 24% the halo was clipped by the panel edge and read
+       as a smear along it. */
+    /* The photo dissolves before its own bottom edge so it can never show a
+       raw cut, and the fade rides the image itself: a container-anchored
+       gradient drifted out of alignment with the floating animation and let
+       the dark PCB smear past it (and left a hard cut on mobile, where the
+       image is much shorter than the container). */
+    .board-visual img{position:absolute;top:4%;right:-4%;width:92%;height:auto;--tilt:6deg;animation:driftdn 6s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(6,58,86,0.22));
+      -webkit-mask-image:linear-gradient(to bottom,#000 52%,transparent 88%);
+      mask-image:linear-gradient(to bottom,#000 52%,transparent 88%)}
+    .esp-sig{position:relative;z-index:3;margin-top:1.3rem}
+    @media(min-width:1024px){.esp-sig{position:absolute;right:clamp(1.8rem,4vw,4rem);bottom:clamp(1.8rem,4vw,3rem);margin:0;text-align:right}}
+    .esp-sig .cap{font-size:0.68rem;letter-spacing:0.2em;font-weight:700;color:rgba(255,255,255,0.9);text-transform:uppercase;margin-bottom:0.5rem}
+    .esp-sig .mark{display:flex;align-items:center;gap:0.55rem}
+    @media(min-width:1024px){.esp-sig .mark{justify-content:flex-end}}
+    .esp-sig svg{width:25px;height:25px;display:block}
+    .esp-sig svg path{fill:#fff}
+    .esp-sig .name{font-weight:700;font-size:1.05rem;color:#fff;letter-spacing:0.01em}
+
+    /* S7 WHAT'S INSIDE */
+    .inside{padding:clamp(4.5rem,9vw,8rem) 0 clamp(3rem,6vw,5rem)}
+    .tier1{display:grid;gap:1.25rem;margin-top:var(--inside-head-gap,0px)}
+    @media(min-width:700px){.tier1{grid-template-columns:1fr 1fr}}
+    @media(min-width:1100px){
+      .tier1{grid-template-columns:1.55fr 1fr 1fr 1fr;gap:1.5rem}
+      .tier1 .spec-card:first-child{padding:2.1rem 1.9rem 2.3rem}
+      .tier1 .spec-card:first-child h3{font-size:1.45rem;letter-spacing:-0.015em}
+      .tier1 .spec-card:first-child p{font-size:0.95rem;max-width:34ch}
+    }
+    /* These were white chips punched out of a black page: the brightest thing
+       on the screen. On a white page the same job needs the opposite value, so
+       they invert to ink. They are the one dark block on the page and they land
+       right before the blue closing card, which gives the end of the scroll a
+       proper crescendo instead of another sheet of white. */
+    .spec-card{background:var(--dark);color:#fff;padding:1.7rem 1.5rem 1.9rem}
+    .spec-card h3{font-size:1.08rem;font-weight:800;letter-spacing:-0.01em;margin-bottom:0.55rem}
+    .spec-card p{font-size:0.88rem;color:rgba(255,255,255,0.76);line-height:1.5;font-weight:500}
+    .tier2{display:grid;gap:1.7rem 2rem;margin-top:clamp(2.5rem,5vw,4rem)}
+    @media(min-width:640px){.tier2{grid-template-columns:1fr 1fr}}
+    @media(min-width:1024px){.tier2{grid-template-columns:repeat(3,1fr);gap:2rem 2.5rem}}
+    .t2{border-top:1px solid var(--hair);padding-top:1.05rem}
+    .t2 b{display:block;color:var(--dark);font-weight:800;font-size:0.95rem;letter-spacing:-0.01em}
+    .t2 span{display:block;margin-top:0.35rem;color:var(--gray);font-size:0.85rem;line-height:1.5;font-weight:500}
+
+    /* S7B FAQ. Same ledger language as the tier-2 specs: hairline rows on
+       white, ink text, one blue square as the open/close marker. The section
+       exists for people AND for answer engines, so every answer is plain
+       HTML text in the DOM whether or not the row is open. */
+    .faq{padding:0 0 clamp(3rem,6vw,5rem)}
+    .faq .sec-head{margin-bottom:clamp(1.5rem,3vw,2.5rem)}
+    .faq-list{border-top:1px solid var(--hair);max-width:66rem}
+    .qa{border-bottom:1px solid var(--hair)}
+    .qa summary{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;list-style:none;cursor:pointer;padding:1.1rem 0}
+    .qa summary::-webkit-details-marker{display:none}
+    .qa summary::marker{content:''}
+    .qa h3{font-size:clamp(0.98rem,1.5vw,1.15rem);font-weight:800;letter-spacing:-0.01em;color:var(--dark);margin:0}
+    @media(hover:hover) and (pointer:fine){.qa summary:hover h3{color:var(--blue)}}
+    .qa summary:focus-visible{outline:2px solid transparent;outline-offset:2px;box-shadow:0 0 0 2px var(--dark),0 0 0 5px var(--blue)}
+    .qa-x{position:relative;width:22px;height:22px;background:var(--blue);flex:none}
+    .qa-x::before,.qa-x::after{content:'';position:absolute;left:50%;top:50%;translate:-50% -50%;background:#fff}
+    .qa-x::before{width:12px;height:2px}
+    .qa-x::after{width:2px;height:12px;transition:transform 0.2s var(--ease)}
+    .qa[open] .qa-x::after{transform:scaleY(0)}
+    .qa-a{padding:0 0 1.4rem;max-width:70ch}
+    .qa-a p{color:var(--gray);font-weight:500;line-height:1.6;font-size:0.92rem}
+    .qa-a p+p{margin-top:0.6rem}
+    .spec-table{width:100%;border-collapse:collapse;margin-top:0.2rem}
+    .spec-table th,.spec-table td{text-align:left;padding:0.5rem 1rem 0.5rem 0;border-bottom:1px solid var(--hair);font-size:0.88rem;vertical-align:top;line-height:1.5}
+    .spec-table tr:last-child th,.spec-table tr:last-child td{border-bottom:none}
+    .spec-table th{color:var(--dark);font-weight:800;white-space:nowrap;width:1%;padding-right:1.6rem}
+    .spec-table td{color:var(--gray);font-weight:500}
+
+    /* S8 READY + FOOTER */
+    .ready-sec{padding:clamp(2.5rem,5vw,4rem) 0 clamp(4rem,7vw,6rem)}
+    .ready-card{position:relative;background:var(--blue);text-align:center;padding:clamp(4.5rem,10vw,8rem) clamp(1.5rem,4vw,4rem)}
+    .ready-card h2{font-size:clamp(2.5rem,6.4vw,4.6rem);font-weight:900;letter-spacing:-0.03em;color:#fff;line-height:1;text-wrap:balance}
+    .rsub{margin-top:1.1rem;color:#fff;font-weight:600;font-size:clamp(1rem,1.5vw,1.15rem)}
+    .ready-cta{display:flex;flex-direction:column;align-items:center;gap:1.5rem;margin-top:2.8rem}
+    @media(min-width:640px){.ready-cta{flex-direction:row;justify-content:center;gap:2.4rem}}
+    .btn-white{
+      display:inline-flex;align-items:center;gap:0.6rem;
+      padding:1.1rem 2.1rem;font-size:0.95rem;font-weight:800;font-family:inherit;
+      letter-spacing:0.06em;text-transform:uppercase;
+      color:var(--dark);background:#fff;border:none;cursor:pointer;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    @media(hover:hover) and (pointer:fine){.btn-white:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(8,52,78,0.28)}}
+    .btn-white svg{width:16px;height:16px}
+    .cs-ink{display:inline-flex;align-items:center;gap:0.5rem;color:#fff;font-weight:800;font-size:0.95rem;text-decoration:none;letter-spacing:0.02em;transition:color 0.2s,transform 0.2s}
+    @media(hover:hover) and (pointer:fine){.cs-ink:hover{color:var(--ink);transform:translateY(-2px)}}
+    .cs-ink svg{width:14px;height:14px}
+    .pop-badge{position:absolute;z-index:5;border:none;background:none;padding:0}
+    .pop-badge img{display:block;width:100%;height:auto;filter:drop-shadow(0 5px 12px rgba(6,58,86,0.32))}
+    .pop-badge.gone{animation:popout 0.22s ease forwards;pointer-events:none}
+    .pop-badge.back{animation:popin 0.34s cubic-bezier(0.34,1.56,0.64,1)}
+    #b1{width:84px;left:-26px;top:12%}
+    #b2{width:70px;right:8%;top:-24px}
+    #b3{width:64px;left:14%;top:-20px}
+    #b4{width:78px;right:-26px;bottom:20%}
+    #b5{width:62px;left:9%;bottom:-20px}
+    @media(max-width:767px){
+      #b1{width:56px;left:-12px;top:9%}
+      #b2{width:48px;right:9%;top:-14px}
+      #b3{width:44px;left:15%;top:-12px}
+      #b4{width:52px;right:-12px;bottom:24%}
+      #b5{width:44px;left:8%;bottom:-13px}
+    }
+    footer{padding:3.5rem var(--gut) calc(3rem + env(safe-area-inset-bottom));text-align:center;border-top:1px solid var(--hair)}
+    .f-logo{width:var(--f-logo-w,116px);height:auto;margin:0 auto 1.2rem;display:block}
+    .f-line{color:var(--gray);font-size:0.8rem;font-weight:500}
+    .f-links{display:flex;gap:2rem;justify-content:center;margin-top:1.15rem}
+    .f-links a{color:var(--ink);font-weight:700;font-size:0.85rem;text-decoration:none;letter-spacing:0.03em;transition:color 0.2s}
+    @media(hover:hover) and (pointer:fine){.f-links a:hover{color:var(--dark)}}
+    .f-ig{display:inline-flex;align-items:center}
+    .f-ig svg{display:block}
+    /* Section index: descriptive in-page anchors are how a one-page site earns
+       jump-to links in search results, and they give crawlers named entry
+       points into every section. */
+    .f-nav{display:flex;flex-wrap:wrap;gap:0.5rem 1.6rem;justify-content:center;margin-bottom:1.4rem}
+    .f-nav a{color:var(--gray);font-weight:600;font-size:0.8rem;text-decoration:none;letter-spacing:0.02em;transition:color 0.2s}
+    @media(hover:hover) and (pointer:fine){.f-nav a:hover{color:var(--blue)}}
+    /* Anchor jumps land below the fixed header instead of under it. */
+    #smart,#apps,#code,#diy,#board,#inside,#faq{scroll-margin-top:90px}
+    /* Nominative-use trademark attribution. Word only, no logo, brand-first
+       phrasing everywhere it appears: the Sega v. Accolade / 8BitDo pattern. */
+    .f-legal{margin:0.9rem auto 0;color:rgba(10,10,10,0.55);font-size:0.68rem;font-weight:500;max-width:56ch;line-height:1.5}
+
+    @media(min-width:1024px){:root{--smart-top:53px;--radios-gap:15px;--nowrun-gap:68px;--apps-remote-h:334px;--apps-head-gap:3px;--nowrun-top:19px;--diy-remote-h:330px;--diy-remote-x:-24px;--diy-waves-w:120px;--diy-rig-w:430px;--f-logo-w:116px;}}
+    @media(min-width:1180px){:root{--remote-h:660px;}}
+
+    /* MOBILE HERO IS UNTOUCHABLE: below 1024 it keeps the original dark
+       treatment regardless of the light theme used by the rest of the page. */
+    @media(max-width:767.98px){
+      .hero-content h1{color:#fff}
+      .hero-content h1 span{color:var(--blue)}
+      .hero-content>p{color:rgba(255,255,255,0.7)}
+      .badge{color:var(--blue);border-color:var(--blue);background:transparent}
+      .logo{filter:none}
+    }
+    @media(min-width:1024px){
+      #smart > .scroll-cue{padding:0;margin:0}
+      #apps > .scroll-cue{padding:0 0 27px;margin:0}
+      #code > .scroll-cue{padding:0 0 0 2px;margin:-91px 0 0}
+    }
+    /* Samson's dragged positions are centre-anchored and desktop-only.
+       Below 1024 the original top-left coordinates apply unchanged. */
+    .eco,.pill{--anchor:-50% -50%}
+
+    /* ---- MOBILE / TABLET COMPOSITION FIXES ---- */
+    @media(max-width:767.98px){
+      /* radiating scene: the remote was oversized for the section */
+      .ripple-remote{height:330px}
+      /* DIY scene: parts were tiny. Proportion them to the card instead. */
+      .diy-card{padding:1.6rem 1rem 1.9rem}
+      .diy-scene{gap:3%;width:100%;justify-content:center;align-items:center;padding-left:6%}
+      .remote-rockwrap{flex:0 0 22%}
+      .rock-remote{height:auto;width:100%}
+      .waves{flex:0 0 13%;width:auto;margin:0 0 6%}
+      .rig{flex:0 0 60%;width:100%}
+      /* ghost artwork was stacking on itself - keep two, spread them */
+      .diy-card #gh-bread,.diy-card #gh-servo{display:none}
+    }
+    @media(min-width:768px) and (max-width:1023.98px){
+      .diy-card #gh-servo{display:none}
+    }
+    /* apps remote was colliding with the cue dots that sit below it */
+    #code > .scroll-cue{position:relative;z-index:5}
+    @media(min-width:1024px) and (max-width:1179.98px){
+      .apps-break{padding-bottom:clamp(2.4rem,4vw,3.4rem)}
+    }
+
+    /* ---- PER-SECTION SPACING CONTROLS (defaults = exactly what was measured) ---- */
+    #smart{padding-top:var(--sec-smart-top,var(--smart-top,110px));padding-bottom:var(--sec-smart-bot,0px)}
+    #apps{padding-top:var(--sec-apps-top,0px);padding-bottom:var(--sec-apps-bot,40px)}
+    #code{padding-top:var(--sec-code-top,32px);padding-bottom:var(--sec-code-bot,56px)}
+    #diy{padding-top:var(--sec-diy-top,0px);padding-bottom:var(--sec-diy-bot,0px)}
+    #board{padding-top:var(--sec-board-top,0px);padding-bottom:var(--sec-board-bot,0px)}
+    #inside{padding-top:var(--sec-inside-top,72px);padding-bottom:var(--sec-inside-bot,48px)}
+    #build{padding-top:var(--sec-build-top,32px);padding-bottom:var(--sec-build-bot,0px)}
+    #ready{padding-top:var(--sec-ready-top,40px);padding-bottom:var(--sec-ready-bot,64px)}
+    @media(min-width:1024px){
+      #smart{padding-top:var(--sec-smart-top,var(--smart-top,53px));padding-bottom:var(--sec-smart-bot,0px)}
+      #apps{padding-top:var(--sec-apps-top,0px);padding-bottom:var(--sec-apps-bot,58px)}
+      #code{padding-top:var(--sec-code-top,48px);padding-bottom:var(--sec-code-bot,104px)}
+      #diy{padding-top:var(--sec-diy-top,0px);padding-bottom:var(--sec-diy-bot,0px)}
+      #board{padding-top:var(--sec-board-top,0px);padding-bottom:var(--sec-board-bot,0px)}
+      #inside{padding-top:var(--sec-inside-top,128px);padding-bottom:var(--sec-inside-bot,80px)}
+      #build{padding-top:var(--sec-build-top,56px);padding-bottom:var(--sec-build-bot,0px)}
+      #ready{padding-top:var(--sec-ready-top,64px);padding-bottom:var(--sec-ready-bot,96px)}
+    }
+
+
+    /* HERO, desktop only. Mobile keeps the full-bleed photo hero:
+       .hero-shell is display:contents below 1024px, so it has no layout there. */
+    .hero-shell{display:contents}
+    .hero-duo{display:none}
+    @media(min-width:768px){
+      /* Navbar on the same gutter as every card below it (HIG Layout:
+         "Align components with one another to make them easier to scan"). */
+      header{padding:30px var(--gut);transition:transform .28s ease,opacity .28s ease;
+        max-width:90rem;margin-inline:auto}
+      header.scrolled{padding:30px var(--gut)}
+      header::before{display:none}
+      header.hide{transform:translateY(-110%)}
+      .logo{width:230px}
+      .join-btn{padding:0.85rem 1.7rem;font-size:0.9rem}
+      /* Over the blue hero the mark and the button invert; past it they go back
+         to brand blue on white. Toggled by JS on the hero's own position, not on
+         a scroll distance, so it can never be blue-on-blue. */
+      header.overhero .logo{filter:brightness(0) invert(1)}
+      header.overhero .join-btn{background:#fff;color:var(--ink)}
+      header.overhero .join-btn:hover{box-shadow:0 8px 20px rgba(8,52,78,0.28)}
+
+      /* THE HERO IS A SOLID BRAND-BLUE FIELD, full bleed, no card, no border,
+         no gradient: the same flat #25AFF4 as the closing card so the page is
+         bookended by one material. White cutouts finally have a ground. */
+      .hero{display:block;height:100svh;padding:108px var(--gut) 40px;background:var(--blue)}
+      /* Same measure as .shell: max-width 90rem minus the two gutters, centred.
+         The hero copy therefore starts and ends on the exact column as every
+         card below it at every width. */
+      .hero-shell{position:relative;display:flex;align-items:center;
+        width:100%;max-width:calc(90rem - 2 * var(--gut));height:100%;
+        margin-inline:auto;border:none;overflow:visible}
+      .hero::after{display:none}
+      .hero-img{display:none}
+
+      /* Everything in the hero is white on blue. */
+      .hero-content h1,.hero-content h1 span{color:#fff}
+      .hero-content>p{color:rgba(255,255,255,0.94)}
+      .badge{background:transparent;border-color:rgba(255,255,255,0.75);color:#fff}
+      /* Primary action on a blue field: white fill, ink label. Highest contrast
+         pairing available on this surface. */
+      .cta{background:#fff;color:var(--ink)}
+      .cta:hover{box-shadow:0 12px 28px rgba(8,52,78,0.3)}
+      /* One scroll-indicator language for the whole page: the same three dots,
+         same 2s three-step chase, knocked to white on the blue. */
+      .hero .scroll-cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:3}
+      /* Same component, same 2s three-step chase; only the resting value is
+         lifted because the dots are white on blue rather than blue on white. */
+      .hero .scroll-cue b{background:#fff;animation-name:cuestepw}
+
+      /* The duo keeps the source photo's exact composition (container = the original
+         cutout's 470x856 frame, each remote at its photographed position and scale);
+         only the drift is independent, and gentle enough not to break the stance. */
+      /* Anchor both halves to the card's centre line with one shared gap, so the
+         remotes and the copy read as one group instead of hugging the outer edges. */
+      .hero-duo{display:block;position:absolute;left:50%;top:50%;
+        transform:translateX(calc(-100% - var(--pair-gap,64px))) translateY(var(--duo-y,-53%));
+        height:var(--duo-h,81%);aspect-ratio:470/856}
+      /* Shadows retuned for a blue ground: the same hue at depth, so the lift
+         reads as light on blue instead of a grey stain. */
+      .duo-a{position:absolute;z-index:3;left:var(--duo-a-x,3%);top:var(--duo-a-y,5%);height:var(--duo-a-h,98%);width:auto;
+        filter:drop-shadow(0 1px 2px rgba(6,58,86,0.28)) drop-shadow(0 18px 30px rgba(6,58,86,0.26));
+        animation:bobA 6s ease-in-out infinite}
+      .duo-b{position:absolute;z-index:2;left:var(--duo-b-x,47%);top:var(--duo-b-y,14%);height:var(--duo-b-h,85%);width:auto;
+        filter:drop-shadow(0 1px 2px rgba(6,58,86,0.28)) drop-shadow(0 18px 30px rgba(6,58,86,0.26));
+        animation:bobB 6s ease-in-out 3s infinite}
+
+      .hero-content{position:relative;left:auto;top:-28px;margin-left:calc(50% + var(--pair-gap,64px));
+        padding:0;max-width:min(500px,40%)}
+      /* Smaller desktops: tighten the gap and shrink the remotes so the pair
+         keeps real margin on both sides instead of touching the card edges. */
+      /* The headline is one unbreakable 11-character word, so the type scale
+         and the copy column have to move together or "Superpowers" runs off
+         the screen between 1024 and 1339 (HIG Typography: "Make sure your
+         app's layout adapts to all font sizes"). */
+      .hero-content h1{font-size:clamp(2.6rem,5vw,4.5rem)}
+      @media(max-width:1339px){
+        .hero-duo{--pair-gap:44px;height:72%}
+        .hero-content{--pair-gap:44px;max-width:min(460px,40%)}
+      }
+      .hero-content>p{max-width:420px}
+    }
+    /* Below 1024 the hero is the photograph again and carries no cue. */
+    .hero .scroll-cue{display:none}
+    @media(min-width:768px){.hero .scroll-cue{display:flex}}
+    @keyframes bobA{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(-0.9deg)}}
+    @keyframes bobB{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(0.7deg)}}
+    /* Custom cursor must win over any later bare cursor:pointer declarations */
+    @media(min-width:768px){
+      a,button,input,select,label,summary,[role=button],[onclick],.cta,.join-btn,.cs-link,.pop-badge{
+        cursor:url('cursors/cursor-pointer-32.png') 16 0,pointer!important}
+    }
+
+    /* ------------------------------------------------------------------
+       Keyboard focus.
+       Two rings, because the same controls sit on three different grounds:
+       near-black page, white modal, and the solid blue closing card. The
+       inner ink ring is what survives on blue; the outer blue ring is what
+       survives on ink and on white. Transparent outline keeps an indicator
+       in Windows forced-colors mode, where box-shadow is dropped.
+       Listed explicitly (not :where) so these beat the :hover rules above.
+       ------------------------------------------------------------------ */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    .cta:focus-visible,
+    .join-btn:focus-visible,
+    .btn-white:focus-visible,
+    .cs-ink:focus-visible,
+    .pop-badge:focus-visible,
+    .sheet button[type=submit]:focus-visible{
+      outline:2px solid transparent;
+      outline-offset:2px;
+      box-shadow:0 0 0 2px var(--dark),0 0 0 5px var(--blue);
+    }
+
+    /* Button and label text should not highlight when a drag starts on it. */
+    .join-btn,.cta,.btn-white,.cs-ink,.pop-badge,.sheet button[type=submit],.sheet-bar{
+      -webkit-user-select:none;user-select:none;
+    }
+
+    /* Decorative layers must not sit in the hit-test path. Every selector
+       here is already aria-hidden or purely ornamental. */
+    .scroll-cue,.waves,.ledstrip,.strip-row,.rows-zone,.conn-col,.rig{
+      pointer-events:none;
+    }
+
+    /* ---- PER-CUE SPACING: additive only, never overrides existing rules ---- */
+    .hero .scroll-cue{translate:0 var(--cue-hero-y,0px)}
+    #smart > .scroll-cue{translate:0 var(--cue-smart-y,0px)}
+    #apps > .scroll-cue{translate:0 var(--cue-apps-y,0px)}
+    #code > .scroll-cue{translate:0 var(--cue-code-y,0px)}
+
+    /* headline and radios line always paint above the scene */
+    .smart-h{position:relative;z-index:60}
+    .proto-row{position:relative;z-index:60}
+
+
+    /* ---- BAKED FROM THE CONTROL PANEL (per breakpoint) ---- */
+    @media(max-width:767.98px){
+      .smart-h{translate:0px 33px}
+      .proto-row{translate:-17px 42px}
+      #apps > .scroll-cue{display:none}
+      #code > .scroll-cue{display:none}
+      /* --sec-apps-bot 0: the tuner wrote -66px here, but negative padding is
+         invalid and always rendered as 0. Baked to what actually renders. */
+      :root{--smart-top:13px;--apps-remote-h:255px;--sec-apps-bot:0px;--sec-code-bot:58px;}
+    }
+    @media(min-width:768px){
+      :root{--sec-code-bot:58px;}
+    }
+
+
+    /* Touch devices carry one tight shadow per cutout instead of stacked
+       wide Gaussians: every tile repaint re-runs those blurs, and halving
+       the blur work is what keeps fast-scroll repaints instant. The look
+       shifts from a soft halo to a crisp lift; geometry is untouched. */
+    @media (hover:none) and (pointer:coarse){
+      .ripple-remote{filter:drop-shadow(0 4px 10px rgba(16,60,88,0.18))}
+      .apps-remote{filter:drop-shadow(0 4px 10px rgba(16,60,88,0.20))}
+      .rock-remote{filter:drop-shadow(0 4px 8px rgba(16,60,88,0.20))}
+      .board-visual img{filter:drop-shadow(0 4px 8px rgba(6,58,86,0.20))}
+    }
+
+    /* iOS fixed-bar fix: backdrop-filter on a position:fixed element makes
+       Safari detach it during scroll. Solid surface on touch devices. */
+    @media (hover:none) and (pointer:coarse){
+      /* keep the brand-blue surface; only the backdrop-filter is the iOS problem */
+      .bar{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+        background:var(--blue);border:0;
+        box-shadow:0 10px 30px rgba(16,60,88,0.22);
+        bottom:max(0px,env(safe-area-inset-bottom))}
+    }
+
+    /* ---- labels ride the remote ----
+       .remote-anchor is laid out by the same flow as .remote-float and sized
+       to the remote itself, so label positions are immune to scene changes. */
+    .remote-anchor{position:absolute;left:50%;top:50%;translate:-50% -52%;
+      height:var(--remote-h,clamp(400px,46vw,660px));aspect-ratio:1201/1676;
+      pointer-events:none;z-index:40}
+
+    /* ---- LABEL POSITIONS: % of the remote-sized anchor box ---- */
+    @media(max-width:767.98px){
+      #p-wifi{left:19.26%;top:47.52%;right:auto;bottom:auto}
+      #p-ir{left:50.00%;top:-0.76%;right:auto;bottom:auto}
+      #p-bt{left:74.57%;top:24.36%;right:auto;bottom:auto}
+      #p-usb{left:81.44%;top:94.58%;right:auto;bottom:auto}
+      #e-ha{left:9.63%;top:28.01%;right:auto;bottom:auto}
+      #e-matter{left:71.49%;top:10.66%;right:auto;bottom:auto}
+      #e-gh{left:26.79%;top:77.39%;right:auto;bottom:auto}
+      #e-alexa{left:87.53%;top:47.52%;right:auto;bottom:auto}
+      #e-ah{left:45.26%;top:100.33%;right:auto;bottom:auto}
+    }
+    @media(min-width:768px){
+      #p-wifi{left:22.49%;top:47.17%;right:auto;bottom:auto}
+      #p-ir{left:51.79%;top:4.40%;right:auto;bottom:auto}
+      #p-bt{left:70.74%;top:31.23%;right:auto;bottom:auto}
+      #p-usb{left:88.39%;top:90.40%;right:auto;bottom:auto}
+      #e-ha{left:6.77%;top:31.23%;right:auto;bottom:auto}
+      #e-matter{left:70.74%;top:17.88%;right:auto;bottom:auto}
+      #e-gh{left:22.49%;top:70.27%;right:auto;bottom:auto}
+      #e-alexa{left:90.62%;top:52.19%;right:auto;bottom:auto}
+      #e-ah{left:41.21%;top:90.40%;right:auto;bottom:auto}
+    }
+
+    /* platform row: icons evenly spaced, label centred under its own icon */
+    .plat-row{display:flex;flex-wrap:nowrap;justify-content:center;align-items:flex-start}
+    .plat{flex:1 1 0;min-width:0;max-width:none;display:flex;flex-direction:column;align-items:center;text-align:center}
+    .plat img{margin:0 auto;display:block}
+    .plat span{display:block;width:100%;text-align:center}
+    @media(max-width:767.98px){
+      .plat-row{gap:0;max-width:min(100%,26rem);margin-inline:auto}
+      .plat{gap:0.5rem}
+      .plat img{width:clamp(34px,11vw,64px)}
+      .plat span{font-size:clamp(0.58rem,2.4vw,0.8rem);line-height:1.2}
+    }
+
+    /* ---- MOBILE CTA: match the live site exactly ----
+       openmote.io has no floating bottom bar. The nav is fixed at the top,
+       always visible, with its background fading in after 50px. Copy that:
+       no bar to mistime, nothing to drift on iOS. ---- */
+    @media(max-width:1023.98px){
+      .bar{display:none!important}
+      header{position:fixed;top:0;left:0;right:0;z-index:99;
+        transform:none!important;opacity:1!important}
+      header.hide{transform:none!important}
+    }
   </style>
+
+  <meta name="description" content="The programmable remote for Home Assistant and your smart home. Pairs as a Bluetooth gamepad, fits an original Wii remote shell. $99, coming soon on Crowd Supply.">
+  <link rel="canonical" href="https://openmote.io/">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="theme-color" content="#FFFFFF">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OpenMote">
+  <meta property="og:title" content="One Remote. Controls Everything.">
+  <meta property="og:description" content="Twelve programmable buttons, motion control, and infrared in and out. Works with Home Assistant out of the box. $99, coming soon on Crowd Supply.">
+  <meta property="og:url" content="https://openmote.io/">
+  <meta property="og:image" content="https://openmote.io/img/og-openmote.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The OpenMote remote and its open board on a blue field, with the price and Crowd Supply launch date">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Safari ignores SVG favicons, and this site's catch-all serves HTML at
+       /favicon.ico and /apple-touch-icon.png, so iOS had NO valid icon and
+       showed a stale cached one. PNG fallbacks + a real touch icon fix it.
+       The 96px PNG is for Google Search, which wants an icon over 48x48. -->
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="icon" type="image/png" sizes="96x96" href="img/favicon-96.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://openmote.io/#organization",
+        "name": "Hat & Hammer",
+        "url": "https://openmote.io/",
+        "logo": { "@id": "https://openmote.io/#logo" },
+        "description": "Hat & Hammer is a two-person hardware studio in Los Angeles building OpenMote, a programmable remote for the smart home.",
+        "foundingLocation": { "@type": "Place", "name": "Los Angeles, California" },
+        "founder": [
+          { "@type": "Person", "name": "Samson Taxon" },
+          { "@type": "Person", "name": "Ezra Bird" }
+        ],
+        "numberOfEmployees": { "@type": "QuantitativeValue", "value": 2 },
+        "sameAs": [
+          "https://www.instagram.com/openmote.io",
+          "https://www.crowdsupply.com/hat-and-hammer/openmote"
+        ]
+      },
+      {
+        "@type": "ImageObject",
+        "@id": "https://openmote.io/#logo",
+        "url": "https://openmote.io/img/logo.png",
+        "contentUrl": "https://openmote.io/img/logo.png",
+        "caption": "OpenMote logo",
+        "width": 498,
+        "height": 121
+      },
+      {
+        "@type": "Brand",
+        "@id": "https://openmote.io/#brand",
+        "name": "OpenMote"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://openmote.io/#website",
+        "url": "https://openmote.io/",
+        "name": "OpenMote",
+        "publisher": { "@id": "https://openmote.io/#organization" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://openmote.io/#webpage",
+        "url": "https://openmote.io/",
+        "name": "One Programmable Remote That Controls Everything | OpenMote",
+        "description": "The programmable remote for Home Assistant and your smart home. Pairs as a Bluetooth gamepad, fits an original Wii remote shell. $99, coming soon on Crowd Supply.",
+        "isPartOf": { "@id": "https://openmote.io/#website" },
+        "about": { "@id": "https://openmote.io/#organization" },
+        "mainEntity": [
+          { "@id": "https://openmote.io/#product-remote" },
+          { "@id": "https://openmote.io/#product-board" }
+        ],
+        "dateModified": "2026-08-07",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "Product",
+        "@id": "https://openmote.io/#product-remote",
+        "name": "OpenMote (Fully Assembled Remote)",
+        "category": "Smart Home Remote Control",
+        "description": "A programmable remote control built on the ESP32-S3, fully assembled in a classic Wii-remote-style shell. 12 buttons, a 6-axis IMU, haptics, speaker, microphone, infrared send and receive, USB-C, and a 1200 mAh battery, with WiFi and Bluetooth 5 LE. Works with Home Assistant out of the box and pairs as a Bluetooth HID gamepad. Schematics and the Arduino library will be open-sourced before units ship.",
+        "image": [
+          "https://openmote.io/img/openmote-1x1.jpg",
+          "https://openmote.io/img/openmote-4x3.jpg",
+          "https://openmote.io/img/openmote-16x9.jpg"
+        ],
+        "url": "https://openmote.io/",
+        "sku": "OPENMOTE-ASSEMBLED",
+        "brand": { "@id": "https://openmote.io/#brand" },
+        "manufacturer": { "@id": "https://openmote.io/#organization" },
+        "isRelatedTo": { "@id": "https://openmote.io/#product-board" },
+        "additionalProperty": [
+          { "@type": "PropertyValue", "name": "Processor", "value": "ESP32-S3-WROOM-1, dual core 240 MHz, 16MB flash, 8MB PSRAM" },
+          { "@type": "PropertyValue", "name": "Buttons", "value": "12, eleven freely programmable" },
+          { "@type": "PropertyValue", "name": "Motion", "value": "6-axis IMU, accelerometer and gyroscope" },
+          { "@type": "PropertyValue", "name": "Infrared", "value": "940nm emitter and 38kHz receiver, send and learn" },
+          { "@type": "PropertyValue", "name": "Radios", "value": "WiFi 2.4 GHz, Bluetooth 5 LE, ESP-NOW" },
+          { "@type": "PropertyValue", "name": "Audio", "value": "3.2W Class-D amplifier and PDM MEMS microphone" },
+          { "@type": "PropertyValue", "name": "Expansion", "value": "Qwiic / STEMMA QT I2C port" },
+          { "@type": "PropertyValue", "name": "Battery", "value": "1200 mAh lithium, USB-C charging at 500 mA" },
+          { "@type": "PropertyValue", "name": "Works with", "value": "Home Assistant; through it, Matter devices, Google Home, Amazon Alexa, and Apple Home" }
+        ],
+        "offers": {
+          "@type": "Offer",
+          "url": "https://www.crowdsupply.com/hat-and-hammer/openmote",
+          "price": 99.00,
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/PreOrder",
+          "itemCondition": "https://schema.org/NewCondition",
+          "seller": { "@id": "https://openmote.io/#organization" }
+        }
+      },
+      {
+        "@type": "Product",
+        "@id": "https://openmote.io/#product-board",
+        "name": "OpenMote Dev Board",
+        "category": "Microcontroller Development Board",
+        "description": "The bare OpenMote board for makers: an ESP32-S3 dev board shaped to drop into the shell of an original Wii remote with no soldering. 12 button inputs, a 6-axis IMU, haptic driver, audio amplifier, microphone, infrared emitter and receiver, Qwiic / STEMMA QT expansion, and USB-C for charging and flashing. Programs from the Arduino IDE, ESP-IDF, PlatformIO, or CircuitPython.",
+        "image": [
+          "https://openmote.io/img/openmote-board-1x1.jpg",
+          "https://openmote.io/img/openmote-board-4x3.jpg",
+          "https://openmote.io/img/openmote-board-16x9.jpg"
+        ],
+        "url": "https://openmote.io/",
+        "sku": "OPENMOTE-BOARD",
+        "brand": { "@id": "https://openmote.io/#brand" },
+        "manufacturer": { "@id": "https://openmote.io/#organization" },
+        "isRelatedTo": { "@id": "https://openmote.io/#product-remote" },
+        "isAccessoryOrSparePartFor": {
+          "@type": "Product",
+          "name": "Wii Remote",
+          "brand": { "@type": "Brand", "name": "Nintendo" }
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": "https://www.crowdsupply.com/hat-and-hammer/openmote",
+          "price": 59.00,
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/PreOrder",
+          "itemCondition": "https://schema.org/NewCondition",
+          "seller": { "@id": "https://openmote.io/#organization" }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://openmote.io/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is OpenMote?",
+            "acceptedAnswer": { "@type": "Answer", "text": "OpenMote is a programmable remote control built on the ESP32-S3: twelve buttons, a 6-axis motion sensor, infrared in and out, WiFi, and Bluetooth 5 LE, in a classic Wii-remote-style shell. It is made by Hat & Hammer, a two-person hardware studio in Los Angeles. The bare board is $59 and the fully assembled remote is $99 on Crowd Supply, launching soon." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I put OpenMote inside my old Wii remote?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, that is the whole idea. The OpenMote board is a drop-in replacement for the board inside an original Wii remote, the one you may know as the Wiimote: open the shell, swap the board, close it up. No soldering, no adhesive, no drama. So far it has dropped into every official Wii remote shell we have tried. Third-party shells usually copy the original closely, but they do vary inside, so the guaranteed fit is for Nintendo's own shells. And if you would rather not open anything, the fully assembled OpenMote remote comes ready to go in its own shell." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work with an actual Wii console?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No, and we would rather you hear it from us. The original console talks to its remotes over Bluetooth Classic, and OpenMote is built on Bluetooth 5 LE, the modern standard that PCs, phones, and emulators use. OpenMote is for everything else: the emulator rig, the smart home, and whatever you build next." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does OpenMote work with Home Assistant?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. OpenMote works with Home Assistant out of the box, over your own network. Real physical buttons run your scenes and automations: lights, thermostats, media, anything Home Assistant can reach. And because you program the firmware, you decide what a single press, a double press, a long press, or a flick of the wrist actually does." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does OpenMote need the cloud?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. OpenMote connects over your own WiFi and Bluetooth. There is no account to create and no subscription. You flash the firmware yourself, so you always know exactly what the remote is doing and who it talks to." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work with Alexa, Google Home, or Apple Home?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, through Home Assistant. Its bridges connect OpenMote to Google Home, Amazon Alexa, and Apple Home, and its Matter integration lets OpenMote's buttons drive your Matter devices too. One remote can cover the whole living room: the TV over infrared, the lights over WiFi, the games over Bluetooth." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can OpenMote replace my old universal remote?",
+            "acceptedAnswer": { "@type": "Answer", "text": "That is one of its favorite jobs. OpenMote carries a 940nm infrared emitter and a 38kHz receiver, so it can learn codes straight from any remote you point at it, then be that remote: TV, receiver, cable box, projector. If you have been nursing a discontinued Harmony remote, this is the programmable replacement. WiFi and Bluetooth pick up everything infrared cannot reach." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does OpenMote work with the Dolphin emulator?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. OpenMote pairs as a standard Bluetooth gamepad on Windows, Mac, and Linux, with real motion data from its accelerometer and gyroscope. In Dolphin you map it as an emulated Wii Remote with motion input: no sensor bar adapter, no special Bluetooth stack, no sync-button ritual. The same goes for RetroArch and anything else that accepts a Bluetooth controller." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use it as a game controller on my PC or phone?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. OpenMote shows up as a real Bluetooth HID gamepad on a PC, Mac, or phone, the same way a modern controller does. Buttons and motion are yours to map in firmware, and the haptic motor answers back with rumble." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I program OpenMote with the Arduino IDE?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. OpenMote programs like any ESP32: Arduino IDE, ESP-IDF, PlatformIO, or CircuitPython, all over USB-C. The OpenMote.h Arduino library covers the buttons, motion, sound, infrared, and LEDs. If you have ever flashed an ESP32 dev board, you already know how this works." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is OpenMote open source?",
+            "acceptedAnswer": { "@type": "Answer", "text": "It will be. Complete schematics, PCB layouts, the bill of materials, and the Arduino library go public on GitHub before units ship. The board is built around the ESP32-S3-WROOM-1, a pre-certified module the maker community already knows inside and out." }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to solder anything?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. The board drops into the shell of an original Wii remote with every connection already made: buttons, battery, speaker, all of it. For expansion there is a Qwiic / STEMMA QT port, so thousands of off-the-shelf I2C sensors plug straight in, also without soldering." }
+          },
+          {
+            "@type": "Question",
+            "name": "What exactly is inside?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Every part of a controller, on one board. ESP32-S3-WROOM-1, dual core at 240 MHz, with 16MB flash and 8MB PSRAM. WiFi 2.4 GHz, Bluetooth 5 LE, and ESP-NOW. 12 buttons, eleven freely programmable. A 6-axis IMU with accelerometer and gyroscope. A 940nm infrared emitter and a 38kHz receiver. A 3.2W Class-D amplifier with a PDM microphone. A haptic motor, 4 indicator LEDs, a Qwiic / STEMMA QT I2C port, and a 1200 mAh battery that charges over USB-C at 500 mA." }
+          },
+          {
+            "@type": "Question",
+            "name": "How much does OpenMote cost?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The bare board is $59 and the fully assembled remote is $99 on Crowd Supply, with free US shipping for backers. The campaign opens soon and runs about six weeks; join the waitlist and we will email you the moment it goes live. After the campaign the assembled remote moves to its regular $109 price, so the campaign is the best price it will ever have." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can OpenMote be a MIDI controller?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes, with the right firmware. The ESP32-S3 can speak MIDI over Bluetooth LE, so OpenMote can appear to your computer as a wireless MIDI device. Map buttons to notes and the motion sensor to CC messages and you have an instrument that fits in one hand." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -568,97 +1441,630 @@
   <button class="join-btn" onclick="openModal()">Join Waitlist</button>
 </header>
 
+<main id="main">
 <section class="hero">
-  <img src="img/hero.webp" alt="" class="hero-img" width="675" height="1200" fetchpriority="high">
+  <div class="hero-shell">
+  <img src="img/hero.webp" alt="The OpenMote remote and its circuit board side by side" class="hero-img" width="675" height="1200" fetchpriority="high">
+  <div class="hero-duo" aria-hidden="true">
+    <img src="img/hero-remote-a.webp" alt="" class="duo-a" width="381" height="1260">
+    <img src="img/hero-remote-b.webp" alt="" class="duo-b" width="330" height="1090">
+  </div>
+  <div class="scroll-cue" aria-hidden="true"><b></b><b></b><b></b></div>
   <div class="hero-content">
     <div class="badge">Coming Soon</div>
-    <h1>Give Your Controller<span>Superpowers</span></h1>
-    <p>A drop-in dev board for makers. Play games, control your home, build anything.</p>
+    <h1>One Remote.<span>Controls Everything.</span></h1>
+    <p>Twelve buttons. Infrared in and out, WiFi, and Bluetooth 5 LE. Works with Home Assistant.</p>
     <button class="cta" onclick="openModal()">
       Join Waitlist
       <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
   </div>
+  </div>
 </section>
 
-<section class="use-cases">
-  <div class="use-cases-header">
-    <div>
-      <h2>What You Can Build</h2>
-      <p>Old tech, new creations. Transform a classic controller into anything you imagine.</p>
+
+<!-- S2 SMART HOME -->
+<section class="smart la" id="smart" data-screen-label="02 Smart Home">
+  <h2 class="h2 smart-h rv">Control Your Whole Life.</h2>
+  <p class="proto-row rv">WiFi &#183; Bluetooth &#183; IR</p>
+
+  <div class="ripple-scene">
+    <svg class="ripple-svg" viewBox="0 0 1600 1000" aria-hidden="true">
+      <defs>
+        <!-- Rings must hit ZERO alpha before the scene's overflow clip on both
+             edges: opaque ring pixels at the clip line paint a 1px seam while
+             the composited layer scrolls. 0.35 / 0.645 sit just past the clip
+             lines at every viewport from 320 up to ~2560 wide. -->
+        <linearGradient id="fadeDown" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0.35" stop-color="#FFFFFF" stop-opacity="0"></stop>
+          <stop offset="0.47" stop-color="#FFFFFF" stop-opacity="1"></stop>
+          <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.65"></stop>
+          <stop offset="0.645" stop-color="#FFFFFF" stop-opacity="0"></stop>
+        </linearGradient>
+        <mask id="ringMask" maskUnits="userSpaceOnUse" x="-400" y="-400" width="2400" height="1800">
+          <rect x="-400" y="-400" width="2400" height="1800" fill="url(#fadeDown)"></rect>
+        </mask>
+        </defs>
+      <g mask="url(#ringMask)" fill="none" stroke="#25AFF4">
+        <g class="pulse loop" style="animation-delay:0s">
+          <circle cx="800" cy="560" r="170" stroke-width="150" stroke-opacity="0.19"></circle>
+          <circle cx="800" cy="560" r="170" stroke-width="90" stroke-opacity="0.95"></circle>
+        </g>
+        <g class="pulse loop" style="animation-delay:0.25s">
+          <circle cx="800" cy="560" r="290" stroke-width="150" stroke-opacity="0.18"></circle>
+          <circle cx="800" cy="560" r="290" stroke-width="90" stroke-opacity="0.85"></circle>
+        </g>
+        <g class="pulse loop" style="animation-delay:0.5s">
+          <circle cx="800" cy="560" r="410" stroke-width="150" stroke-opacity="0.15"></circle>
+          <circle cx="800" cy="560" r="410" stroke-width="90" stroke-opacity="0.72"></circle>
+        </g>
+        <g class="pulse loop" style="animation-delay:0s">
+          <circle cx="800" cy="560" r="530" stroke-width="150" stroke-opacity="0.12"></circle>
+          <circle cx="800" cy="560" r="530" stroke-width="90" stroke-opacity="0.6"></circle>
+        </g>
+        <g class="pulse loop" style="animation-delay:0.25s">
+          <circle cx="800" cy="560" r="650" stroke-width="150" stroke-opacity="0.09"></circle>
+          <circle cx="800" cy="560" r="650" stroke-width="90" stroke-opacity="0.48"></circle>
+        </g>
+        <g class="pulse loop" style="animation-delay:0.5s">
+          <circle cx="800" cy="560" r="770" stroke-width="150" stroke-opacity="0.07"></circle>
+          <circle cx="800" cy="560" r="770" stroke-width="90" stroke-opacity="0.36"></circle>
+        </g>
+        <g class="pulse loop" style="animation-delay:0s">
+          <circle cx="800" cy="560" r="890" stroke-width="150" stroke-opacity="0.05"></circle>
+          <circle cx="800" cy="560" r="890" stroke-width="90" stroke-opacity="0.26"></circle>
+        </g>
+        <g class="pulse loop" style="animation-delay:0.25s">
+          <circle cx="800" cy="560" r="1010" stroke-width="150" stroke-opacity="0.04"></circle>
+          <circle cx="800" cy="560" r="1010" stroke-width="90" stroke-opacity="0.18"></circle>
+        </g>
+      </g>
+    </svg>
+    <div class="remote-float">
+      <img class="ripple-remote" src="assets/photo-cutouts/product-01.webp" alt="OpenMote remote controlling a smart home over WiFi, Bluetooth and infrared" width="1201" height="1676" decoding="async">
+    </div>
+    <div class="remote-anchor">
+    <span class="pill" id="p-wifi">WIFI 2.4 GHZ</span>
+    <span class="pill" id="p-ir">IR IN + OUT</span>
+    <span class="pill" id="p-bt">BLUETOOTH 5 LE</span>
+    <span class="pill" id="p-usb">USB-C</span>
+    <div class="eco" id="e-ha">
+      <img class="inv" src="assets/logos/homeassistant.svg" alt="" width="24" height="24" decoding="async">
+      <span class="nm">Home Assistant</span>
+    </div>
+    <div class="eco" id="e-gh">
+      <img class="hk" src="assets/logos/googlehome-app.webp" alt="" width="244" height="244" decoding="async">
+      <span class="nm">Google Home</span>
+    </div>
+    <div class="eco" id="e-alexa">
+      <img class="hk" src="assets/logos/alexa-app.webp" alt="" width="244" height="244" decoding="async">
+      <span class="nm">Amazon Alexa</span>
+    </div>
+    <div class="eco" id="e-ah">
+      <img class="hk" src="assets/logos/homekit.svg" alt="" width="1024" height="1024" decoding="async">
+      <span class="nm">Apple Home</span>
+    </div>
+    </div>
+    <div class="smart-fade top"></div>
+    <div class="smart-fade bot"></div>
+  </div>
+</section>
+
+<!-- S3 COMMUNITY APPS -->
+<section class="apps" id="apps" data-screen-label="03 Community Apps">
+  <div class="scroll-cue" aria-hidden="true"><b></b><b></b><b></b></div>
+  <div class="shell">
+    <div class="sec-head apps-head">
+      <h2 class="h2">Pick An App. Or Build One.</h2>
     </div>
   </div>
-  <div class="use-cases-grid">
-    <figure class="use-case">
-      <video src="img/dino.mp4" autoplay loop muted playsinline></video>
-      <div class="use-case-overlay">
-        <span class="use-case-num">01</span>
-        <span class="use-case-title">Play Games</span>
+  <div class="apps-break la">
+    <div class="nowrun-wrap"><svg class="nowrun loop" id="nowrun-svg" viewBox="0 0 460 120" aria-hidden="true">
+        <defs>
+          <filter id="cardShadow" x="-20%" y="-30%" width="140%" height="180%">
+            <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"></feDropShadow>
+          </filter>
+        </defs>
+        <g filter="url(#cardShadow)">
+          <rect x="6" y="6" width="448" height="108" fill="#FFFFFF"></rect>
+          <rect x="6" y="6" width="448" height="108" fill="none" stroke="#E0E0E0" stroke-width="1.5"></rect>
+        </g>
+        <text x="30" y="38" font-size="13" font-weight="700" letter-spacing="3" fill="#25AFF4" font-family="Montserrat, sans-serif">NOW RUNNING</text>
+        <g id="app-1">
+          <rect x="30" y="50" width="46" height="46" fill="#25AFF4"></rect>
+          <g transform="translate(30 50) scale(1.9166)"><g class="st"><rect x="3" y="8" width="18" height="9.5"></rect><path d="M8 11v3.5 M6.2 12.75h3.6"></path><circle cx="16" cy="11.6" r="0.4"></circle><circle cx="18.4" cy="13.9" r="0.4"></circle></g></g>
+          <text x="94" y="72" font-size="21" font-weight="800" fill="#0A0B0D" font-family="Montserrat, sans-serif">Gamepad Pro</text>
+          <text x="94" y="94" font-size="14" font-weight="500" fill="#9A9A9A" font-family="Montserrat, sans-serif">Bluetooth HID by the community</text>
+        </g>
+        <g id="app-2" opacity="0">
+          <rect x="30" y="50" width="46" height="46" fill="#25AFF4"></rect>
+          <g transform="translate(30 50) scale(1.9166)"><g class="st"><rect x="3" y="6" width="18" height="12"></rect><path d="M9 21h6 M9 3l3 3 3-3"></path></g></g>
+          <text x="94" y="72" font-size="21" font-weight="800" fill="#0A0B0D" font-family="Montserrat, sans-serif">TV Remote+</text>
+          <text x="94" y="94" font-size="14" font-weight="500" fill="#9A9A9A" font-family="Montserrat, sans-serif">Clone any remote over IR</text>
+        </g>
+        <g id="app-3" opacity="0">
+          <rect x="30" y="50" width="46" height="46" fill="#25AFF4"></rect>
+          <g transform="translate(30 50) scale(1.9166)"><g class="st"><path d="M4 11l8-7 8 7"></path><path d="M6.5 10v9h11v-9"></path><rect x="10.4" y="14" width="3.2" height="5"></rect></g></g>
+          <text x="94" y="72" font-size="21" font-weight="800" fill="#0A0B0D" font-family="Montserrat, sans-serif">HA Deck</text>
+          <text x="94" y="94" font-size="14" font-weight="500" fill="#9A9A9A" font-family="Montserrat, sans-serif">Home Assistant scenes on real buttons</text>
+        </g>
+        <g id="app-4" opacity="0">
+          <rect x="30" y="50" width="46" height="46" fill="#25AFF4"></rect>
+          <g transform="translate(30 50) scale(1.9166)"><g class="st"><path d="M6 4l12 7-5.2 1.4L16 19l-2.6 1-3-6.4L6 17z"></path></g></g>
+          <text x="94" y="72" font-size="21" font-weight="800" fill="#0A0B0D" font-family="Montserrat, sans-serif">Air Mouse</text>
+          <text x="94" y="94" font-size="14" font-weight="500" fill="#9A9A9A" font-family="Montserrat, sans-serif">Point and click with the IMU</text>
+        </g>
+        <g id="app-5" opacity="0">
+          <rect x="30" y="50" width="46" height="46" fill="#25AFF4"></rect>
+          <g transform="translate(30 50) scale(1.9166)"><g class="st"><ellipse cx="12" cy="9" rx="8" ry="3"></ellipse><path d="M4 9v7c0 1.7 3.6 3 8 3s8-1.3 8-3V9"></path><path d="M8.5 11.5L5 5 M15.5 11.5L19 5"></path></g></g>
+          <text x="94" y="72" font-size="21" font-weight="800" fill="#0A0B0D" font-family="Montserrat, sans-serif">Drum Kit</text>
+          <text x="94" y="94" font-size="14" font-weight="500" fill="#9A9A9A" font-family="Montserrat, sans-serif">Swing the remote, hit the snare</text>
+        </g>
+      </svg></div>
+    <div class="rows-wrap">
+    <div class="rows-zone">
+      <div class="strips-clip">
+      <!-- Raster, not SVG: Safari discards offscreen layers and re-rasterizing
+           vector strips on the way back is slow enough to watch. A bitmap blits
+           straight back. Not lazy: each late-loading strip changes the row's
+           max-content width, which re-bases the translateX(-50%) loop. -->
+      <div class="strip-row row-1 loop" aria-hidden="true">
+        <img src="assets/app-strip-1.webp" alt="" width="4828" height="192" decoding="async">
+        <img src="assets/app-strip-1.webp" alt="" width="4828" height="192" decoding="async">
       </div>
-    </figure>
-    <figure class="use-case">
-      <video src="img/media.mp4" autoplay loop muted playsinline></video>
-      <div class="use-case-overlay">
-        <span class="use-case-num">02</span>
-        <span class="use-case-title">Control Media</span>
+      <div class="strip-row row-2 loop" aria-hidden="true">
+        <img src="assets/app-strip-2.webp" alt="" width="4828" height="192" decoding="async">
+        <img src="assets/app-strip-2.webp" alt="" width="4828" height="192" decoding="async">
       </div>
-    </figure>
-    <figure class="use-case">
-      <img src="img/arduino.webp" alt="" width="800" height="450" style="height:auto;">
-      <div class="use-case-overlay">
-        <span class="use-case-num">03</span>
-        <span class="use-case-title">Arduino Compatible</span>
       </div>
-    </figure>
-  </div>
-</section>
-
-<section class="specs-section">
-  <div class="specs-header">
-    <div>
-      <h2>What's Inside</h2>
-      <p>Everything you need in one board. WiFi. Bluetooth. Motion. IR. Haptics. Mic. Speaker.</p>
+      <div class="apps-stage">
+      <img class="apps-remote" src="assets/photo-cutouts/product-02.webp" alt="OpenMote remote running community-built apps" width="256" height="900" decoding="async">
+      </div>
+    </div>
     </div>
   </div>
-  <div class="specs-list">
-    <span>ESP32-S3</span>
-    <span>WiFi</span>
-    <span>Bluetooth 5.0</span>
-    <span>6-Axis IMU</span>
-    <span>IR Blaster</span>
-    <span>USB-C</span>
-    <span>12 Buttons</span>
-    <span>Haptic Motor</span>
-    <span>Speaker</span>
-    <span>Mic</span>
-    <span>4 LEDs</span>
-    <span>Battery</span>
-    <span>Open Source</span>
+  <ul class="sr-only">
+    <li>Gamepad Pro, Bluetooth HID by the community</li>
+    <li>TV Remote+, clone any remote over IR</li>
+    <li>HA Deck, Home Assistant scenes on real buttons</li>
+    <li>Air Mouse, point and click with the IMU</li>
+    <li>Drum Kit, swing the remote, hit the snare</li>
+  </ul>
+</section>
+
+<!-- S4 YOUR CODE -->
+<section class="code" id="code" data-screen-label="04 Your Code">
+  <div class="scroll-cue" aria-hidden="true"><b></b><b></b><b></b></div>
+  <div class="shell">
+    <div class="code-grid la">
+      <div class="code-copy">
+        <div>
+          <h2 class="h2 code-h">Your Tools Already Work.</h2>
+        </div>
+        <div class="flash-target">
+          <img class="remote" src="assets/photo-cutouts/product-03.webp" alt="OpenMote remote upright with its four status LEDs lit" width="495" height="1719" decoding="async">
+          <svg class="ledstrip" viewBox="0 0 240 60" aria-hidden="true">
+            <defs><filter id="ledGlowA"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter></defs>
+            <g>
+              <rect x="12" y="18" width="24" height="24" fill="#1E4B63" stroke="#3A3A3A" stroke-width="2"></rect>
+              <rect x="70" y="18" width="24" height="24" fill="#2A2A2A" stroke="#3A3A3A" stroke-width="2"></rect>
+              <rect x="128" y="18" width="24" height="24" fill="#2A2A2A" stroke="#3A3A3A" stroke-width="2"></rect>
+              <rect x="186" y="18" width="24" height="24" fill="#2A2A2A" stroke="#3A3A3A" stroke-width="2"></rect>
+              <g class="l1 loop"><rect x="12" y="18" width="24" height="24" fill="#4FC3FF"></rect><rect x="8" y="14" width="32" height="32" fill="#4FC3FF" opacity="0.5" filter="url(#ledGlowA)"></rect></g>
+              <g class="l2 loop"><rect x="70" y="18" width="24" height="24" fill="#4FC3FF"></rect><rect x="66" y="14" width="32" height="32" fill="#4FC3FF" opacity="0.5" filter="url(#ledGlowA)"></rect></g>
+              <g class="l3 loop"><rect x="128" y="18" width="24" height="24" fill="#4FC3FF"></rect><rect x="124" y="14" width="32" height="32" fill="#4FC3FF" opacity="0.5" filter="url(#ledGlowA)"></rect></g>
+              <g class="l4 loop"><rect x="186" y="18" width="24" height="24" fill="#4FC3FF"></rect><rect x="182" y="14" width="32" height="32" fill="#4FC3FF" opacity="0.5" filter="url(#ledGlowA)"></rect></g>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="conn-col" aria-hidden="true">
+        <svg class="conn-svg" id="connD" fill="none">
+          <path id="connPath" d="" stroke="#9A9A9A" stroke-width="7" stroke-linecap="butt" stroke-linejoin="miter" stroke-dasharray="13 26" opacity="0.65"></path>
+          <rect class="dot loop" id="connDot" x="-9" y="-9" width="18" height="18" fill="#25AFF4"></rect>
+        </svg>
+      </div>
+      <div class="code-editor rv">
+        <svg class="editor-svg" viewBox="0 0 1000 1280" role="img" aria-label="Arduino style editor running an OpenMote sketch">
+          <defs>
+            <filter id="winshadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="22" stdDeviation="26" flood-color="#000000" flood-opacity="0.38"></feDropShadow>
+            </filter>
+            <filter id="bshadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.30"></feDropShadow>
+            </filter>
+          </defs>
+          <g filter="url(#bshadow)">
+            <g transform="translate(96 46) rotate(-8)"><rect width="132" height="132" fill="#00979D"></rect>
+              <g transform="translate(20 20) scale(3.85)"><path d="M18.087 6.146c-.3 0-.607.017-.907.069-2.532.367-4.23 2.239-5.18 3.674-.95-1.435-2.648-3.307-5.18-3.674a6.49 6.49 0 0 0-.907-.069C2.648 6.146 0 8.77 0 12s2.656 5.854 5.913 5.854c.3 0 .607-.017.916-.069 2.531-.376 4.23-2.247 5.18-3.683.949 1.436 2.647 3.307 5.18 3.683.299.043.607.069.915.069C21.344 17.854 24 15.23 24 12s-2.656-5.854-5.913-5.854zM6.53 15.734a3.837 3.837 0 0 1-.625.043c-2.148 0-3.889-1.7-3.889-3.777 0-2.085 1.749-3.777 3.898-3.777.208 0 .416.017.624.043 2.39.35 3.847 2.768 4.347 3.734-.508.974-1.974 3.384-4.355 3.734zm11.558.043c-.208 0-.416-.017-.624-.043-2.39-.35-3.856-2.768-4.347-3.734.491-.966 1.957-3.384 4.347-3.734.208-.026.416-.043.624-.043 2.149 0 3.89 1.7 3.89 3.777 0 2.085-1.75 3.777-3.89 3.777zm1.65-4.404v1.134h-1.205v1.182h-1.156v-1.182H16.17v-1.134h1.206V10.19h1.156v1.183h1.206zM4.246 12.498H7.82v-1.125H4.245v1.125z" fill="#FFFFFF"></path></g></g>
+            <g transform="translate(330 8)"><rect width="148" height="148" fill="#E7352C"></rect>
+              <g transform="translate(22 22) scale(4.35)"><path d="M12.926 19.324a7.6 7.6 0 00-2.983-6.754 7.44 7.44 0 00-3.828-1.554.697.697 0 01-.606-.731.674.674 0 01.743-.617 8.97 8.97 0 018 9.805 7.828 7.828 0 01-.298 1.542l1.989.56a11.039 11.039 0 001.714-.651 12.159 12.159 0 00.217-2.343A12.57 12.57 0 007.212 6.171a5.53 5.53 0 00-2 0 4.354 4.354 0 00-2.16 1.337 4.274 4.274 0 001.909 6.856 9.896 9.896 0 001.074.195 4.011 4.011 0 013.337 3.954 3.965 3.965 0 01-.64 2.16l1.371.88a10.182 10.182 0 002.057.342 7.52 7.52 0 00.754-2.628m.16 4.73A13.073 13.073 0 01.001 10.983 12.982 12.982 0 013.83 1.737l.743.697a12.067 12.067 0 000 17.141 12.067 12.067 0 0017.141 0l.697.697a12.97 12.97 0 01-9.336 3.726M24 10.993A10.993 10.993 0 0012.949 0c-.389 0-.766 0-1.143.057l-.252.732a18.912 18.912 0 0111.588 11.576l.731-.263c0-.366.069-.732.069-1.143m-1.269 5.165A17.53 17.53 0 007.818 1.27a11.119 11.119 0 00-2.457 1.77v1.635A13.919 13.919 0 0119.268 18.57h1.634a11.713 11.713 0 001.771-2.446M7.92 17.884a1.691 1.691 0 11-1.69-1.691 1.691 1.691 0 011.69 1.691" fill="#FFFFFF"></path></g></g>
+            <g transform="translate(590 34) rotate(7)"><rect width="136" height="136" fill="#F5822A"></rect>
+              <g transform="translate(20 20) scale(4.0)"><path d="M12 23.992c1.25.211 7.051-3.743 9.113-8.217.253-.686.61-1.198.746-2.5.21-2.016-.41-3.912-1.59-5.419-.987-1.163-2.305-2.004-3.88-2.532l.683-2.583a1.371 1.371 0 1 0-.76-.189L15.64 5.1c-1.109-.288-2.328-.437-3.64-.444m5.978 11.667c-1.548 1.346-2.525 1.488-3.045 1.467-.274-.034-.75-.558-.919-1.104-.188-.612-.28-1.282-.273-2.2-.199-2.476 1.465-5.624 3.937-6.041 1.003-.186 2.39.493 2.889 2.088.506 1.422-.645 4.147-2.589 5.79zM12 4.656c-1.315.007-2.538.156-3.65.447l-.675-2.56A1.37 1.37 0 0 0 6.962 0a1.372 1.372 0 0 0-.044 2.742L7.6 5.328c-1.57.528-2.885 1.367-3.871 2.528-1.179 1.507-1.8 3.403-1.588 5.419.136 1.302.492 1.814.745 2.5 2.062 4.474 7.862 8.428 9.113 8.217m-1.507-9.507c.007.92-.086 1.589-.274 2.201-.167.546-.644 1.07-.918 1.104-.52.021-1.498-.121-3.045-1.467-1.944-1.643-3.095-4.368-2.589-5.79.5-1.595 1.886-2.274 2.889-2.088 2.471.417 4.136 3.565 3.937 6.04zm6.45-2.19a1.24 1.24 0 1 0 0 2.48 1.24 1.24 0 0 0 0-2.48zm.416 1.149a.325.325 0 1 1 0-.65.325.325 0 0 1 0 .65zM7.25 12.294a1.24 1.24 0 1 0 0 2.48 1.24 1.24 0 0 0 0-2.48zm-.418 1.15a.325.325 0 1 1 0-.65.325.325 0 0 1 0 .65z" fill="#FFFFFF"></path></g></g>
+            <g transform="translate(806 42) rotate(13)"><image href="assets/platform-circuitpython.webp" width="124" height="124"></image></g>
+          </g>
+          <g filter="url(#winshadow)">
+            <rect x="40" y="150" width="920" height="1080" fill="#FFFFFF"></rect>
+            <rect x="40" y="150" width="920" height="64" fill="#0A0B0D"></rect>
+            <rect x="66" y="174" width="16" height="16" fill="#FF0000"></rect>
+            <rect x="94" y="174" width="16" height="16" fill="#9A9A9A"></rect>
+            <rect x="122" y="174" width="16" height="16" fill="#25AFF4"></rect>
+            <rect x="40" y="214" width="920" height="58" fill="#25AFF4"></rect>
+            <rect x="72" y="222" width="252" height="50" fill="#FFFFFF"></rect>
+            <text x="96" y="255" font-family="Montserrat, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#0A0B0D">OpenMote.ino</text>
+            <g font-family="Menlo, Consolas, 'SF Mono', monospace" font-size="30" font-weight="500">
+              <text x="90" y="352"><tspan fill="#9A9A9A">#include</tspan><tspan fill="#25AFF4" dx="14">&lt;OpenMote.h&gt;</tspan></text>
+              <text x="90" y="436"><tspan fill="#FF0000">void</tspan><tspan fill="#0A0B0D" dx="14">setup() {</tspan></text>
+              <text x="90" y="492"><tspan fill="#25AFF4" dx="56">OpenMote.begin</tspan><tspan fill="#0A0B0D">();</tspan></text>
+              <text x="90" y="548" fill="#0A0B0D">}</text>
+              <text x="90" y="632"><tspan fill="#FF0000">void</tspan><tspan fill="#0A0B0D" dx="14">loop() {</tspan></text>
+              <text x="90" y="688"><tspan fill="#25AFF4" dx="56">OpenMote.run</tspan><tspan fill="#0A0B0D">();</tspan></text>
+              <text x="90" y="744" fill="#0A0B0D">}</text>
+            </g>
+            <rect x="40" y="980" width="920" height="26" fill="#25AFF4"></rect>
+            <rect x="40" y="1006" width="920" height="168" fill="#0A0B0D"></rect>
+            <g font-family="Menlo, Consolas, 'SF Mono', monospace" font-size="26" fill="#FFFFFF">
+              <text x="76" y="1062">Buttons ready. IMU ready. Radio up.</text>
+              <text x="76" y="1112" fill="#25AFF4">Flashing... done in 3.8s</text>
+            </g>
+            <rect x="40" y="1174" width="920" height="56" fill="#25AFF4"></rect>
+            <text x="928" y="1210" font-family="Montserrat, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF" text-anchor="end">OpenMote on COM3</text>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+    <p class="prog-line">Program It Like Any ESP32</p>
+    <div class="plat-row">
+      <div class="plat"><img src="assets/platform-arduino.svg" alt="" width="120" height="120" decoding="async"><span>Arduino</span></div>
+      <div class="plat"><img src="assets/platform-espressif.svg" alt="" width="120" height="120" decoding="async"><span>ESP-IDF</span></div>
+      <div class="plat"><img src="assets/platform-platformio.svg" alt="" width="120" height="120" decoding="async"><span>PlatformIO</span></div>
+      <div class="plat"><img src="assets/platform-circuitpython.webp" alt="" width="120" height="120" decoding="async"><span>CircuitPython</span></div>
+    </div>
   </div>
 </section>
 
-<figure class="showcase">
-  <img src="img/showcase.png" alt="" width="2000" height="1125">
-  <div class="showcase-overlay">
-    <strong>No Soldering Required</strong>
-    <span>Just swap the board and start building.</span>
-  </div>
-</figure>
+<!-- S5 FOR DIY ELECTRONICS -->
+<section class="cardsec" id="diy" data-screen-label="05 For DIY Electronics">
+  <div class="shell">
+    <div class="diy-card la">
+      <svg class="ghost" id="gh-res" viewBox="0 0 48 20" aria-hidden="true">
+        <path d="M2 10 H12 l2 -5 l4 10 l4 -10 l4 10 l4 -10 l4 10 l2 -5 H46" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <svg class="ghost" id="gh-chip" viewBox="0 0 32 32" aria-hidden="true">
+        <g fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round">
+          <rect x="9" y="9" width="14" height="14"></rect>
+          <circle cx="13" cy="13" r="1.2"></circle>
+          <path d="M12 9V4 M16 9V4 M20 9V4 M12 23v5 M16 23v5 M20 23v5 M9 12H4 M9 16H4 M9 20H4 M23 12h5 M23 16h5 M23 20h5"></path>
+        </g>
+      </svg>
+      <svg class="ghost" id="gh-bread" viewBox="0 0 44 28" aria-hidden="true">
+        <g fill="none" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round">
+          <rect x="2" y="2" width="40" height="24"></rect>
+          <path d="M2 14 H42" stroke-dasharray="2 2.5"></path>
+          <circle cx="8" cy="7" r="0.9"></circle><circle cx="14" cy="7" r="0.9"></circle><circle cx="20" cy="7" r="0.9"></circle><circle cx="26" cy="7" r="0.9"></circle><circle cx="32" cy="7" r="0.9"></circle><circle cx="38" cy="7" r="0.9"></circle>
+          <circle cx="8" cy="10.5" r="0.9"></circle><circle cx="14" cy="10.5" r="0.9"></circle><circle cx="20" cy="10.5" r="0.9"></circle><circle cx="26" cy="10.5" r="0.9"></circle><circle cx="32" cy="10.5" r="0.9"></circle><circle cx="38" cy="10.5" r="0.9"></circle>
+          <circle cx="8" cy="17.5" r="0.9"></circle><circle cx="14" cy="17.5" r="0.9"></circle><circle cx="20" cy="17.5" r="0.9"></circle><circle cx="26" cy="17.5" r="0.9"></circle><circle cx="32" cy="17.5" r="0.9"></circle><circle cx="38" cy="17.5" r="0.9"></circle>
+          <circle cx="8" cy="21" r="0.9"></circle><circle cx="14" cy="21" r="0.9"></circle><circle cx="20" cy="21" r="0.9"></circle><circle cx="26" cy="21" r="0.9"></circle><circle cx="32" cy="21" r="0.9"></circle><circle cx="38" cy="21" r="0.9"></circle>
+        </g>
+      </svg>
+      <svg class="ghost" id="gh-servo" viewBox="0 0 36 32" aria-hidden="true">
+        <g fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="10" y="13" width="16" height="13"></rect>
+          <path d="M10 17h-4v3h4 M26 17h4v3h-4"></path>
+          <circle cx="15" cy="9" r="3.6"></circle>
+          <circle cx="15" cy="9" r="1"></circle>
+          <path d="M15 9 L27 3.5"></path>
+        </g>
+      </svg>
+      <div class="diy-grid">
+        <div class="diy-copy">
+          <h2 class="h2">Drive Your Own Hardware.</h2>
+        </div>
+        <div class="diy-scene">
+          <div class="remote-rockwrap">
+            <img class="rock-remote loop" src="assets/photo-cutouts/product-02.webp" alt="OpenMote remote sending a wireless signal to a servo" width="179" height="630" decoding="async">
+          </div>
+          <div class="waves" aria-hidden="true">
+            <svg viewBox="0 0 360 240" width="100%">
+              <g fill="none" stroke="#FFFFFF" stroke-linecap="round">
+                <path class="w1 loop" d="M 96 84 a 52 52 0 0 1 0 72" stroke-width="13"></path>
+                <path class="w2 loop" d="M 156 62 a 82 82 0 0 1 0 116" stroke-width="13"></path>
+                <path class="w3 loop" d="M 216 40 a 112 112 0 0 1 0 160" stroke-width="13"></path>
+              </g>
+            </svg>
+          </div>
+          <svg class="rig" viewBox="0 0 850 540" aria-hidden="true">
+            <defs>
+              <filter id="rigShadow" x="-15%" y="-15%" width="130%" height="140%">
+                <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#000000" flood-opacity="0.42"></feDropShadow>
+              </filter>
+              <filter id="svShadow" x="-25%" y="-25%" width="150%" height="150%">
+                <feDropShadow dx="0" dy="9" stdDeviation="10" flood-color="#000000" flood-opacity="0.38"></feDropShadow>
+              </filter>
+            </defs>
+            <g filter="url(#rigShadow)">
+              <image href="assets/esp32-devkitc.webp" x="0" y="139" width="470" height="232" transform="rotate(-90 235 255)"></image>
+            </g>
+            <rect class="bled loop" x="290" y="135" width="17" height="13" fill="#25AFF4" opacity="0.35"></rect>
+            <g fill="none" stroke-width="6" stroke-linecap="round">
+              <path d="M 337 44 C 434 58 540 300 611 398" stroke="#FF4D3A"></path>
+              <path d="M 337 130 C 438 148 544 322 611 409" stroke="#F5A623"></path>
+              <path d="M 337 151 C 434 174 538 344 613 420" stroke="#2B2F33"></path>
+            </g>
+            <svg x="565" y="200" width="258" height="258" viewBox="0 0 512 512" aria-hidden="true"><g filter="url(#svShadow)">
+<g clip-path="url(#clip0_125_3)">
+<path clip-path="url(#bodyclip)" d="M99.252 0H136.03C136.105 2.18631 134.989 4.85477 134.445 7.04577C133.053 12.6596 135.052 18.6717 139.009 22.7724C150.15 34.3175 169.277 26.4817 169.784 10.6772C169.889 7.39972 167.676 2.40811 168.033 0H229.072C229.177 2.12827 227.975 5.1438 227.461 7.3131C226.126 12.9389 228.399 19.0592 232.379 23.0807C235.743 26.456 240.328 28.3285 245.093 28.2725C254.785 28.1825 262.873 19.9632 262.915 10.281C262.93 6.67495 260.823 3.24275 261.068 0H297.808C298.53 3.62203 298.265 18.8038 298.263 23.4918L298.26 46.8908C298.26 49.94 298.403 53.7438 298.32 56.6768C302.99 56.7533 307.668 56.489 312.39 56.607C312.793 61.4662 312.663 67.158 312.653 72.0752L312.64 93.1712L312.645 119.57C312.645 124.267 312.798 129.965 312.54 134.561C322.53 136.25 332.497 138.088 342.435 140.074L381.045 147.452L402.795 151.582C410.315 153.017 419.2 153.775 424.06 160.417C426.767 164.065 427.898 168.647 427.198 173.136C426.418 178.004 424.42 181.569 420.358 184.451C418.658 185.655 416.782 186.59 414.8 187.224C412.372 187.979 408.27 188.666 405.682 189.162L390.795 192.001L336.84 202.294C331.8 203.277 326.758 204.235 321.708 205.166C318.988 205.669 315.18 206.258 312.578 206.966C312.878 212.477 312.638 219.255 312.638 224.878L312.635 259.168L312.638 364.848L312.64 429.935C312.64 433.795 313.055 452.6 312.32 454.932C310.735 455.642 300.265 455.51 298.163 455.297C298.295 459.727 298.288 464.25 298.258 468.682C298.16 483.107 298.418 497.58 298.218 512H260.97C260.653 509.182 262.77 505.41 262.9 502.12C263.275 492.677 255.373 484.205 245.993 483.745C241.182 483.462 236.461 485.137 232.906 488.392C228.628 492.32 226.338 498.685 227.338 504.45C227.733 506.728 229.267 509.72 229.043 512H167.835C167.75 510.455 168.11 509.04 168.668 507.603C173.105 496.16 163.946 483.195 151.173 483.742C146.299 483.945 141.72 486.13 138.497 489.79C135.043 493.645 133.303 499.517 134.322 504.625C134.771 506.875 136.044 509.783 136.092 512H98.7675C98.3098 501.993 98.7075 488.563 98.7048 478.228L98.6798 464.245C98.6745 461.55 98.5545 458.027 98.8463 455.455C93.973 455.177 89.382 455.525 84.5353 455.397C84.2195 452.542 84.0185 437.168 84.4155 434.57C84.7563 403.855 84.4473 372.485 84.4468 341.725L84.4443 161.282L84.4435 94.0543C84.4433 84.567 84.4368 75.0762 84.4425 65.589C84.4435 64.0737 84.239 57.9388 84.8885 57.0815C86.938 56.321 95.4388 56.702 98.1535 56.7425L98.5423 56.5433C99.372 55.2608 98.218 10.5558 98.7225 5.58703C98.872 4.11533 98.7 1.987 99.252 0Z" fill="#1B7FB8"></path>
+<path d="M271.04 214.728C284.75 212.355 298.89 209.06 312.578 206.966C312.878 212.477 312.638 219.255 312.638 224.878L312.635 259.168L312.638 364.848L312.64 429.935C312.64 433.795 313.055 452.6 312.32 454.932C310.735 455.642 300.265 455.51 298.163 455.297C298.295 459.727 298.288 464.25 298.258 468.682C298.16 483.107 298.418 497.58 298.218 512H260.97C260.653 509.182 262.77 505.41 262.9 502.12C263.275 492.677 255.373 484.205 245.993 483.745C241.182 483.462 236.461 485.137 232.906 488.392C228.628 492.32 226.338 498.685 227.338 504.45C227.733 506.728 229.267 509.72 229.043 512H167.835C167.75 510.455 168.11 509.04 168.668 507.603C173.105 496.16 163.946 483.195 151.173 483.742C146.299 483.945 141.72 486.13 138.497 489.79C135.043 493.645 133.303 499.517 134.322 504.625C134.771 506.875 136.044 509.783 136.092 512H98.7675C98.3098 501.993 98.7075 488.563 98.7048 478.228L98.6798 464.245C98.6745 461.55 98.5545 458.027 98.8463 455.455C93.973 455.177 89.382 455.525 84.5353 455.397C84.2195 452.542 84.0185 437.168 84.4155 434.57L84.5998 434.818C86.4493 434.385 92.1793 434.505 94.386 434.503L112.08 434.497L179.837 434.5L199.935 434.51C205.575 434.513 211.139 434.63 216.751 433.932C226.049 432.745 234.96 429.475 242.819 424.365C246.985 421.64 250.608 418.503 253.98 414.85C255.175 413.558 255.31 412.945 256.983 412.688L256.715 412.51C257.015 411.335 260.875 406.332 261.813 404.875C272.738 387.91 270.8 370.783 271.003 351.69C271.185 334.325 270.615 316.295 271.085 298.753C269.25 298.81 267.968 298.82 266.14 298.707C269.163 298.265 279.71 298.475 283.393 298.413C281.505 297.978 273.6 298.215 271.188 298.253C270.753 293.38 271.028 283.435 271.028 278.182V234.773C271.023 229.123 271.353 219.987 271.04 214.728Z" fill="#1B7FB8"></path>
+<path d="M98.8463 455.455C107.831 455.055 117.205 455.388 126.23 455.278C147.694 455.018 169.585 455.628 191.011 455.235L190.981 474.07C190.978 478.435 190.109 485.64 193.281 488.903C194.612 490.285 196.457 491.053 198.375 491.02C200.513 490.99 202.543 490.08 203.991 488.508C204.877 487.543 205.478 486.35 205.724 485.063C206.184 482.688 206.01 476.1 206 473.388L205.982 455.215C226.468 455.543 247.562 455.27 268.093 455.27L287.935 455.3C290.833 455.315 295.515 455.578 298.163 455.298C298.295 459.728 298.288 464.25 298.258 468.683C298.16 483.108 298.418 497.58 298.218 512H260.97C260.653 509.183 262.77 505.41 262.9 502.12C263.275 492.678 255.373 484.205 245.993 483.745C241.182 483.463 236.461 485.138 232.906 488.393C228.628 492.32 226.338 498.685 227.338 504.45C227.733 506.728 229.267 509.72 229.043 512H167.835C167.75 510.455 168.11 509.04 168.668 507.603C173.105 496.16 163.946 483.195 151.173 483.743C146.299 483.945 141.72 486.13 138.497 489.79C135.043 493.645 133.303 499.518 134.322 504.625C134.771 506.875 136.044 509.783 136.092 512H98.7675C98.3098 501.993 98.7075 488.563 98.7048 478.228L98.6798 464.245C98.6745 461.55 98.5545 458.028 98.8463 455.455Z" fill="#14607E"></path>
+<path d="M266.14 298.707C269.162 298.265 279.71 298.475 283.392 298.412L283.86 298.672C284.192 300.322 284.035 307.275 284.027 309.31L284.025 328.865C284.027 356.67 283.745 384.977 284.027 412.745C275.122 412.752 265.86 412.885 256.982 412.687L256.715 412.51C257.015 411.335 260.875 406.332 261.812 404.875C272.737 387.91 270.8 370.782 271.002 351.69C271.185 334.325 270.615 316.295 271.085 298.752C269.25 298.81 267.967 298.82 266.14 298.707Z" fill="#1B7FB8"></path>
 
-<section class="final">
-  <h2>Ready to Build?</h2>
-  <p>Be first in line when we launch.</p>
-  <button class="cta" onclick="openModal()">
-    Get Early Access
-    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-  </button>
-  <a href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" class="cs-link">
-    View on Crowd Supply
-    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-  </a>
+<path d="M113.008 298.59C118.687 298.847 125.253 298.702 131.003 298.702L161.487 298.705L266.14 298.707C267.968 298.82 269.25 298.81 271.085 298.752C270.615 316.295 271.185 334.325 271.003 351.69C270.8 370.782 272.738 387.91 261.812 404.875C260.875 406.332 257.015 411.335 256.715 412.51L113.001 412.48C113.242 397.762 113.041 382.515 113.042 367.762L113.008 298.59Z" fill="#25AFF4"></path>
+<path d="M141.533 355.525C156.198 355.762 171.461 355.547 186.165 355.547L255.393 355.508C255.075 362.388 255.503 369.573 255.32 376.48C255.26 378.783 255.228 381.733 255.445 384L141.536 384.005L141.533 355.525Z" fill="#FFFFFF"></path>
+<path d="M141.6 319.6C164.577 319.21 188.645 319.578 211.702 319.578L239.48 319.563C244.63 319.555 249.741 319.568 254.89 319.64C264.51 319.773 265.997 332.625 255.937 334.558L179.06 334.57L154.435 334.583C149.937 334.588 145.307 334.675 140.819 334.46C139.385 334.393 138.453 334.053 137.262 333.213C135.549 331.99 134.43 330.103 134.177 328.013C133.586 323.238 137.065 320.06 141.6 319.6Z" fill="#14607E"></path>
+<path d="M99.252 0H136.029C136.105 2.18631 134.989 4.85477 134.445 7.04577C133.053 12.6596 135.052 18.6717 139.009 22.7724C150.149 34.3175 169.277 26.4817 169.784 10.6772C169.889 7.39972 167.675 2.40811 168.033 0H229.072C229.177 2.12827 227.975 5.1438 227.461 7.3131C226.126 12.9389 228.399 19.0592 232.379 23.0807C235.743 26.456 240.328 28.3285 245.093 28.2725C254.785 28.1825 262.873 19.9632 262.915 10.281C262.93 6.67495 260.823 3.24275 261.068 0H297.807C298.53 3.62203 298.265 18.8038 298.263 23.4918L298.26 46.8908C298.26 49.94 298.403 53.7438 298.32 56.6768C302.99 56.7533 307.668 56.489 312.39 56.607C312.793 61.4662 312.662 67.158 312.652 72.0752L312.64 93.1712L312.645 119.57C312.645 124.267 312.798 129.965 312.54 134.561C310.893 133.972 302.705 132.64 300.328 132.188L271.318 126.655C270.865 123.774 271.01 119.999 271.02 116.992L271.03 104.012L271.035 56.91C258.473 57.4242 243.485 57.0243 230.77 57.0293L153.509 57.0295L118.537 57.0455C115.642 57.0475 104.837 57.2338 102.445 56.7783C100.933 56.7135 99.6658 56.715 98.1535 56.7425L98.5423 56.5433C99.372 55.2608 98.218 10.5558 98.7225 5.58703C98.872 4.11533 98.7 1.987 99.252 0Z" fill="#14607E"></path>
+<path d="M191.002 56.7543L190.979 38.117C190.971 31.6423 189.275 21.7397 198.151 20.9411C201.096 20.6763 205.232 23.4092 205.532 26.391C206.539 36.381 205.765 46.6543 206.066 56.7358C227.218 56.958 248.714 56.798 269.88 56.738L287.753 56.686C290.838 56.6625 295.423 56.4285 298.32 56.6768C302.99 56.7533 307.668 56.489 312.39 56.607C312.793 61.4663 312.663 67.158 312.653 72.0753L312.64 93.1713L312.645 119.57C312.645 124.267 312.798 129.965 312.54 134.562C310.893 133.972 302.705 132.64 300.328 132.188L271.318 126.655C270.865 123.774 271.01 119.999 271.02 116.992L271.03 104.012L271.035 56.91C258.473 57.4243 243.485 57.0243 230.77 57.0293L153.509 57.0295L118.538 57.0455C115.642 57.0475 104.837 57.2338 102.445 56.7783C104.926 56.6203 109.368 56.7785 111.998 56.7815L130.727 56.784L191.002 56.7543Z" fill="#1B7FB8"></path>
+<g id="horn" class="loop"><path d="M271.04 214.728C259.853 217.075 247.987 219.154 236.732 221.294L220.192 224.458C208.981 226.665 200.702 228.741 189.039 226.722C174.004 224.183 160.614 215.726 151.862 203.24C143.121 190.743 139.78 175.252 142.593 160.263C145.326 145.404 153.884 132.252 166.363 123.736C175.204 117.711 185.561 114.297 196.252 113.883C205.899 113.445 218.815 116.648 228.605 118.504L271.318 126.655L300.328 132.187C302.705 132.64 310.893 133.972 312.54 134.561C322.53 136.25 332.497 138.088 342.435 140.074L381.045 147.452L402.795 151.582C410.315 153.017 419.2 153.775 424.06 160.417C426.767 164.065 427.898 168.647 427.198 173.136C426.418 178.004 424.42 181.569 420.358 184.451C418.658 185.655 416.782 186.59 414.8 187.224C412.372 187.979 408.27 188.666 405.682 189.162L390.795 192.001L336.84 202.294C331.8 203.277 326.757 204.235 321.707 205.166C318.987 205.669 315.18 206.258 312.578 206.966C298.89 209.06 284.75 212.355 271.04 214.728Z" fill="#FFFFFF" stroke="#14607E" stroke-width="5" stroke-linejoin="round"></path>
+<path d="M196.309 142.346C211.893 141.165 225.503 152.799 226.76 168.377C228.017 183.955 216.45 197.621 200.878 198.954C185.198 200.296 171.417 188.631 170.151 172.945C168.886 157.259 180.617 143.535 196.309 142.346Z" fill="#C9D6DE"></path>
+<path d="M196.883 163.373C200.891 162.5 204.85 165.031 205.74 169.035C206.631 173.038 204.117 177.009 200.117 177.917C196.093 178.83 192.092 176.297 191.197 172.269C190.301 168.24 192.851 164.251 196.883 163.373Z" fill="#FFFFFF"></path>
+<path d="M289.64 163.135C293.815 162.909 297.378 166.125 297.583 170.302C297.785 174.48 294.553 178.026 290.373 178.208C286.225 178.388 282.71 175.183 282.508 171.036C282.308 166.889 285.493 163.358 289.64 163.135Z" fill="#C9D6DE"></path>
+<path d="M318.075 163.156C322.198 162.899 325.755 166.017 326.043 170.138C326.33 174.26 323.24 177.841 319.12 178.16C314.958 178.482 311.33 175.351 311.038 171.186C310.748 167.02 313.905 163.415 318.075 163.156Z" fill="#C9D6DE"></path>
+<path d="M345.4 163.383C348.052 162.771 350.825 163.646 352.645 165.668C354.465 167.69 355.042 170.54 354.157 173.112C353.27 175.683 351.057 177.571 348.377 178.042C344.385 178.744 340.557 176.136 339.75 172.162C338.945 168.188 341.45 164.294 345.4 163.383Z" fill="#C9D6DE"></path>
+<path d="M373.937 163.379C376.58 162.779 379.337 163.659 381.145 165.677C382.95 167.695 383.52 170.534 382.632 173.093C381.747 175.652 379.542 177.528 376.875 177.995C372.887 178.693 369.075 176.085 368.277 172.119C367.48 168.152 369.992 164.274 373.937 163.379Z" fill="#C9D6DE"></path></g>
+</g>
+<defs>
+<clipPath id="bodyclip"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H512V512H0Z M317 100H470V245H317Z"></path></clipPath>
+<clipPath id="clip0_125_3">
+<rect width="512" height="512" fill="white"></rect>
+</clipPath>
+</defs>
+</g></svg>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<footer>© 2026 Hat & Hammer · Los Angeles</footer>
+<!-- S6 THE BOARD -->
+<section class="cardsec" id="board" data-screen-label="06 The Board">
+  <div class="shell">
+    <div class="board-card la">
+      <div class="board-visual" aria-hidden="true">
+        <img src="assets/photo-cutouts/product-09-web.webp" alt="The OpenMote board, an ESP32-S3 with 12 button contacts" width="1076" height="1527" decoding="async" class="loop">
+      </div>
+      <div class="board-grid">
+        <div>
+          <div>
+            <h2 class="h2 board-h">One Board Runs It All.</h2>
+          </div>
+          <p class="esp-display">ESP32-S3</p>
+          <p class="esp-sub">Dual core, 240 MHz. WiFi and Bluetooth 5 LE on the pre-certified WROOM module.</p>
+          <div class="stat-row">
+            <div class="stat"><b>12</b><span>programmable buttons</span></div>
+            <div class="stat"><b>6-axis</b><span>IMU</span></div>
+            <div class="stat"><b>USB-C</b><span>charge and flash, one port</span></div>
+          </div>
+          <p class="os-line">Schematics, PCB layouts, BOM, and the Arduino library will be open-sourced before units ship.</p>
+        </div>
+        <div></div>
+      </div>
+      <div class="esp-sig">
+        <p class="cap">ESP32</p>
+        <div class="mark">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.926 19.324a7.6 7.6 0 00-2.983-6.754 7.44 7.44 0 00-3.828-1.554.697.697 0 01-.606-.731.674.674 0 01.743-.617 8.97 8.97 0 018 9.805 7.828 7.828 0 01-.298 1.542l1.989.56a11.039 11.039 0 001.714-.651 12.159 12.159 0 00.217-2.343A12.57 12.57 0 007.212 6.171a5.53 5.53 0 00-2 0 4.354 4.354 0 00-2.16 1.337 4.274 4.274 0 001.909 6.856 9.896 9.896 0 001.074.195 4.011 4.011 0 013.337 3.954 3.965 3.965 0 01-.64 2.16l1.371.88a10.182 10.182 0 002.057.342 7.52 7.52 0 00.754-2.628m.16 4.73A13.073 13.073 0 01.001 10.983 12.982 12.982 0 013.83 1.737l.743.697a12.067 12.067 0 000 17.141 12.067 12.067 0 0017.141 0l.697.697a12.97 12.97 0 01-9.336 3.726M24 10.993A10.993 10.993 0 0012.949 0c-.389 0-.766 0-1.143.057l-.252.732a18.912 18.912 0 0111.588 11.576l.731-.263c0-.366.069-.732.069-1.143m-1.269 5.165A17.53 17.53 0 007.818 1.27a11.119 11.119 0 00-2.457 1.77v1.635A13.919 13.919 0 0119.268 18.57h1.634a11.713 11.713 0 001.771-2.446M7.92 17.884a1.691 1.691 0 11-1.69-1.691 1.691 1.691 0 011.69 1.691" fill="#FFFFFF"></path></svg>
+          <span class="name">espressif</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S7 WHAT'S INSIDE -->
+<section class="inside" id="inside" data-screen-label="07 What's Inside">
+  <div class="shell">
+    <div class="sec-head split">
+      <div>
+        <h2 class="h2">Everything In The Shell.</h2>
+      </div>
+    </div>
+    <div class="tier1">
+      <div class="spec-card"><h3>ESP32-S3-WROOM-1</h3><p>Dual core at 240 MHz with 16MB flash and 8MB PSRAM. WiFi and Bluetooth 5 LE on a pre-certified module.</p></div>
+      <div class="spec-card"><h3>12 Buttons</h3><p>Eleven freely programmable. The twelfth is power.</p></div>
+      <div class="spec-card"><h3>6-Axis IMU</h3><p>Accelerometer plus gyro, with two interrupt lines for wake on motion.</p></div>
+      <div class="spec-card"><h3>IR Both Ways</h3><p>A 940nm emitter and a 38kHz receiver. Clone any remote, or be one.</p></div>
+    </div>
+    <div class="tier2">
+      <div class="t2"><b>Qwiic / STEMMA QT</b><span>A standard I2C port. Plug in thousands of off-the-shelf sensors, no soldering.</span></div>
+      <div class="t2"><b>16MB Flash, 8MB PSRAM</b><span>Room for sound banks, models, and over-the-air updates.</span></div>
+      <div class="t2"><b>3.2W Class-D Amp</b><span>A real MAX98357A over I2S, not a buzzer.</span></div>
+      <div class="t2"><b>Haptic Motor</b><span>Rumble that tells your hand what happened.</span></div>
+      <div class="t2"><b>Microphone</b><span>A PDM MEMS mic. Listen for claps, commands, or chaos.</span></div>
+      <div class="t2"><b>4 Indicator LEDs</b><span>Status you can read across the room, plus a charge light.</span></div>
+      <div class="t2"><b>USB-C</b><span>Charge it and flash it, one port. 500 mA charging.</span></div>
+      <div class="t2"><b>1200 mAh Battery</b><span>Rechargeable lithium, on a standard JST connector.</span></div>
+      <div class="t2"><b>Bluetooth HID</b><span>Shows up as a real gamepad on a PC, Mac, or phone.</span></div>
+      <div class="t2"><b>ESP-NOW</b><span>Talk straight to other boards, no WiFi network needed.</span></div>
+      <div class="t2"><b>Home Assistant</b><span>Works out of the box.</span></div>
+      <div class="t2"><b>Matter</b><span>Drive your Matter devices through Home Assistant.</span></div>
+      <div class="t2"><b>Arduino Library</b><span>OpenMote.h will be open-sourced before units ship.</span></div>
+      <div class="t2"><b>Drop-In Board</b><span>Swap it into the shell. No soldering.</span></div>
+      <div class="t2"><b>Shell Compatible</b><span>Fits the classic controller you already own.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- S7B FAQ -->
+<section class="faq" id="faq" data-screen-label="07B FAQ">
+  <div class="shell">
+    <div class="sec-head split rv">
+      <div>
+        <h2 class="h2">Questions, Answered.</h2>
+      </div>
+      <p class="sub">Straight answers for the smart home, the emulator rig, and the workbench. Updated August 2026.</p>
+    </div>
+    <div class="faq-list">
+      <details class="qa">
+        <summary><h3>What is OpenMote?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>OpenMote is a programmable remote control built on the ESP32-S3: twelve buttons, a 6-axis motion sensor, infrared in and out, WiFi, and Bluetooth 5 LE, in a classic Wii-remote-style shell. It is made by Hat &amp; Hammer, a two-person hardware studio in Los Angeles. The bare board is $59 and the fully assembled remote is $99 on Crowd Supply, launching soon.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Can I put OpenMote inside my old Wii remote?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a">
+          <p>Yes, that is the whole idea. The OpenMote board is a drop-in replacement for the board inside an original Wii remote, the one you may know as the Wiimote: open the shell, swap the board, close it up. No soldering, no adhesive, no drama.</p>
+          <p>So far it has dropped into every official Wii remote shell we have tried. Third-party shells usually copy the original closely, but they do vary inside, so the guaranteed fit is for Nintendo's own shells. And if you would rather not open anything, the fully assembled OpenMote remote comes ready to go in its own shell.</p>
+        </div>
+      </details>
+      <details class="qa">
+        <summary><h3>Does it work with an actual Wii console?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>No, and we would rather you hear it from us. The original console talks to its remotes over Bluetooth Classic, and OpenMote is built on Bluetooth 5 LE, the modern standard that PCs, phones, and emulators use. OpenMote is for everything else: the emulator rig, the smart home, and whatever you build next.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Does OpenMote work with Home Assistant?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>Yes. OpenMote works with Home Assistant out of the box, over your own network. Real physical buttons run your scenes and automations: lights, thermostats, media, anything Home Assistant can reach. And because you program the firmware, you decide what a single press, a double press, a long press, or a flick of the wrist actually does.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Does OpenMote need the cloud?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>No. OpenMote connects over your own WiFi and Bluetooth. There is no account to create and no subscription. You flash the firmware yourself, so you always know exactly what the remote is doing and who it talks to.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Does it work with Alexa, Google Home, or Apple Home?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>Yes, through Home Assistant. Its bridges connect OpenMote to Google Home, Amazon Alexa, and Apple Home, and its Matter integration lets OpenMote's buttons drive your Matter devices too. One remote can cover the whole living room: the TV over infrared, the lights over WiFi, the games over Bluetooth.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Can OpenMote replace my old universal remote?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>That is one of its favorite jobs. OpenMote carries a 940nm infrared emitter and a 38kHz receiver, so it can learn codes straight from any remote you point at it, then be that remote: TV, receiver, cable box, projector. If you have been nursing a discontinued Harmony remote, this is the programmable replacement. WiFi and Bluetooth pick up everything infrared cannot reach.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Does OpenMote work with the Dolphin emulator?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>Yes. OpenMote pairs as a standard Bluetooth gamepad on Windows, Mac, and Linux, with real motion data from its accelerometer and gyroscope. In Dolphin you map it as an emulated Wii Remote with motion input: no sensor bar adapter, no special Bluetooth stack, no sync-button ritual. The same goes for RetroArch and anything else that accepts a Bluetooth controller.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Can I use it as a game controller on my PC or phone?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>Yes. OpenMote shows up as a real Bluetooth HID gamepad on a PC, Mac, or phone, the same way a modern controller does. Buttons and motion are yours to map in firmware, and the haptic motor answers back with rumble.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Can I program OpenMote with the Arduino IDE?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>Yes. OpenMote programs like any ESP32: Arduino IDE, ESP-IDF, PlatformIO, or CircuitPython, all over USB-C. The OpenMote.h Arduino library covers the buttons, motion, sound, infrared, and LEDs. If you have ever flashed an ESP32 dev board, you already know how this works.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Is OpenMote open source?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>It will be. Complete schematics, PCB layouts, the bill of materials, and the Arduino library go public on GitHub before units ship. The board is built around the ESP32-S3-WROOM-1, a pre-certified module the maker community already knows inside and out.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Do I need to solder anything?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>No. The board drops into the shell of an original Wii remote with every connection already made: buttons, battery, speaker, all of it. For expansion there is a Qwiic / STEMMA QT port, so thousands of off-the-shelf I2C sensors plug straight in, also without soldering.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>What exactly is inside?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a">
+          <p>Every part of a controller, on one board.</p>
+          <table class="spec-table">
+            <tbody>
+              <tr><th scope="row">Processor</th><td>ESP32-S3-WROOM-1, dual core at 240 MHz</td></tr>
+              <tr><th scope="row">Memory</th><td>16MB flash, 8MB PSRAM</td></tr>
+              <tr><th scope="row">Radios</th><td>WiFi 2.4 GHz, Bluetooth 5 LE, ESP-NOW</td></tr>
+              <tr><th scope="row">Buttons</th><td>12, eleven freely programmable</td></tr>
+              <tr><th scope="row">Motion</th><td>6-axis IMU: accelerometer and gyroscope</td></tr>
+              <tr><th scope="row">Infrared</th><td>940nm emitter and 38kHz receiver</td></tr>
+              <tr><th scope="row">Audio</th><td>3.2W Class-D amplifier and PDM microphone</td></tr>
+              <tr><th scope="row">Haptics</th><td>Rumble motor</td></tr>
+              <tr><th scope="row">LEDs</th><td>4 indicator LEDs</td></tr>
+              <tr><th scope="row">Power</th><td>1200 mAh battery, USB-C charging at 500 mA</td></tr>
+              <tr><th scope="row">Expansion</th><td>Qwiic / STEMMA QT I2C port</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+      <details class="qa">
+        <summary><h3>How much does OpenMote cost?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>The bare board is $59 and the fully assembled remote is $99 on Crowd Supply, with free US shipping for backers. The campaign opens soon and runs about six weeks; join the waitlist and we will email you the moment it goes live. After the campaign the assembled remote moves to its regular $109 price, so the campaign is the best price it will ever have.</p></div>
+      </details>
+      <details class="qa">
+        <summary><h3>Can OpenMote be a MIDI controller?</h3><span class="qa-x" aria-hidden="true"></span></summary>
+        <div class="qa-a"><p>Yes, with the right firmware. The ESP32-S3 can speak MIDI over Bluetooth LE, so OpenMote can appear to your computer as a wireless MIDI device. Map buttons to notes and the motion sensor to CC messages and you have an instrument that fits in one hand.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- S8 READY TO BUILD -->
+<!-- S1 WHAT YOU CAN BUILD -->
+<section class="build" id="build" data-screen-label="01 What You Can Build">
+  <div class="shell">
+    <div class="uc-ledger">
+      <article class="ucr">
+        <div class="ucr-media"><video data-lazy muted loop playsinline preload="none" src="img/dino.mp4"></video></div>
+        <div class="ucr-body">
+          <span class="uc-num">01</span>
+          <h3 class="ucr-title">Play Games</h3>
+        </div>
+      </article>
+      <article class="ucr">
+        <div class="ucr-media"><video data-lazy muted loop playsinline preload="none" src="img/media.mp4"></video></div>
+        <div class="ucr-body">
+          <span class="uc-num">02</span>
+          <h3 class="ucr-title">Run Your Home</h3>
+        </div>
+      </article>
+      <article class="ucr">
+        <div class="ucr-media"><img src="img/arduino.webp" alt="OpenMote board wired on a breadboard" width="800" height="450" loading="lazy" decoding="async"></div>
+        <div class="ucr-body">
+          <span class="uc-num">03</span>
+          <h3 class="ucr-title">Build Anything</h3>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="ready-sec" id="ready" data-screen-label="08 Ready To Build">
+  <div class="shell">
+    <div class="ready-card la">
+      <button class="pop-badge" id="b1" aria-label="Pop the gamepad badge"><img src="assets/badge-gamepad.svg" alt="" width="96" height="96" decoding="async" class="fl loop" style="--fd:6s"></button>
+      <button class="pop-badge" id="b2" aria-label="Pop the house badge"><img src="assets/badge-house.svg" alt="" width="96" height="96" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.4s"></button>
+      <button class="pop-badge" id="b3" aria-label="Pop the wand badge"><img src="assets/badge-wand.svg" alt="" width="96" height="96" decoding="async" class="fl loop" style="--fd:6s;--fdel:1.6s"></button>
+      <button class="pop-badge" id="b4" aria-label="Pop the infrared badge"><img src="assets/badge-ir.svg" alt="" width="96" height="96" decoding="async" class="fl2 loop" style="--fd:6s;--fdel:1.8s"></button>
+      <button class="pop-badge" id="b5" aria-label="Pop the robot badge"><img src="assets/badge-robot.svg" alt="" width="96" height="96" decoding="async" class="fl loop" style="--fd:6s;--fdel:0.3s"></button>
+      <h2 class="rv">Ready To Build?</h2>
+      <div class="ready-cta" data-rvg>
+        <button class="btn-white" onclick="openModal()">
+          Join The Waitlist
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </button>
+        <a class="cs-ink" href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" rel="noopener">
+          Follow on Crowd Supply
+          <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer data-screen-label="Footer">
+  <img class="f-logo" src="img/footer-logo.png" alt="OpenMote" width="932" height="770" decoding="async">
+  <nav class="f-nav" aria-label="Page sections">
+    <a href="#smart">Smart Home Control</a>
+    <a href="#apps">Community Apps</a>
+    <a href="#code">Programming</a>
+    <a href="#diy">DIY Electronics</a>
+    <a href="#board">The ESP32-S3 Board</a>
+    <a href="#inside">Full Specs</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+  <p class="f-line">&#169; 2026 Hat &amp; Hammer &#183; Los Angeles</p>
+  <p class="f-legal">Wii and Wii Remote are trademarks of Nintendo. OpenMote is an independent product from Hat &amp; Hammer and is not affiliated with, endorsed by, or sponsored by Nintendo.</p>
+  <div class="f-links">
+    <a href="https://www.instagram.com/openmote.io" target="_blank" rel="noopener" aria-label="OpenMote on Instagram" class="f-ig"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+    <a href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" rel="noopener">Crowd Supply</a>
+  </div>
+</footer>
+
+<div class="bar" id="bar" role="region" aria-label="Launch reminder">
+  <p>The Crowd Supply campaign is <strong>launching soon</strong></p>
+  <button class="join-btn" onclick="openModal()">Join Waitlist</button>
+</div>
 
 <div class="overlay" onclick="closeModal()"></div>
 <div class="sheet">
@@ -666,8 +2072,8 @@
   <h2>Join the Waitlist</h2>
   <p class="sub">Be first when OpenMote launches.</p>
   <form id="joinForm" onsubmit="handleJoin(event)">
-    <input type="text" name="firstName" placeholder="Your name" required>
-    <input type="email" name="email" placeholder="Your email" required>
+    <input type="text" name="firstName" placeholder="Your name" aria-label="Your name" required>
+    <input type="email" name="email" placeholder="Your email" aria-label="Your email" required>
     <button type="submit">Get Early Access</button>
   </form>
   <p class="note">No spam. Unsubscribe anytime.</p>
@@ -689,17 +2095,126 @@ function closeModal(){
   document.body.style.top='';
   window.scrollTo(0,scrollPos);
 }
-document.addEventListener('keydown',e=>e.key==='Escape'&&closeModal());
+// Escape only acts while the sheet is open: an unconditional closeModal()
+// scrolled the page back to a stale saved position on every stray Escape.
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.querySelector('.sheet').classList.contains('on'))closeModal();
+});
 
-// Header scroll effect
+// Header state. One rAF-batched scroll handler instead of three separate
+// listeners, so scrolling never runs layout reads more than once per frame.
 const header=document.querySelector('header');
-window.addEventListener('scroll',()=>{
-  if(window.scrollY>50){
-    header.classList.add('scrolled');
-  }else{
-    header.classList.remove('scrolled');
+const heroEl=document.querySelector('.hero');
+let lastY=window.scrollY;window.headerHidden=false;
+let scrollQueued=false;
+function headerScrollWork(){
+  scrollQueued=false;
+  const y=window.scrollY;
+  // Over the solid blue hero the mark and button invert. Driven by the hero's
+  // own box so the swap always happens exactly at the blue-to-white edge.
+  // The blue hero starts at 768px, so the swap has to as well.
+  if(heroEl)header.classList.toggle('overhero',window.innerWidth>=768&&heroEl.getBoundingClientRect().bottom>110);
+  // Desktop: kode-style header hide on scroll down, return on scroll up
+  if(window.innerWidth>=1024){
+    if(y>140&&y>lastY+4)header.classList.add('hide');
+    else if(y<lastY-4||y<=140)header.classList.remove('hide');
+  }else header.classList.remove('hide');
+  header.classList.toggle('scrolled',y>50);
+  lastY=y;
+  const hh=header.classList.contains('hide');
+  if(hh!==window.headerHidden){window.headerHidden=hh;if(window.updBar)window.updBar();}
+}
+function queueScrollWork(){if(!scrollQueued){scrollQueued=true;requestAnimationFrame(headerScrollWork)}}
+headerScrollWork();
+window.addEventListener('scroll',queueScrollWork,{passive:true});
+window.addEventListener('resize',queueScrollWork);
+
+
+/* ---- WAITLIST SURVEY -------------------------------------------------------
+   Step 1: which SKU. Step 2: willingness to pay. Both optional.
+   The email has ALREADY been written to Loops before any of this renders.
+   Survey answers go as a SEPARATE follow-up call keyed on the same email, so a
+   failure here can never cost a signup.
+   NOTE: the slider deliberately gives no feedback about whether a number is
+   "right". Any hint about our planned price anchors the answer.
+   NOTE: it starts at $99. To remove that anchor, start it at a random value.
+--------------------------------------------------------------------------- */
+window.svState = {sku:null, wtp:99, locked:false, touchedPrice:false, done:false};
+function svRender(step){
+  var sheet=document.querySelector('.sheet'), st=window.svState;
+  if(step==='sku'){
+    sheet.innerHTML='<div class="sheet-bar"></div>'+
+      '<div class="sv-steps"><i class="on"></i><i></i></div>'+
+      '<h2>You\'re in.</h2>'+
+      '<p class="sub">One quick thing. Which would you be more interested in buying?</p>'+
+      '<div class="sv-choices">'+
+        '<button type="button" class="sv-choice'+(st.sku==='board'?' sel':'')+'" onclick="svPick(\'board\')">'+
+          '<img src="assets/photo-cutouts/product-09-web.webp" alt="The OpenMote board on its own">'+
+          '<b>Mod Your Own</b><span>Just the board. You supply the shell.</span></button>'+
+        '<button type="button" class="sv-choice'+(st.sku==='assembled'?' sel':'')+'" onclick="svPick(\'assembled\')">'+
+          '<img src="img/hero-remote-b.webp" alt="The assembled OpenMote remote">'+
+          '<b>Ready To Go</b><span>Built, boxed, works out of the box.</span></button>'+
+      '</div>'+
+      '<button type="button" class="sv-skip" onclick="svFinish(true)">Skip</button>';
   }
-},{passive:true});
+  if(step==='wtp'){
+    var label = st.sku==='board' ? 'the bare board' : 'the ready-made remote';
+    sheet.innerHTML='<div class="sheet-bar"></div>'+
+      '<div class="sv-steps"><i class="on"></i><i class="on"></i></div>'+
+      '<h2>Last one.</h2>'+
+      '<p class="sub">What feels like the right price for '+label+'?</p>'+
+      '<div class="sv-val" id="svVal">$'+st.wtp+'</div>'+
+      '<input type="range" class="sv-range" min="19" max="199" step="5" value="'+st.wtp+'" oninput="svSlide(this.value)" aria-label="Price you would pay">'+
+      '<div class="sv-ticks"><span>$19</span><span>$199</span></div>'+
+      '<button type="button" class="sv-skip" style="margin-bottom:0.6rem" onclick="svRender(\'sku\')">Change my choice</button>'+
+      '<button type="button" onclick="svFinish(false)" style="width:100%;padding:1rem;font-size:0.95rem;font-weight:700;font-family:inherit;letter-spacing:0.03em;color:#fff;background:var(--blue);border:none;cursor:pointer">Done</button>'+
+      '<button type="button" class="sv-skip" onclick="svFinish(true)">Skip</button>';
+  }
+  if(step==='done'){
+    sheet.innerHTML='<div class="sheet-bar"></div>'+
+      '<div class="sv-tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" aria-hidden="true"><path d="M4 12l6 6L20 6"/></svg></div>'+
+      '<h2>Thanks.</h2>'+
+      '<p class="sub">We will email you the moment it goes live. For the fastest news, follow the project on Crowd Supply.</p>'+
+      '<a class="sv-cs" href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" rel="noopener">Follow on Crowd Supply</a>';
+  }
+}
+function svSend(partial){
+  // Writes whatever we have RIGHT NOW. Called on selection, on change, on
+  // completion, and on abandonment, so a half-finished answer is never lost.
+  var st=window.svState;
+  if(!window.svEmail || !st.sku) return;
+  var payload={email:window.svEmail, skuPreference:st.sku, surveySource:'signup'};
+  if(!partial) payload.willingnessToPay=st.wtp;
+  var body=JSON.stringify(payload);
+  // sendBeacon survives the page closing; fetch is the fallback.
+  if(partial===false && navigator.sendBeacon){
+    try{ navigator.sendBeacon('/api/survey', new Blob([body],{type:'application/json'})); return; }catch(e){}
+  }
+  fetch('/api/survey',{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true}).catch(function(){});
+}
+function svPick(v){
+  var st=window.svState; if(st.locked) return;
+  st.locked=true; st.sku=v; svRender('sku');
+  svSend(true);                       // capture the choice immediately
+  setTimeout(function(){ st.locked=false; svRender('wtp'); }, 260);
+}
+function svSlide(v){
+  window.svState.wtp=+v; window.svState.touchedPrice=true;
+  var el=document.getElementById('svVal'); if(el) el.textContent='$'+v;
+}
+function svFinish(skipped){
+  var st=window.svState;
+  if(!skipped) svSend(false);
+  else if(st.sku) svSend(true);       // skipping the price still keeps the choice
+  st.done=true;
+  svRender('done');
+}
+// Someone who moved the slider and then closed the tab still counts.
+window.addEventListener('pagehide', function(){
+  var st=window.svState;
+  if(st && st.sku && st.touchedPrice && !st.done) svSend(false);
+});
+
 
 function handleJoin(e) {
   e.preventDefault();
@@ -721,21 +2236,136 @@ function handleJoin(e) {
     body: body.toString()
   }).then(res => res.json()).then(res => {
     if (!res || !res.success) throw new Error((res && res.message) || 'Signup failed');
-    // Show success message inside the modal
-    sheet.innerHTML = `
-      <div class="sheet-bar"></div>
-      <h2>Success!</h2>
-      <p class="sub">Thanks for joining. For the most up-to-date news, follow our project on Crowd Supply.</p>
-      <a href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" style="display:block; width:100%; padding:1rem; font-size:0.95rem; font-weight:700; text-align:center; text-decoration:none; color:#fff; background:#25AFF4; border:none; margin-top:1rem; box-shadow:0 4px 12px rgba(37,175,244,0.3);">
-        Follow on Crowd Supply
-      </a>
-    `;
+    // Email is now safely in Loops. Everything below is optional extra data:
+    // if the visitor abandons or the follow-up call fails, the signup still stands.
+    window.svEmail = (data.get('email') || '').trim();
+    svRender('sku');
   }).catch(err => {
     console.error('Form error:', err);
     btn.textContent = 'Something went wrong. Try again.';
     btn.disabled = false;
   });
 }
+</script>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Rise-and-fade reveals, staggered children on [data-rvg].
+  // Positive bottom margin starts the fade just BEFORE the element scrolls in,
+  // so a fast flick never lands on a still-blank section.
+  var ro = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var t = e.target;
+      if(t.hasAttribute('data-rvg')){
+        Array.prototype.forEach.call(t.children, function(c,i){ c.style.transitionDelay = (i*0.07)+'s'; });
+      }
+      t.classList.add('in');
+      ro.unobserve(t);
+    });
+  }, {threshold:0, rootMargin:'0px 0px 12% 0px'});
+  document.querySelectorAll('.rv,[data-rvg]').forEach(function(el){ ro.observe(el); });
+
+  // Pause every infinite loop while its section is off screen. Wake a full
+  // viewport ahead: with only 60px of margin, iOS delivered the wake-up after
+  // the section was already on screen, so it arrived frozen and jolted alive.
+  var lo = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ e.target.classList.toggle('live', e.isIntersecting); });
+  }, {rootMargin:'100% 0px'});
+  document.querySelectorAll('.la').forEach(function(el){ lo.observe(el); });
+
+  // Lazy video playback
+  var vo = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if(e.isIntersecting){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
+      else{ v.pause(); }
+    });
+  }, {rootMargin:'140px 0px'});
+  document.querySelectorAll('video[data-lazy]').forEach(function(v){ vo.observe(v); });
+
+  // NOW RUNNING crossfade, only while in view
+  var nr = document.getElementById('nowrun-svg');
+  if(nr && !reduce){
+    var groups = nr.querySelectorAll('[id^="app-"]');
+    var idx = 0, area = nr.closest('.la');
+    setInterval(function(){
+      if(area && !area.classList.contains('live')) return;
+      groups[idx].style.opacity = 0;
+      idx = (idx+1) % groups.length;
+      groups[idx].style.opacity = 1;
+    }, 1500);
+  }
+
+  // Badge pop and respawn
+  document.querySelectorAll('.pop-badge').forEach(function(b){
+    b.addEventListener('click', function(){
+      if(b.classList.contains('gone')) return;
+      b.classList.add('gone');
+      setTimeout(function(){
+        b.classList.remove('gone');
+        b.classList.add('back');
+        setTimeout(function(){ b.classList.remove('back'); }, 420);
+      }, 2000);
+    });
+  });
+
+  // S4 connector: anchor the dashed elbow to the real editor + remote boxes
+  var connSvg = document.getElementById('connD');
+  function drawConn(){
+    if(!connSvg) return;
+    var g = document.querySelector('.code-grid'), ed = document.querySelector('.code-editor .editor-svg'), rm = document.querySelector('.flash-target .remote');
+    if(!g || !ed || !rm) return;
+    var gr = g.getBoundingClientRect(), er = ed.getBoundingClientRect(), rr = rm.getBoundingClientRect();
+    if(er.width < 10 || rr.width < 10) return;
+    var mob = gr.width < 700;
+    var sx = er.left - gr.left, sy = er.top - gr.top + er.height * 0.5;
+    var ex, ey;
+    if(mob){ ex = rr.left - gr.left + rr.width * 0.62; ey = rr.top - gr.top + rr.height * 0.6; }
+    else { ex = rr.left - gr.left + rr.width * 0.45; ey = rr.top - gr.top + rr.height * 0.88; }
+    var rrRight = rr.right - gr.left;
+    var r = mob ? 18 : 26;
+    var xd = rrRight + Math.max(26, (sx - rrRight) * 0.45);
+    if(mob){ xd = Math.max(xd, ex + r + 8); if(xd > sx - r - 6) xd = sx - r - 6; }
+    else if(xd > sx - 20) xd = rrRight + (sx - rrRight) * 0.5;
+    // square corners, no radius: the run turns 90 degrees like a PCB trace
+    var d = 'M ' + sx + ' ' + sy + ' H ' + xd + ' V ' + ey + ' H ' + ex;
+    connSvg.setAttribute('viewBox', '0 0 ' + gr.width + ' ' + gr.height);
+    var _d=document.getElementById('connDot'), _s = gr.width < 700 ? 6 : 9;
+    _d.setAttribute('x', -_s); _d.setAttribute('y', -_s);
+    _d.setAttribute('width', _s*2); _d.setAttribute('height', _s*2);
+    document.getElementById('connPath').setAttribute('stroke-width', gr.width < 700 ? 5 : 7);
+    document.getElementById('connPath').setAttribute('d', d);
+    document.getElementById('connDot').style.offsetPath = "path('" + d + "')";
+  }
+  if(connSvg){
+    // Redraw only when the WIDTH changes: iOS fires resize on every toolbar
+    // collapse mid-scroll, and a full redraw there is layout thrash and jank.
+    var connRaf, connW = window.innerWidth;
+    window.addEventListener('resize', function(){
+      if(window.innerWidth === connW) return;
+      connW = window.innerWidth;
+      cancelAnimationFrame(connRaf); connRaf = requestAnimationFrame(drawConn);
+    });
+    var rmImg = document.querySelector('.flash-target .remote');
+    if(rmImg){ rmImg.addEventListener('load', drawConn); }
+    drawConn(); setTimeout(drawConn, 400); setTimeout(drawConn, 1400); setTimeout(drawConn, 3200);
+  }
+
+  // Floating bottom bar, desktop only (the CSS hides it below 1024): on while
+  // the header is hidden, off near the end. Both inputs push updBar when they
+  // change, so no scroll listener is needed at all.
+  var bar = document.getElementById('bar');
+  var ready = document.getElementById('ready');
+  var endNear = false;
+  function updBar(){
+    if(window.innerWidth < 1024){ bar.classList.remove('on'); return; }
+    bar.classList.toggle('on', window.headerHidden && !endNear);
+  }
+  window.updBar=updBar;
+  new IntersectionObserver(function(es){ endNear = es[0].isIntersecting; updBar(); }, {threshold:0.1}).observe(ready);
+})();
 </script>
 </body>
 </html>

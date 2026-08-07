@@ -1,0 +1,3 @@
+# /survey and /survey/<source> are handled by functions/survey/[[path]].js
+# Do NOT add a rule here pointing at survey.html or survey/index.html:
+# Cloudflare strips .html and the rule loops infinitely.

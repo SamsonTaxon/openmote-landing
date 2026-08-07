@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Two quick questions | OpenMote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#25AFF4;--ink:#0A0A0A;--gray:rgba(10,10,10,0.66);--edge:rgba(10,10,10,0.16)}
+html,body{height:100%}
+body{font-family:'Montserrat',sans-serif;color:var(--ink);background:var(--blue);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.stage{min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+
+.topbar{position:relative;z-index:3;padding:1.4rem 1.5rem 0;display:flex;justify-content:center;flex:none}
+.topbar img{width:190px;height:auto;display:block;filter:brightness(0) invert(1)}
+.duo{position:absolute;z-index:1;pointer-events:none;user-select:none}
+.duo img{position:absolute;width:auto;display:block;
+  filter:drop-shadow(0 2px 4px rgba(6,58,86,.28)) drop-shadow(0 20px 34px rgba(6,58,86,.26))}
+@media(max-width:899px){
+  .duo{left:50%;top:50%;transform:translate(-50%,-50%);width:300px;height:360px;opacity:.22}
+  .duo-a{left:0;top:0;height:360px}
+  .duo-b{left:44%;top:9%;height:314px}
+}
+@media(min-width:900px){
+  .duo{left:auto;right:calc(50% + 1.5rem);top:50%;transform:translateY(-50%);width:min(30vw,340px);height:min(74vh,600px)}
+  .duo-a{left:0;top:2%;height:96%}
+  .duo-b{left:47%;top:12%;height:83%}
+}
+.mid{flex:1;display:flex;align-items:center;justify-content:center;padding:1.5rem;position:relative;z-index:2}
+@media(min-width:900px){ .mid{justify-content:flex-start;padding:1.5rem 1.5rem 1.5rem calc(50% + 1.5rem)} }
+.card{background:#fff;width:100%;max-width:404px;padding:1.5rem 1.4rem 1.35rem;
+  box-shadow:0 2px 6px rgba(6,58,86,.16),0 28px 60px -24px rgba(6,58,86,.42)}
+.eyebrow{font-size:.58rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);text-align:center;margin-bottom:.55rem}
+.steps{display:flex;gap:5px;justify-content:center;margin-bottom:.85rem}
+.steps i{width:26px;height:3px;background:var(--edge);display:block}
+.steps i.on{background:var(--blue)}
+h1{font-size:1.3rem;font-weight:900;letter-spacing:-.025em;text-align:center;margin-bottom:.35rem;line-height:1.14;text-wrap:balance}
+.sub{font-size:.82rem;color:var(--gray);text-align:center;margin-bottom:1rem;line-height:1.45;font-weight:500;text-wrap:pretty}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.choice{border:2px solid var(--edge);padding:.7rem .5rem;cursor:pointer;background:#fff;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;font-family:inherit;transition:border-color .15s}
+.choice.sel{border-color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue)}
+@media(hover:hover){.choice:hover{border-color:var(--blue)}}
+.choice img{width:100%;height:82px;object-fit:contain;display:block}
+.choice b{font-size:.85rem;font-weight:800;letter-spacing:-.01em;color:var(--ink);line-height:1.15}
+.choice span{font-size:.67rem;color:var(--gray);font-weight:500;line-height:1.28}
+.val{text-align:center;font-size:2.4rem;font-weight:900;letter-spacing:-.035em;margin:.1rem 0 .8rem;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;-webkit-appearance:none;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;background:var(--edge)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;background:var(--blue);margin-top:-13px;cursor:pointer;border:0}
+.ticks{display:flex;justify-content:space-between;font-size:.68rem;color:var(--gray);font-weight:700;margin:.5rem 0 1rem}
+input[type=email]{width:100%;padding:1rem;font-size:1rem;font-family:inherit;border:2px solid var(--edge);outline:none;margin-bottom:1rem;-webkit-appearance:none}
+input[type=email]:focus{border-color:var(--blue)}
+.btn{width:100%;padding:.95rem;font-size:.95rem;font-weight:800;font-family:inherit;letter-spacing:.03em;color:#fff;background:var(--blue);border:none;cursor:pointer}
+.skip{display:block;width:100%;text-align:center;margin-top:.65rem;font-size:.76rem;color:var(--gray);font-weight:600;background:none;border:0;cursor:pointer;font-family:inherit;text-decoration:underline}
+.tick{width:46px;height:46px;background:var(--blue);margin:0 auto .85rem;display:grid;place-items:center}
+.tick svg{width:26px;height:26px}
+.cs{display:block;width:100%;padding:.95rem;font-size:.95rem;font-weight:800;text-align:center;text-decoration:none;color:#fff;background:var(--blue);margin-top:1.1rem;letter-spacing:.03em}
+.foot{position:relative;z-index:3;text-align:center;padding:1.2rem;flex:none;font-size:.72rem;font-weight:600;color:rgba(255,255,255,.82);letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="topbar"><img src="/img/logo.png" alt="OpenMote"></div>
+  <div class="duo" aria-hidden="true">
+    <img class="duo-a" src="/img/hero-remote-a.webp" alt="">
+    <img class="duo-b" src="/img/hero-remote-b.webp" alt="">
+  </div>
+  <div class="mid"><div class="card" id="card"></div></div>
+  <div class="foot">Two questions. About thirty seconds.</div>
+</div>
+
+<script>
+/* Standalone survey. Linked from the Loops newsletter.
+   The email carries the contact's address and (optionally) their SKU pick:
+     /survey?e={{email}}&c=assembled
+   Loops merge tags fill {{email}}. If the email pre-answers step one via the
+   two image links, we land straight on the price question. */
+var P = new URLSearchParams(location.search);
+var EMAIL = (P.get('e') || P.get('email') || '').trim();
+// Where this visitor came from. Set it per channel in the link:
+//   ?s=newsletter   ?s=instagram   ?s=creator-machonacho   etc.
+// Source can come from EITHER form, so links can be written whichever way is
+// convenient:  /survey/instagram   or   /survey?s=instagram
+// A path segment after /survey/ wins; the query param is the fallback.
+var PATH_SRC = (location.pathname.match(/\/survey(?:\.html)?\/([^\/?#]+)/) || [])[1] || '';
+if (/^(index\.html|survey\.html)$/.test(PATH_SRC)) PATH_SRC = '';
+var SOURCE = (PATH_SRC || P.get('s') || 'link').trim().toLowerCase().slice(0, 32);
+var state = { sku: P.get('c') === 'board' || P.get('c') === 'assembled' ? P.get('c') : null, wtp: 99, locked:false, touchedPrice:false, done:false };
+var card = document.getElementById('card');
+
+function render(step){
+  if(step === 'sku'){
+    card.innerHTML =
+      '<div class="eyebrow">Help us decide</div>' +
+      '<div class="steps"><i class="on"></i><i></i></div>' +
+      '<h1>Which one would you buy?</h1>' +
+      '<p class="sub">We are deciding how many of each to build. Your answer genuinely changes the order.</p>' +
+      '<div class="choices">' +
+        '<button class="choice" onclick="pick(\'board\')">' +
+          '<img src="/assets/photo-cutouts/product-09-web.webp" alt="The OpenMote board on its own">' +
+          '<b>Mod Your Own</b><span>Just the board. You supply the shell.</span></button>' +
+        '<button class="choice" onclick="pick(\'assembled\')">' +
+          '<img src="/img/hero-remote-b.webp" alt="The assembled OpenMote remote">' +
+          '<b>Ready To Go</b><span>Built, boxed, works out of the box.</span></button>' +
+      '</div>' +
+      '<button class="skip" onclick="finish(true)">Skip this</button>';
+  }
+  if(step === 'wtp'){
+    var label = state.sku === 'board' ? 'the bare board' : 'the ready-made remote';
+    card.innerHTML =
+      '<div class="eyebrow">One more</div>' +
+      '<div class="steps"><i class="on"></i><i class="on"></i></div>' +
+      '<h1>What feels like the right price?</h1>' +
+      '<p class="sub">For ' + label + '. There is no wrong answer, we just want to know what you think.</p>' +
+      '<div class="val" id="val">$' + state.wtp + '</div>' +
+      '<input type="range" min="19" max="199" step="5" value="' + state.wtp + '" oninput="slide(this.value)" aria-label="Price">' +
+      '<div class="ticks"><span>$19</span><span>$199</span></div>' +
+      '<button class="btn" onclick="finish(false)">Send it</button>' +
+      '<button class="skip" onclick="render(\'sku\')">Change my choice</button>';
+  }
+}
+function pick(v){
+  if(state.locked) return;
+  state.locked = true; state.sku = v;
+  var els = document.querySelectorAll('.choice');
+  els[v === 'board' ? 0 : 1].classList.add('sel');
+  send(true);                            // capture the choice the moment it is made
+  setTimeout(function(){ state.locked = false; render('wtp'); }, 260);
+}
+function slide(v){
+  state.wtp = +v; state.touchedPrice = true;
+  document.getElementById('val').textContent = '$' + v;
+}
+function send(partial){
+  // Writes whatever we have right now: on selection, on change, on completion,
+  // and on abandonment. A half-finished answer is still an answer.
+  if(!EMAIL || !state.sku) return;
+  var payload = { email: EMAIL, skuPreference: state.sku, surveySource: SOURCE };
+  if(!partial) payload.willingnessToPay = state.wtp;
+  var body = JSON.stringify(payload);
+  if(partial === false && navigator.sendBeacon){
+    try { navigator.sendBeacon('/api/survey', new Blob([body], {type:'application/json'})); return; } catch(e){}
+  }
+  fetch('/api/survey', {method:'POST', headers:{'Content-Type':'application/json'}, body:body, keepalive:true}).catch(function(){});
+}
+function goToSite(){
+  // Same site, so navigate to the root PATH, not an absolute cross-origin URL.
+  // Verified: an absolute https://openmote.io/ is silently blocked when the page
+  // is served from another origin, and it is pointless in production anyway
+  // since the survey and the landing page share a domain.
+  if(state.done) return;
+  state.done = true;
+  location.href = '/';
+}
+function finish(skipped){
+  if(!skipped) send(false);
+  else if(state.sku) send(true);
+  goToSite();
+}
+// Moved the slider then closed the tab? Still counts.
+window.addEventListener('pagehide', function(){
+  if(state.sku && state.touchedPrice && !state.done && EMAIL) send(false);
+});
+
+// Always let people answer. If the link carried no address we ask for one at the
+// end instead of blocking them at the door.
+if(state.sku && EMAIL) send(true);   // the email link already answered step one
+render(state.sku ? 'wtp' : 'sku');
+</script>
+</body>
+</html>
