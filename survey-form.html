@@ -82,7 +82,11 @@ input[type=email]:focus{border-color:var(--blue)}
    Loops merge tags fill {{email}}. If the email pre-answers step one via the
    two image links, we land straight on the price question. */
 var P = new URLSearchParams(location.search);
-var EMAIL = (P.get('e') || P.get('email') || '').trim();
+// A merge tag drops the address into the query string raw, so a plus-addressed
+// contact (you+openmote@gmail.com) arrives with the plus decoded as a space and
+// would fail validation at the API. A space is never legal in an address, so
+// putting the plus back is lossless.
+var EMAIL = (P.get('e') || P.get('email') || '').trim().replace(/ /g, '+');
 // Where this visitor came from. Set it per channel in the link:
 //   ?s=newsletter   ?s=instagram   ?s=creator-machonacho   etc.
 // Source can come from EITHER form, so links can be written whichever way is
