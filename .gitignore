@@ -8,3 +8,10 @@ untitled folder/
 .dev.vars
 
 STATUS.md
+
+# local working files, must never deploy to Cloudflare Pages
+campaign-preview/
+campaign-body.md
+TODO-LAUNCH.md
+wholesale/
+safety/
