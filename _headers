@@ -13,3 +13,9 @@
 /preview-light-q7w2m5/*
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
   Cache-Control: no-store
+
+/conformity
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/conformity/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
