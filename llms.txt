@@ -8,7 +8,7 @@
 > receive, 4 LEDs, USB-C, and a 1200 mAh battery, with WiFi and Bluetooth
 > 5 LE on a pre-certified WROOM module. It works with Home Assistant out of
 > the box and pairs as a standard Bluetooth HID gamepad. The Crowd Supply
-> campaign is launching soon,
+> campaign launches September 15, 2026,
 > and the hardware design files will be open-sourced before units ship.
 
 Key facts:
