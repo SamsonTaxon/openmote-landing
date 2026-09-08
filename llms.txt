@@ -29,5 +29,6 @@ Key facts:
 ## Community
 
 - [Instagram @openmote.io](https://www.instagram.com/openmote.io): build demos and short-form videos
+- [Discord](https://discord.gg/vdjjZ4ygR3): the OpenMote community server for questions, builds and demo ideas
 
 Wii and Wii Remote are trademarks of Nintendo. OpenMote is an independent product from Hat & Hammer and is not affiliated with, endorsed by, or sponsored by Nintendo.
