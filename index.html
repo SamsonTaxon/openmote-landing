@@ -1523,6 +1523,50 @@
     ]
   }
   </script>
+<style>
+/* ===== LAUNCH HERO ===== */
+.lh{position:relative;background:var(--blue);color:#fff;min-height:100svh;display:grid;place-items:center;
+    padding:calc(6rem + env(safe-area-inset-top)) var(--gut) calc(6rem + env(safe-area-inset-bottom))}
+.lh-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.25rem;width:100%}
+.lh-art{position:relative;height:min(36svh,320px);aspect-ratio:470/856}
+.lh-art img{position:absolute;width:auto;filter:drop-shadow(0 1px 2px rgba(6,58,86,0.28)) drop-shadow(0 18px 30px rgba(6,58,86,0.26))}
+.lh-art .a{left:3%;top:5%;height:98%;z-index:2;animation:bobA 6s ease-in-out infinite}
+.lh-art .b{left:47%;top:14%;height:85%;z-index:1;animation:bobB 6s ease-in-out 3s infinite}
+.lh-copy{flex:0 0 auto;text-align:center;opacity:0;animation:lhfade .6s ease-out .1s forwards}
+@keyframes lhfade{to{opacity:1}}
+.lh-eye{font-size:0.66rem;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.85);margin:0 0 0.75rem}
+.lh-clock{display:flex;justify-content:center;align-items:flex-start;margin:0 0 1.75rem;font-size:clamp(2.7rem,12.6vw,4.2rem)}
+.lh-u{text-align:center;min-width:1.44em}
+.lh-n{display:block;font-weight:900;font-size:1em;line-height:1;letter-spacing:-0.05em;font-variant-numeric:tabular-nums}
+.lh-c{font-weight:900;font-size:0.85em;line-height:1.18;opacity:0.55;width:0.42em;text-align:center}
+.lh-l{display:block;margin-top:0.5rem;font-size:0.58rem;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.82)}
+.lh-cta{margin:0 0 1.25rem}
+.lh-cta .cta{background:#fff;color:var(--ink);text-decoration:none;white-space:nowrap;padding:1.1rem 2rem;font-size:1rem}
+.lh-h{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lh-h b{font-weight:900}
+.lh-alt{margin:0;font-size:0.8rem;font-weight:600}.lh-alt a{color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px}.lh-alt a:hover{color:#fff}
+.is-live .lh-alt{display:none}
+@media(min-width:768px){.lh-art{height:min(42svh,420px)}.lh-clock{font-size:clamp(3.2rem,7.6vw,5.2rem)}}
+@media(min-width:1024px){
+  .lh-wrap{flex-direction:row;align-items:center;gap:clamp(3rem,6vw,6rem)}
+  .lh-art{height:min(72svh,720px);flex:0 0 auto}
+  .lh-copy{text-align:center;display:flex;flex-direction:column;align-items:center}
+  .lh-eye{margin-bottom:1rem;font-size:0.72rem}
+  .lh-clock{justify-content:center;font-size:clamp(3.6rem,6.8vw,6.4rem);margin-bottom:2.25rem}
+  .lh-u{text-align:center;min-width:1.42em}
+  .lh-l{font-size:0.66rem;margin-top:0.6rem}
+  .lh-cta{margin-bottom:1.5rem}
+}
+@media(prefers-reduced-motion:reduce){.lh-copy{animation:none;opacity:1}.lh-art img{animation:none}}
+.bar p em{font-style:normal;font-weight:800;font-variant-numeric:tabular-nums}
+@media(min-width:1700px){.lh-art{height:min(72svh,800px)}.lh-clock{font-size:7.2rem}.lh-h{font-size:1.45rem}.lh-cta .cta{padding:1.2rem 2.3rem;font-size:1.05rem}}
+.lh .scroll-cue{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:3;display:flex}
+.lh .scroll-cue b{background:#fff;animation-name:cuestepw}
+.is-live .lh-clock{display:none}
+header.overhero::before{opacity:0}
+header.overhero .logo{filter:brightness(0) invert(1)}header.overhero .join-btn{background:#fff;color:var(--ink)}
+header.overhero.scrolled .logo{filter:brightness(0) invert(1)}
+</style>
 </head>
 <body>
 
@@ -1532,24 +1576,24 @@
 </header>
 
 <main id="main">
-<section class="hero">
-  <div class="hero-shell">
-  <img src="img/hero.webp" alt="The OpenMote remote and its circuit board side by side" class="hero-img" width="675" height="1200" fetchpriority="high">
-  <div class="hero-duo" aria-hidden="true">
-    <img src="img/hero-remote-a.webp" alt="" class="duo-a" width="381" height="1260">
-    <img src="img/hero-remote-b.webp" alt="" class="duo-b" width="330" height="1090">
+<section class="lh" aria-label="Launch countdown">
+  <div class="lh-wrap">
+    <div class="lh-art" aria-hidden="true">
+      <img src="img/hero-remote-a.webp" alt="" class="a" width="381" height="1260" fetchpriority="high">
+      <img src="img/hero-remote-b.webp" alt="" class="b" width="330" height="1090">
+    </div>
+    <div class="lh-copy">
+      <p class="lh-eye" id="lhEye">Crowd Supply campaign launches in</p>
+      <div class="lh-clock" role="timer" aria-live="off">
+        <div class="lh-u"><span class="lh-n" id="cdD">00</span><span class="lh-l">Days</span></div><span class="lh-c">:</span><div class="lh-u"><span class="lh-n" id="cdH">00</span><span class="lh-l">Hours</span></div><span class="lh-c">:</span><div class="lh-u"><span class="lh-n" id="cdM">00</span><span class="lh-l">Minutes</span></div><span class="lh-c">:</span><div class="lh-u"><span class="lh-n" id="cdS">00</span><span class="lh-l">Seconds</span></div>
+      </div>
+      <div class="lh-cta"><button class="cta" id="lhCta" onclick="openModal()">Join the Waitlist
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+      <h1 class="lh-h" id="lhH">One Remote. Controls Everything. The OpenMote Crowd Supply campaign launches Tuesday, September 15.</h1>
+      <p class="lh-alt" id="lhAlt"><a href="https://www.crowdsupply.com/hat-and-hammer/openmote" target="_blank" rel="noopener">Or get the alert from Crowd Supply</a></p>
+    </div>
   </div>
   <div class="scroll-cue" aria-hidden="true"><b></b><b></b><b></b></div>
-  <div class="hero-content">
-    <div class="badge">Launches Sept 15</div>
-    <h1>One Remote.<span>Controls Everything.</span></h1>
-    <p>Twelve buttons. Infrared in and out, WiFi, and Bluetooth 5 LE. Works with Home Assistant.</p>
-    <button class="cta" onclick="openModal()">
-      Join Waitlist
-      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-  </div>
-  </div>
 </section>
 
 
@@ -2094,7 +2138,7 @@ document.addEventListener('keydown',e=>{
 // Header state. One rAF-batched scroll handler instead of three separate
 // listeners, so scrolling never runs layout reads more than once per frame.
 const header=document.querySelector('header');
-const heroEl=document.querySelector('.hero');
+const heroEl=document.querySelector('.hero,.lh');
 let lastY=window.scrollY;window.headerHidden=false;
 let scrollQueued=false;
 function headerScrollWork(){
@@ -2103,7 +2147,7 @@ function headerScrollWork(){
   // Over the solid blue hero the mark and button invert. Driven by the hero's
   // own box so the swap always happens exactly at the blue-to-white edge.
   // The blue hero starts at 768px, so the swap has to as well.
-  if(heroEl)header.classList.toggle('overhero',window.innerWidth>=768&&heroEl.getBoundingClientRect().bottom>110);
+  if(heroEl)header.classList.toggle('overhero',heroEl.getBoundingClientRect().bottom>110);
   // Desktop: kode-style header hide on scroll down, return on scroll up
   if(window.innerWidth>=1024){
     if(y>140&&y>lastY+4)header.classList.add('hide');
@@ -2355,6 +2399,29 @@ function handleJoin(e) {
   }
   window.updBar=updBar;
   new IntersectionObserver(function(es){ endNear = es[0].isIntersecting; updBar(); }, {threshold:0.1}).observe(ready);
+})();
+</script>
+
+<script>
+(function(){
+  var T=Date.parse('2026-09-15T17:00:00Z');
+  var $=function(i){return document.getElementById(i)};
+  var d=$('cdD'),h=$('cdH'),m=$('cdM'),s=$('cdS'),barP=document.querySelector('.bar p');
+  function pad(n){return (n<10?'0':'')+n}
+  try{
+    var f=new Intl.DateTimeFormat(undefined,{weekday:'long',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).formatToParts(new Date(T)),g={};
+    f.forEach(function(x){g[x.type]=(g[x.type]||'')+x.value});
+    $('lhEye').textContent='Launches '+g.weekday+', '+g.month+' '+g.day+' at '+g.hour+':'+g.minute+' '+(g.dayPeriod||'').toUpperCase()+' '+g.timeZoneName;
+  }catch(e){}
+  function live(){document.documentElement.classList.add('is-live');$('lhEye').textContent='Live now on Crowd Supply';var b=$('lhCta');b.firstChild.textContent='Back OpenMote on Crowd Supply ';b.onclick=function(){window.open('https://www.crowdsupply.com/hat-and-hammer/openmote','_blank','noopener')};if(barP)barP.innerHTML='OpenMote is <strong>live on Crowd Supply</strong>'}
+  function tick(){
+    var r=T-Date.now(); if(r<=0){live();return}
+    var t=Math.floor(r/1000),D=Math.floor(t/86400),H=Math.floor(t%86400/3600),M=Math.floor(t%3600/60),S=t%60;
+    d.textContent=pad(D);h.textContent=pad(H);m.textContent=pad(M);s.textContent=pad(S);
+    if(barP)barP.innerHTML='Crowd Supply campaign launches in <em>'+D+'d '+pad(H)+'h '+pad(M)+'m '+pad(S)+'s</em>';
+    setTimeout(tick,1000-(Date.now()%1000));
+  }
+  tick();
 })();
 </script>
 </body>
