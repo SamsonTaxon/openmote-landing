@@ -1541,7 +1541,8 @@
 .lh-c{font-weight:900;font-size:0.85em;line-height:1.18;opacity:0.55;width:0.42em;text-align:center}
 .lh-l{display:block;margin-top:0.5rem;font-size:0.58rem;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.82)}
 .lh-cta{margin:0 0 1.25rem}
-.lh-cta .cta{background:#fff;color:var(--ink);text-decoration:none;white-space:nowrap;padding:1.1rem 2rem;font-size:1rem}
+.lh-cta .cta{background:#fff;color:var(--ink);text-decoration:none;white-space:normal;text-align:center;max-width:100%;padding:1.1rem 2rem;font-size:1rem}
+.is-live .lh-eye{font-size:clamp(1.3rem,3.2vw,2.2rem);font-weight:900;letter-spacing:-0.02em;text-transform:none;color:#fff;margin-bottom:1.5rem;line-height:1.15}
 .lh-h{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .lh-h b{font-weight:900}
 .lh-alt{margin:0;font-size:0.8rem;font-weight:600}.lh-alt a{color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px}.lh-alt a:hover{color:#fff}
@@ -2413,7 +2414,7 @@ function handleJoin(e) {
     f.forEach(function(x){g[x.type]=(g[x.type]||'')+x.value});
     $('lhEye').textContent='Launches '+g.weekday+', '+g.month+' '+g.day+' at '+g.hour+':'+g.minute+' '+(g.dayPeriod||'').toUpperCase()+' '+g.timeZoneName;
   }catch(e){}
-  function live(){document.documentElement.classList.add('is-live');$('lhEye').textContent='Live now on Crowd Supply';var b=$('lhCta');b.firstChild.textContent='Back OpenMote on Crowd Supply ';b.onclick=function(){window.open('https://www.crowdsupply.com/hat-and-hammer/openmote','_blank','noopener')};if(barP)barP.innerHTML='OpenMote is <strong>live on Crowd Supply</strong>'}
+  function live(){document.documentElement.classList.add('is-live');$('lhEye').textContent='OpenMote is live on Crowd Supply';var b=$('lhCta');b.firstChild.textContent='Back OpenMote ';var wait=Math.max(0,T+60000-Date.now());setTimeout(function(){try{if(sessionStorage.getItem('omfwd'))return;sessionStorage.setItem('omfwd','1')}catch(e){}location.replace('https://www.crowdsupply.com/hat-and-hammer/openmote')},wait);b.onclick=function(){window.open('https://www.crowdsupply.com/hat-and-hammer/openmote','_blank','noopener')};if(barP)barP.innerHTML='OpenMote is <strong>live on Crowd Supply</strong>'}
   function tick(){
     var r=T-Date.now(); if(r<=0){live();return}
     var t=Math.floor(r/1000),D=Math.floor(t/86400),H=Math.floor(t%86400/3600),M=Math.floor(t%3600/60),S=t%60;
