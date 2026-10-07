@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpenMote Guides</title>
+<meta name="description" content="Step by step guides for OpenMote, starting with putting the board in a Wiimote shell.">
+<link rel="canonical" href="https://openmote.io/guides/">
+<meta property="og:title" content="OpenMote Guides"><meta property="og:description" content="Step by step guides for OpenMote."><meta property="og:image" content="https://openmote.io/guides/assembly/og.jpg"><meta property="og:url" content="https://openmote.io/guides/">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:#F5F5F5;color:#0A0A0A;font-family:'Montserrat',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:#0077B6;text-decoration:none}a:hover{text-decoration:underline}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #0A0A0A;outline-offset:2px}.top :focus-visible,.hero :focus-visible,.end :focus-visible,.lb :focus-visible{outline-color:#fff}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#25AFF4}
+/* header */
+.top{position:sticky;top:0;z-index:20;background:#0A0A0A;color:#fff}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-top:8px;padding-bottom:8px}
+.top .logo{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
+.top .mark{height:36px;width:auto;flex:none}
+.top .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9A9A9A;white-space:nowrap}.top .kicker a{color:#9A9A9A}
+.prog{display:flex;align-items:center;flex:1;min-width:0;justify-content:flex-end}
+.prog .count{font-size:13px;font-weight:700;white-space:nowrap;color:#fff}
+.help{display:flex;align-items:center;justify-content:center;gap:8px;background:#25AFF4;color:#fff;min-height:44px;padding:0 16px;font-size:13px;font-weight:700;white-space:nowrap;flex:none;transition:background .2s,color .2s}
+.help:hover{background:#fff;color:#0A0A0A;text-decoration:none}
+.top .bar{height:4px;background:#1A1A1A}.top .bar i{display:block;height:4px;width:0;background:#25AFF4;transition:width .35s cubic-bezier(.4,0,.2,1)}
+/* hero */
+.hero{background:#0A0A0A;color:#fff;padding-top:24px}
+.notice{display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid #FFD400;background:rgba(255,212,0,.08);margin:0;font-size:14px;line-height:1.5}
+.notice svg{flex:none}.notice strong{color:#FFD400;font-weight:800}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:center;padding:40px 0 56px}
+.hero h1{margin:0;font-size:clamp(34px,5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.hero p{margin:0;font-size:17px;line-height:1.55;color:rgba(255,255,255,.75);max-width:520px;text-wrap:pretty}
+.hero .col{display:flex;flex-direction:column;gap:20px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.stats div{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:2px solid #25AFF4;min-width:120px}
+.stats span{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9A9A9A}.stats b{font-size:16px;font-weight:800}
+.hero .cover{background:#fff;aspect-ratio:1/1;overflow:hidden}
+.hero .cover img{width:100%;height:100%;object-fit:cover;object-position:50% 52%}
+/* main */
+main.wrap{padding-top:48px;padding-bottom:80px;display:flex;flex-direction:column;gap:32px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.card{background:#fff;border:1px solid #E0E0E0;padding:28px;display:flex;flex-direction:column;gap:16px}
+.card .row{display:flex;align-items:center;gap:16px}
+.card .n{width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:15px;background:#25AFF4}
+.card.parts .n{background:#0A0A0A}
+.card b{font-size:15px;font-weight:700;display:block}.card small{font-size:13px;color:#6B6B6B}
+.sec{display:flex;flex-direction:column;gap:12px;padding-top:24px}
+.sec h2{margin:0;font-size:40px;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.jump{display:grid;grid-template-columns:repeat(14,1fr);margin-top:8px;border:1px solid #E0E0E0;background:#fff}
+.jump a{height:48px;display:flex;align-items:center;justify-content:center;border-right:1px solid #E0E0E0;font-weight:800;font-size:14px;color:#0A0A0A}
+.jump a:last-child{border-right:0}.jump a:hover{background:#F5F5F5;text-decoration:none}.jump a.is-current{box-shadow:inset 0 -3px 0 #25AFF4}.jump a.is-done{background:#25AFF4;color:#fff}
+/* step */
+.step{background:#fff;border:1px solid #E0E0E0;scroll-margin-top:72px}
+.step>header{display:flex;align-items:stretch;border-bottom:1px solid #E0E0E0}
+.step .num{background:#25AFF4;color:#fff;padding:16px 22px;display:flex;flex-direction:column;justify-content:center;min-width:96px;flex:none}
+.step .num span{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}.step .num b{font-size:32px;font-weight:900;line-height:1;letter-spacing:-.02em}
+.step h3{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em;flex:1;min-width:0;padding:16px 24px;display:flex;align-items:center}
+.done{display:flex;align-items:center;gap:8px;margin:0;align-self:stretch;padding:0 24px;border:0;border-left:1px solid #E0E0E0;background:#fff;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap;flex:none;transition:background .2s,color .2s}
+.done:hover{background:#F5F5F5}
+.step.is-done .done{background:#25AFF4;color:#fff}
+.step.is-done .num{background:#0A0A0A}
+.body{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.media{padding:24px;display:flex;flex-direction:column;gap:12px;border-right:1px solid #E0E0E0}
+.frame{position:relative;aspect-ratio:1/1;background:#fff;border:1px solid #E0E0E0;overflow:hidden;cursor:zoom-in}
+.ph{position:absolute;inset:0}.js .ph.hid{display:none}.ph img{width:100%;height:100%;object-fit:cover}
+.mk{position:absolute;aspect-ratio:1/1;transform:translate(-50%,-50%);border:3px solid;border-radius:50%;pointer-events:none}
+.ar{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.ar line{stroke-width:1.2;stroke-linecap:round}
+.tag{position:absolute;transform:translateY(-50%);color:#fff;padding:.5em .8em;font-size:clamp(11px,3.4vw,14px);font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;pointer-events:none}
+.tag.r{transform:translate(-100%,-50%)}
+.thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.thumbs:has(>:nth-child(5)){grid-template-columns:repeat(5,minmax(0,1fr))}
+.thumbs button{position:relative;padding:0;aspect-ratio:1/1;background:#fff;cursor:pointer;overflow:hidden;border:2px solid #E0E0E0;transition:border-color .2s}
+.thumbs button[aria-pressed="true"]{border-color:#25AFF4}.thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs button.has-mk::after{content:"";position:absolute;top:4px;right:4px;width:10px;height:10px;background:#FFD400}
+.lines{list-style:none;margin:0;padding:28px 28px 28px 24px;display:flex;flex-direction:column;gap:14px}
+.lines li{position:relative;padding-left:24px;font-size:15px;line-height:1.6;text-wrap:pretty}
+.lines li::before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;background:var(--m,#0A0A0A)}
+.lines li.k-c,.lines li.k-n,.lines li.k-a{padding:12px 14px 12px 18px;border-left:6px solid var(--m)}
+.lines li.k-c{background:#FFF0F0}.lines li.k-n{background:#EEF8FE}.lines li.k-a{background:#FFF9DB}
+.lines li.k-c::before,.lines li.k-n::before,.lines li.k-a::before,.lines li.dl::before,.lines li.nx::before{display:none}
+.lines strong{font-weight:800}.wi{vertical-align:-2px;margin-right:4px}
+.lines li.dl{padding-left:0}
+.lines li.nx{margin-top:auto;padding:16px 0 0;border-top:1px solid #E0E0E0}
+.stl{display:inline-flex;align-items:center;gap:10px;border:0;background:#F5F5F5;color:#6B6B6B;padding:14px 20px;font-weight:700;font-size:14px;cursor:not-allowed}.stl svg{color:#9A9A9A}
+.advance{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 18px;background:#0A0A0A;color:#fff;border:0;cursor:pointer;font-weight:800;font-size:15px;text-align:left;transition:background .2s}
+.advance:hover{background:#25AFF4}.advance span{min-width:0}
+.btn{background:#25AFF4;color:#fff;padding:14px 22px;font-weight:700;font-size:14px;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:10px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,175,244,.5);text-decoration:none}
+.btn.ghost{background:none;border:2px solid #25AFF4;padding:12px 20px}.btn.ghost:hover{box-shadow:none}
+/* conclusion */
+.end{background:#0A0A0A;color:#fff;padding:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:center;scroll-margin-top:72px}
+.end .col{display:flex;flex-direction:column;gap:16px}
+.end h2{margin:0;font-size:clamp(28px,8vw,40px);font-weight:900;letter-spacing:-.03em;line-height:1.1;overflow-wrap:anywhere}
+.end p{margin:0;font-size:16px;line-height:1.6;color:rgba(255,255,255,.75);text-wrap:pretty}
+.end a{color:#fff}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.end .pic{background:#fff;aspect-ratio:1/1;overflow:hidden}.end .pic img{width:100%;height:100%;object-fit:cover}
+.foot{font-size:13px;color:#6B6B6B;text-align:center;border-top:1px solid #E0E0E0;margin-top:24px;padding-top:32px;line-height:1.6}
+.foot .tm{font-size:12px;max-width:640px;margin:8px auto 0}
+.fl{margin-bottom:10px}.fl a{color:#0A0A0A;font-weight:700}
+/* resume bar */
+.resume{position:fixed;left:0;right:0;bottom:0;z-index:30;display:none;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:0 16px;background:#0A0A0A;color:#fff;font-weight:700;font-size:14px}
+.resume.on{display:flex}.resume a{color:#25AFF4;font-weight:800}.resume button{background:none;border:0;color:#9A9A9A;cursor:pointer;min-width:44px;min-height:44px}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.94);display:none;align-items:center;justify-content:center;padding:0;overflow:auto}
+.lb.on{display:flex}
+.lb .stage{position:relative;width:min(100vw,calc(100vh - 72px),1200px);aspect-ratio:1/1;background:#fff;touch-action:pinch-zoom}
+.lb .stage .ph{position:absolute;inset:0;display:block}
+.lb .x{position:absolute;top:12px;right:12px;width:48px;height:48px;background:#fff;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1}
+/* no js */
+.no-js .thumbs,.no-js .done,.no-js .prog,.no-js .advance,.no-js .top .bar{display:none}
+.no-js .frame{aspect-ratio:auto;cursor:auto}.no-js .ph{position:relative;aspect-ratio:1/1}.no-js .ph+.ph{margin-top:8px}
+@media (max-width:760px){
+  .top .wrap{gap:8px;padding-left:12px;padding-right:12px}.top .kicker{display:none}
+  .help{padding:0 12px}.help span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .wrap{padding-left:16px;padding-right:16px}
+  .hero .grid{grid-template-columns:1fr;gap:28px;padding:28px 0 40px}
+  .hero .cover{aspect-ratio:1/1}
+  .jump{grid-template-columns:repeat(7,1fr)}.jump a:nth-child(7){border-right:0}.jump a:nth-child(n+8){border-top:1px solid #E0E0E0}
+  .step{margin:0 -16px;border-left:0;border-right:0}
+  .step h3{font-size:18px;padding:14px 16px}.step .num{min-width:72px;padding:12px 14px}.step .num b{font-size:26px}
+  .done{padding:0;width:56px;justify-content:center}.done span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .media{border-right:0;border-bottom:1px solid #E0E0E0;padding:0 0 12px}
+  .frame{border:0}
+  .thumbs{padding:0 12px}
+  .lines{padding:20px 16px}.lines li{font-size:17px;line-height:1.55}
+  .end{padding:28px 20px}.sec h2{font-size:32px}
+  .btns .btn{flex:1 1 100%;justify-content:center}
+}
+
+.list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start}
+.g{background:#fff;border:1px solid #E0E0E0;display:flex;flex-direction:column;color:#0A0A0A}
+.g:hover{text-decoration:none;border-color:#25AFF4}
+.g .img{aspect-ratio:16/10;overflow:hidden;background:#fff}.g .img img{width:100%;height:100%;object-fit:cover;object-position:50% 52%}
+.g .t{padding:20px 24px 24px;display:flex;flex-direction:column;gap:8px}.g h3{margin:0;font-size:20px;font-weight:800;letter-spacing:-.02em}.g p{margin:0;font-size:14px;color:#6B6B6B;line-height:1.5}
+.g.soon .img{aspect-ratio:auto;height:56px;display:flex;align-items:center;padding:0 24px;background:#F5F5F5;border-bottom:1px solid #E0E0E0;color:#6B6B6B;font-weight:800;letter-spacing:.2em;text-transform:uppercase;font-size:12px}.g.soon h3{color:#6B6B6B}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a class="logo" href="/guides/" aria-label="OpenMote guides"><img class="mark" src="/design-system/logos/LogoMarkOpenmote.svg" alt="" width="40" height="36"></a><div class="kicker">Guides</div><div style="flex:1"></div><a class="help" href="https://openmote.io/discord" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>Ask in the Discord</span></a></div></div>
+<section class="hero"><div class="wrap"><div class="grid" style="grid-template-columns:1fr;padding:48px 0"><div class="col"><div class="eyebrow">OpenMote</div><h1>Guides</h1><p>Step by step, with a photo for every step. Mark steps done as you go, and ask in the Discord if you get stuck.</p></div></div></div></section>
+<main class="wrap">
+  <div class="list">
+    <a class="g" href="/guides/assembly/"><div class="img"><img src="/guides/assembly/photos/cover.webp" alt="" width="1200" height="1600"></div><div class="t"><div class="eyebrow">Hardware</div><h3>Installing OpenMote in a Wiimote shell</h3><p>14 steps, 5 to 15 minutes, no soldering. Open the shell, move the B trigger over, drop in the battery.</p></div></a>
+    <div class="g soon"><div class="img">Coming soon</div><div class="t"><div class="eyebrow">Setup</div><h3>First-time setup</h3><p>Charging, connecting, and your first app.</p></div></div>
+    <div class="g soon"><div class="img">Coming soon</div><div class="t"><div class="eyebrow">Programming</div><h3>Programming OpenMote</h3><p>Arduino IDE, the library, and the example apps.</p></div></div>
+  </div>
+  <footer class="foot"><nav class="fl"><a href="https://openmote.io">openmote.io</a> &middot; <a href="https://www.instagram.com/openmote.io/">Instagram</a> &middot; <a href="https://openmote.io/discord">Discord</a></nav>&copy; 2026 Hat &amp; Hammer &middot; Los Angeles<div class="tm">Wii and Wii Remote are trademarks of Nintendo. OpenMote is an independent product from Hat &amp; Hammer and is not affiliated with, endorsed by, or sponsored by Nintendo.</div></footer>
+</main>
+</body>
+</html>

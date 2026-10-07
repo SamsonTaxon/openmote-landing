@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.className='js'</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installing OpenMote in a Wiimote shell | OpenMote Guides</title>
+<meta name="description" content="Put an OpenMote board in a Wiimote shell in 14 steps, a photo for each. You need a tri-wing screwdriver and an opening pick. No soldering, about 15 minutes.">
+<link rel="canonical" href="https://openmote.io/guides/assembly/">
+<meta property="og:type" content="article"><meta property="og:title" content="Installing OpenMote in a Wiimote shell">
+<meta property="og:description" content="14 steps with a photo for each. Open the shell, swap in the OpenMote board, plug in the battery. No soldering, about 15 minutes.">
+<meta property="og:image" content="https://openmote.io/guides/assembly/og.jpg"><meta property="og:url" content="https://openmote.io/guides/assembly/"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:#F5F5F5;color:#0A0A0A;font-family:'Montserrat',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:#0077B6;text-decoration:none}a:hover{text-decoration:underline}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #0A0A0A;outline-offset:2px}.top :focus-visible,.hero :focus-visible,.end :focus-visible,.lb :focus-visible{outline-color:#fff}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#25AFF4}
+/* header */
+.top{position:sticky;top:0;z-index:20;background:#0A0A0A;color:#fff}
+.top .wrap{display:flex;align-items:center;gap:16px;padding-top:8px;padding-bottom:8px}
+.top .logo{display:flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}
+.top .mark{height:36px;width:auto;flex:none}
+.top .kicker{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9A9A9A;white-space:nowrap}.top .kicker a{color:#9A9A9A}
+.prog{display:flex;align-items:center;flex:1;min-width:0;justify-content:flex-end}
+.prog .count{font-size:13px;font-weight:700;white-space:nowrap;color:#fff}
+.help{display:flex;align-items:center;justify-content:center;gap:8px;background:#25AFF4;color:#fff;min-height:44px;padding:0 16px;font-size:13px;font-weight:700;white-space:nowrap;flex:none;transition:background .2s,color .2s}
+.help:hover{background:#fff;color:#0A0A0A;text-decoration:none}
+.top .bar{height:4px;background:#1A1A1A}.top .bar i{display:block;height:4px;width:0;background:#25AFF4;transition:width .35s cubic-bezier(.4,0,.2,1)}
+/* hero */
+.hero{background:#0A0A0A;color:#fff;padding-top:24px}
+.notice{display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid #FFD400;background:rgba(255,212,0,.08);margin:0;font-size:14px;line-height:1.5}
+.notice svg{flex:none}.notice strong{color:#FFD400;font-weight:800}
+.hero .grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:center;padding:40px 0 56px}
+.hero h1{margin:0;font-size:clamp(34px,5vw,60px);font-weight:900;line-height:1.05;letter-spacing:-.03em;text-wrap:balance}
+.hero p{margin:0;font-size:17px;line-height:1.55;color:rgba(255,255,255,.75);max-width:520px;text-wrap:pretty}
+.hero .col{display:flex;flex-direction:column;gap:20px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.stats div{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:2px solid #25AFF4;min-width:120px}
+.stats span{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#9A9A9A}.stats b{font-size:16px;font-weight:800}
+.hero .cover{background:#fff;aspect-ratio:1/1;overflow:hidden}
+.hero .cover img{width:100%;height:100%;object-fit:cover;object-position:50% 52%}
+/* main */
+main.wrap{padding-top:48px;padding-bottom:80px;display:flex;flex-direction:column;gap:32px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.card{background:#fff;border:1px solid #E0E0E0;padding:28px;display:flex;flex-direction:column;gap:16px}
+.card .row{display:flex;align-items:center;gap:16px}
+.card .n{width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:15px;background:#25AFF4}
+.card.parts .n{background:#0A0A0A}
+.card b{font-size:15px;font-weight:700;display:block}.card small{font-size:13px;color:#6B6B6B}
+.sec{display:flex;flex-direction:column;gap:12px;padding-top:24px}
+.sec h2{margin:0;font-size:40px;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.jump{display:grid;grid-template-columns:repeat(14,1fr);margin-top:8px;border:1px solid #E0E0E0;background:#fff}
+.jump a{height:48px;display:flex;align-items:center;justify-content:center;border-right:1px solid #E0E0E0;font-weight:800;font-size:14px;color:#0A0A0A}
+.jump a:last-child{border-right:0}.jump a:hover{background:#F5F5F5;text-decoration:none}.jump a.is-current{box-shadow:inset 0 -3px 0 #25AFF4}.jump a.is-done{background:#25AFF4;color:#fff}
+/* step */
+.step{background:#fff;border:1px solid #E0E0E0;scroll-margin-top:72px}
+.step>header{display:flex;align-items:stretch;border-bottom:1px solid #E0E0E0}
+.step .num{background:#25AFF4;color:#fff;padding:16px 22px;display:flex;flex-direction:column;justify-content:center;min-width:96px;flex:none}
+.step .num span{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}.step .num b{font-size:32px;font-weight:900;line-height:1;letter-spacing:-.02em}
+.step h3{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em;flex:1;min-width:0;padding:16px 24px;display:flex;align-items:center}
+.done{display:flex;align-items:center;gap:8px;margin:0;align-self:stretch;padding:0 24px;border:0;border-left:1px solid #E0E0E0;background:#fff;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap;flex:none;transition:background .2s,color .2s}
+.done:hover{background:#F5F5F5}
+.step.is-done .done{background:#25AFF4;color:#fff}
+.step.is-done .num{background:#0A0A0A}
+.body{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.media{padding:24px;display:flex;flex-direction:column;gap:12px;border-right:1px solid #E0E0E0}
+.frame{position:relative;aspect-ratio:1/1;background:#fff;border:1px solid #E0E0E0;overflow:hidden;cursor:zoom-in}
+.ph{position:absolute;inset:0}.js .ph.hid{display:none}.ph img{width:100%;height:100%;object-fit:cover}
+.mk{position:absolute;aspect-ratio:1/1;transform:translate(-50%,-50%);border:3px solid;border-radius:50%;pointer-events:none}
+.ar{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.ar line{stroke-width:1.2;stroke-linecap:round}
+.tag{position:absolute;transform:translateY(-50%);color:#fff;padding:.5em .8em;font-size:clamp(11px,3.4vw,14px);font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;pointer-events:none}
+.tag.r{transform:translate(-100%,-50%)}
+.thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.thumbs:has(>:nth-child(5)){grid-template-columns:repeat(5,minmax(0,1fr))}
+.thumbs button{position:relative;padding:0;aspect-ratio:1/1;background:#fff;cursor:pointer;overflow:hidden;border:2px solid #E0E0E0;transition:border-color .2s}
+.thumbs button[aria-pressed="true"]{border-color:#25AFF4}.thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs button.has-mk::after{content:"";position:absolute;top:4px;right:4px;width:10px;height:10px;background:#FFD400}
+.lines{list-style:none;margin:0;padding:28px 28px 28px 24px;display:flex;flex-direction:column;gap:14px}
+.lines li{position:relative;padding-left:24px;font-size:15px;line-height:1.6;text-wrap:pretty}
+.lines li::before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;background:var(--m,#0A0A0A)}
+.lines li.k-c,.lines li.k-n,.lines li.k-a{padding:12px 14px 12px 18px;border-left:6px solid var(--m)}
+.lines li.k-c{background:#FFF0F0}.lines li.k-n{background:#EEF8FE}.lines li.k-a{background:#FFF9DB}
+.lines li.k-c::before,.lines li.k-n::before,.lines li.k-a::before,.lines li.dl::before,.lines li.nx::before{display:none}
+.lines strong{font-weight:800}.wi{vertical-align:-2px;margin-right:4px}
+.lines li.dl{padding-left:0}
+.lines li.nx{margin-top:auto;padding:16px 0 0;border-top:1px solid #E0E0E0}
+.stl{display:inline-flex;align-items:center;gap:10px;border:0;background:#F5F5F5;color:#6B6B6B;padding:14px 20px;font-weight:700;font-size:14px;cursor:not-allowed}.stl svg{color:#9A9A9A}
+.advance{width:100%;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 18px;background:#0A0A0A;color:#fff;border:0;cursor:pointer;font-weight:800;font-size:15px;text-align:left;transition:background .2s}
+.advance:hover{background:#25AFF4}.advance span{min-width:0}
+.btn{background:#25AFF4;color:#fff;padding:14px 22px;font-weight:700;font-size:14px;transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:10px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,175,244,.5);text-decoration:none}
+.btn.ghost{background:none;border:2px solid #25AFF4;padding:12px 20px}.btn.ghost:hover{box-shadow:none}
+/* conclusion */
+.end{background:#0A0A0A;color:#fff;padding:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:center;scroll-margin-top:72px}
+.end .col{display:flex;flex-direction:column;gap:16px}
+.end h2{margin:0;font-size:clamp(28px,8vw,40px);font-weight:900;letter-spacing:-.03em;line-height:1.1;overflow-wrap:anywhere}
+.end p{margin:0;font-size:16px;line-height:1.6;color:rgba(255,255,255,.75);text-wrap:pretty}
+.end a{color:#fff}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.end .pic{background:#fff;aspect-ratio:1/1;overflow:hidden}.end .pic img{width:100%;height:100%;object-fit:cover}
+.foot{font-size:13px;color:#6B6B6B;text-align:center;border-top:1px solid #E0E0E0;margin-top:24px;padding-top:32px;line-height:1.6}
+.foot .tm{font-size:12px;max-width:640px;margin:8px auto 0}
+.fl{margin-bottom:10px}.fl a{color:#0A0A0A;font-weight:700}
+/* resume bar */
+.resume{position:fixed;left:0;right:0;bottom:0;z-index:30;display:none;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:0 16px;background:#0A0A0A;color:#fff;font-weight:700;font-size:14px}
+.resume.on{display:flex}.resume a{color:#25AFF4;font-weight:800}.resume button{background:none;border:0;color:#9A9A9A;cursor:pointer;min-width:44px;min-height:44px}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.94);display:none;align-items:center;justify-content:center;padding:0;overflow:auto}
+.lb.on{display:flex}
+.lb .stage{position:relative;width:min(100vw,calc(100vh - 72px),1200px);aspect-ratio:1/1;background:#fff;touch-action:pinch-zoom}
+.lb .stage .ph{position:absolute;inset:0;display:block}
+.lb .x{position:absolute;top:12px;right:12px;width:48px;height:48px;background:#fff;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1}
+/* no js */
+.no-js .thumbs,.no-js .done,.no-js .prog,.no-js .advance,.no-js .top .bar{display:none}
+.no-js .frame{aspect-ratio:auto;cursor:auto}.no-js .ph{position:relative;aspect-ratio:1/1}.no-js .ph+.ph{margin-top:8px}
+@media (max-width:760px){
+  .top .wrap{gap:8px;padding-left:12px;padding-right:12px}.top .kicker{display:none}
+  .help{padding:0 12px}.help span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .wrap{padding-left:16px;padding-right:16px}
+  .hero .grid{grid-template-columns:1fr;gap:28px;padding:28px 0 40px}
+  .hero .cover{aspect-ratio:1/1}
+  .jump{grid-template-columns:repeat(7,1fr)}.jump a:nth-child(7){border-right:0}.jump a:nth-child(n+8){border-top:1px solid #E0E0E0}
+  .step{margin:0 -16px;border-left:0;border-right:0}
+  .step h3{font-size:18px;padding:14px 16px}.step .num{min-width:72px;padding:12px 14px}.step .num b{font-size:26px}
+  .done{padding:0;width:56px;justify-content:center}.done span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .media{border-right:0;border-bottom:1px solid #E0E0E0;padding:0 0 12px}
+  .frame{border:0}
+  .thumbs{padding:0 12px}
+  .lines{padding:20px 16px}.lines li{font-size:17px;line-height:1.55}
+  .end{padding:28px 20px}.sec h2{font-size:32px}
+  .btns .btn{flex:1 1 100%;justify-content:center}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<marker id="ah-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FF0000"/></marker>
+<marker id="ah-ink" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0A0A0A"/></marker>
+<marker id="ah-yel" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#FFD400"/></marker>
+</defs></svg>
+<div class="top"><div class="wrap">
+  <a class="logo" href="/guides/" aria-label="OpenMote guides"><img class="mark" src="/design-system/logos/LogoMarkOpenmote.svg" alt="" width="40" height="36"></a>
+  <div class="kicker"><a href="/guides/">Guides</a> &middot; Assembly</div>
+  <div class="prog"><div class="count">Step 1 of 14</div></div>
+  <a class="help" href="https://openmote.io/discord" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>Stuck and need help?</span></a>
+</div><div class="bar"><i></i></div></div>
+<p class="vh" role="status" id="st"></p>
+
+<section class="hero"><div class="wrap">
+  <div class="notice"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFD400" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><div><strong>Heads up:</strong> We may update these steps as the kit changes.</div></div>
+  <div class="grid">
+    <div class="col">
+      <div class="eyebrow">Wiimote shell &middot; Board replacement</div>
+      <h1>Installing OpenMote in a Wiimote shell</h1>
+      <p>Swap the original Wii Remote board for an OpenMote. You will open the shell, move the B trigger over to a new bracket, and drop in a rechargeable battery. No soldering required.</p>
+      <div class="stats"><div><span>Difficulty</span><b>Easy</b></div><div><span>Steps</span><b>14</b></div><div><span>Time</span><b>5 to 15 min</b></div></div>
+    </div>
+    <div class="cover"><img src="photos/cover.webp" alt="Three stages side by side on a cutting mat: an open Wii Remote shell with its rubber button pads, a black OpenMote board sitting in a white shell, and a finished remote" width="1200" height="1600" fetchpriority="high"></div>
+  </div>
+</div></section>
+
+<main class="wrap">
+  <div class="cards"><div class="card tools"><div class="eyebrow">Tools</div><div class="row"><div class="n">01</div><div><b>Tri-wing screwdriver (Y1)</b><small>For the four battery-bay screws</small></div></div><div class="row"><div class="n">02</div><div><b>Opening pick</b><small>Plastic, not metal. Releases the shell clips</small></div></div></div><div class="card parts"><div class="eyebrow">Parts</div><div class="row"><div class="n">01</div><div><b>OpenMote board</b><small>Replaces the original board</small></div></div><div class="row"><div class="n">02</div><div><b>B trigger bracket</b><small>Holds the B button over the board</small></div></div><div class="row"><div class="n">03</div><div><b>3D printed port cover</b><small>Fills the gap around the USB-C port</small></div></div><div class="row"><div class="n">04</div><div><b>Rechargeable lithium battery</b><small>Replaces the two AA batteries</small></div></div></div></div>
+  <div class="sec"><div class="eyebrow">The Guide</div><h2>Step by Step</h2><nav class="jump" aria-label="Jump to step"><a href="#step-1" title="Remove the Battery Cover" aria-label="Step 1: Remove the Battery Cover">1</a><a href="#step-2" title="Remove the Tri-Wing Screws" aria-label="Step 2: Remove the Tri-Wing Screws">2</a><a href="#step-3" title="Release the Shell Clips" aria-label="Step 3: Release the Shell Clips">3</a><a href="#step-4" title="Separate the Shells" aria-label="Step 4: Separate the Shells">4</a><a href="#step-5" title="Lift Out the Original Board" aria-label="Step 5: Lift Out the Original Board">5</a><a href="#step-6" title="Check the Top Shell" aria-label="Step 6: Check the Top Shell">6</a><a href="#step-7" title="Seat the OpenMote Board" aria-label="Step 7: Seat the OpenMote Board">7</a><a href="#step-8" title="Fit the B Trigger Bracket" aria-label="Step 8: Fit the B Trigger Bracket">8</a><a href="#step-9" title="Install the B Button" aria-label="Step 9: Install the B Button">9</a><a href="#step-10" title="Insert the 3D Printed Port Cover" aria-label="Step 10: Insert the 3D Printed Port Cover">10</a><a href="#step-11" title="Close the Shell" aria-label="Step 11: Close the Shell">11</a><a href="#step-12" title="Reinstall the Screws" aria-label="Step 12: Reinstall the Screws">12</a><a href="#step-13" title="Connect the Battery" aria-label="Step 13: Connect the Battery">13</a><a href="#step-14" title="Replace the Battery Cover" aria-label="Step 14: Replace the Battery Cover">14</a></nav></div>
+<article class="step" id="step-1" data-n="1">
+  <header><div class="num"><span>Step</span><b>1</b></div><h3>Remove the Battery Cover</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 1 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1484" data-i="0"><img src="photos/1484.webp" alt="Wii Remote face down on the mat with the wrist strap removed, B trigger facing up" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1485" data-i="1"><img src="photos/1485.webp" alt="Thumb pressing the tab on the battery cover to slide it off" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1486" data-i="2"><img src="photos/1486.webp" alt="Battery cover off and the two AA batteries lifted out of the bay" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1484" data-i="0" aria-label="Photo 1 of 3"><img src="photos/1484-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1485" data-i="1" aria-label="Photo 2 of 3"><img src="photos/1485-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1486" data-i="2" aria-label="Photo 3 of 3"><img src="photos/1486-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Remove the wrist strap and any silicone jacket from the Wii Remote.</li><li class="k-b" style="--m:#0A0A0A">Flip the remote over so the B trigger faces up.</li><li class="k-b" style="--m:#0A0A0A">Press the tab at the bottom of the battery cover and slide it off.</li><li class="k-b" style="--m:#0A0A0A">Take out both AA batteries. The OpenMote runs on its own rechargeable cell, so you won’t need them again.</li><li class="nx"><button type="button" class="advance" data-next="step-2"><span>Done, next: Remove the Tri-Wing Screws</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-2" data-n="2">
+  <header><div class="num"><span>Step</span><b>2</b></div><h3>Remove the Tri-Wing Screws</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 2 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1487" data-i="0"><img src="photos/1487.webp" alt="Open battery bay with the four tri-wing screws circled in red, two at the top and two at the bottom" decoding="async" width="1200" height="1200"><i class="mk" style="left:43.6%;top:50.3%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:56.8%;top:50.3%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:42.7%;top:85.5%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:57.5%;top:85.5%;width:9%;border-color:#FF0000"></i></div><div class="ph hid" data-ph="1488" data-i="1"><img src="photos/1488.webp" alt="Tri-wing screwdriver removing one of the screws inside the battery bay" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1487" data-i="0" aria-label="Photo 1 of 2, with callouts" class="has-mk"><img src="photos/1487-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1488" data-i="1" aria-label="Photo 2 of 2"><img src="photos/1488-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Remove the four Y1 tri-wing screws inside the battery bay, two near the top, two at the bottom.</li><li class="k-n" style="--m:#25AFF4"><strong style="color:#0077B6">Note:</strong> Keep the screws together. You’ll reuse all four in Step 12.</li><li class="nx"><button type="button" class="advance" data-next="step-3"><span>Done, next: Release the Shell Clips</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-3" data-n="3">
+  <header><div class="num"><span>Step</span><b>3</b></div><h3>Release the Shell Clips</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 3 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1489" data-i="0"><img src="photos/1489.webp" alt="Blue opening pick pushed into the seam near the battery bay, with an arrow pointing along the seam toward the trigger end" decoding="async" width="1200" height="1200"><svg class="ar" viewBox="0 0 100 100" aria-hidden="true"><line x1="74" y1="62.5" x2="88" y2="61.5" stroke="#FF0000" marker-end="url(#ah-red)"/></svg></div><div class="ph hid" data-ph="1490" data-i="1"><img src="photos/1490.webp" alt="Pick held upright in the seam while the other hand holds the remote" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1491" data-i="2"><img src="photos/1491.webp" alt="Pick sliding along the seam, the two shells starting to separate" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1489" data-i="0" aria-label="Photo 1 of 3"><img src="photos/1489-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1490" data-i="1" aria-label="Photo 2 of 3"><img src="photos/1490-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1491" data-i="2" aria-label="Photo 3 of 3"><img src="photos/1491-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Insert an opening pick into the seam between the top and bottom shells, near the battery bay.</li><li class="k-b" style="--m:#0A0A0A">Push the pick straight down into the seam, pointing toward the bottom shell. Don’t hold it flat or at an angle.</li><li class="k-n" style="--m:#25AFF4"><strong style="color:#0077B6">Note:</strong> Pointing the pick down pushes the clips apart instead of prying against them, so they release without breaking.</li><li class="k-b" style="--m:#0A0A0A">Slide the pick along the seam toward the trigger end, in the direction of the arrow, to release the clips. Work down one side, then the other.</li><li class="k-c" style="--m:#FF0000"><strong style="color:#D00000"><svg class="wi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Caution:</strong> Go slowly around the trigger. The clips there are short and can snap if you twist the pick.</li><li class="nx"><button type="button" class="advance" data-next="step-4"><span>Done, next: Separate the Shells</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-4" data-n="4">
+  <header><div class="num"><span>Step</span><b>4</b></div><h3>Separate the Shells</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 4 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1493" data-i="0"><img src="photos/1493.webp" alt="Top shell lifted away and set face down beside the bottom shell with the original board still seated" decoding="async" width="1200" height="1200"></div></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Lift the top shell straight up and set it face-down beside the bottom shell.</li><li class="k-c" style="--m:#FF0000"><strong style="color:#D00000"><svg class="wi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Caution:</strong> Keep the top shell’s button side facing the table as you lift it. If you flip it over, the loose buttons and membranes will fall out.</li><li class="k-b" style="--m:#0A0A0A">The original board stays seated in the bottom shell. The rubber button membranes and speaker stay in the top shell.</li><li class="nx"><button type="button" class="advance" data-next="step-5"><span>Done, next: Lift Out the Original Board</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-5" data-n="5">
+  <header><div class="num"><span>Step</span><b>5</b></div><h3>Lift Out the Original Board</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 5 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1494" data-i="0"><img src="photos/1494.webp" alt="Original Wii Remote board lifted out of the bottom shell by its edges, B trigger assembly attached underneath" decoding="async" width="1200" height="1200"></div></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Grip the board by its edges and lift it out of the bottom shell.</li><li class="k-b" style="--m:#0A0A0A">The B trigger assembly comes out attached to the underside of the board.</li><li class="nx"><button type="button" class="advance" data-next="step-6"><span>Done, next: Check the Top Shell</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-6" data-n="6">
+  <header><div class="num"><span>Step</span><b>6</b></div><h3>Check the Top Shell</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 6 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1507" data-i="0"><img src="photos/1507.webp" alt="Inside of the empty top shell showing the rubber button membranes and the speaker" decoding="async" width="1200" height="1200"></div></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Make sure every rubber button membrane is seated flat in the top shell.</li><li class="k-n" style="--m:#25AFF4"><strong style="color:#0077B6">Note:</strong> A membrane that has shifted will make its button feel mushy or not register at all.</li><li class="nx"><button type="button" class="advance" data-next="step-7"><span>Done, next: Seat the OpenMote Board</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-7" data-n="7">
+  <header><div class="num"><span>Step</span><b>7</b></div><h3>Seat the OpenMote Board</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 7 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1512" data-i="0"><img src="photos/1512.webp" alt="OpenMote board in the top shell with the six mounting holes circled in yellow over the shell posts" decoding="async" width="1200" height="1200"><i class="mk" style="left:26.2%;top:28%;width:7%;border-color:#FFD400"></i><i class="mk" style="left:42.5%;top:28.4%;width:7%;border-color:#FFD400"></i><i class="mk" style="left:26.8%;top:55.3%;width:7%;border-color:#FFD400"></i><i class="mk" style="left:41.6%;top:55.3%;width:7%;border-color:#FFD400"></i><i class="mk" style="left:27.3%;top:89.5%;width:7%;border-color:#FFD400"></i><i class="mk" style="left:40.7%;top:88.9%;width:7%;border-color:#FFD400"></i></div><div class="ph hid" data-ph="1513" data-i="1"><img src="photos/1513.webp" alt="OpenMote board being lowered into the top shell, USB-C port at the bottom end" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1511" data-i="2"><img src="photos/1511.webp" alt="OpenMote board resting flat on the button membranes inside the top shell" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1512" data-i="0" aria-label="Photo 1 of 3, with callouts" class="has-mk"><img src="photos/1512-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1513" data-i="1" aria-label="Photo 2 of 3"><img src="photos/1513-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1511" data-i="2" aria-label="Photo 3 of 3"><img src="photos/1511-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Line up the OpenMote board with the top shell, USB-C port at the bottom end.</li><li class="k-b" style="--m:#0A0A0A">Lower the board in and press gently along its length until it sits flat on the membranes.</li><li class="k-a" style="--m:#FFD400"><strong style="color:#8A6D00">Alignment:</strong> Line up the six holes on the board with the posts in the shell, circled in yellow.</li><li class="k-n" style="--m:#25AFF4"><strong style="color:#0077B6">Note:</strong> The board should drop in without force. If it rocks, lift it out and re-check the membranes.</li><li class="nx"><button type="button" class="advance" data-next="step-8"><span>Done, next: Fit the B Trigger Bracket</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-8" data-n="8">
+  <header><div class="num"><span>Step</span><b>8</b></div><h3>Fit the B Trigger Bracket</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 8 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1516" data-i="0"><img src="photos/1516.webp" alt="Bracket on the board with its two holes circled in yellow over the matching board holes" decoding="async" width="1200" height="1200"><i class="mk" style="left:41.7%;top:47.3%;width:6%;border-color:#FFD400"></i><i class="mk" style="left:55.6%;top:47.9%;width:6%;border-color:#FFD400"></i></div><div class="ph hid" data-ph="1515" data-i="1"><img src="photos/1515.webp" alt="White B trigger bracket held above the top end of the board" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1517" data-i="2"><img src="photos/1517.webp" alt="Bracket pressed down flat over the top end of the board" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1516" data-i="0" aria-label="Photo 1 of 3, with callouts" class="has-mk"><img src="photos/1516-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1515" data-i="1" aria-label="Photo 2 of 3"><img src="photos/1515-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1517" data-i="2" aria-label="Photo 3 of 3"><img src="photos/1517-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Take the white B trigger bracket from your kit.</li><li class="k-b" style="--m:#0A0A0A">Place it over the top end of the board, posts facing up, and press it down until it sits flat.</li><li class="k-a" style="--m:#FFD400"><strong style="color:#8A6D00">Alignment:</strong> Line up the two holes on the bracket with the two holes on the board, circled in yellow, before you press it down.</li><li class="nx"><button type="button" class="advance" data-next="step-9"><span>Done, next: Install the B Button</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-9" data-n="9">
+  <header><div class="num"><span>Step</span><b>9</b></div><h3>Install the B Button</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 9 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1518" data-i="0"><img src="photos/1518.webp" alt="B button held with the rounded face up and the half-moon tab pointing toward the ESP32 chip" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1519" data-i="1"><img src="photos/1519.webp" alt="B button dropped into the round opening on the bracket, sitting flush" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1518" data-i="0" aria-label="Photo 1 of 2"><img src="photos/1518-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1519" data-i="1" aria-label="Photo 2 of 2"><img src="photos/1519-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Hold the B button with the rounded button face pointing up, away from the board.</li><li class="k-b" style="--m:#0A0A0A">Turn it so the half-moon flange points toward the ESP32 chip, away from the trigger end of the remote.</li><li class="k-b" style="--m:#0A0A0A">Drop it into the round opening on the bracket so it sits flush.</li><li class="nx"><button type="button" class="advance" data-next="step-10"><span>Done, next: Insert the 3D Printed Port Cover</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-10" data-n="10">
+  <header><div class="num"><span>Step</span><b>10</b></div><h3>Insert the 3D Printed Port Cover</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 10 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1521" data-i="0"><img src="photos/1521.webp" alt="Small 3D printed port cover held next to the opening at the bottom end of the bottom shell" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1520" data-i="1"><img src="photos/1520.webp" alt="Port cover pressed into the bottom shell around the USB-C opening" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1522" data-i="2"><img src="photos/1522.webp" alt="Bottom shell end with the port cover in place, the gap around the USB-C port filled" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1521" data-i="0" aria-label="Photo 1 of 3"><img src="photos/1521-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1520" data-i="1" aria-label="Photo 2 of 3"><img src="photos/1520-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1522" data-i="2" aria-label="Photo 3 of 3"><img src="photos/1522-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Take the 3D printed port cover and press it into the opening at the bottom end of the bottom shell.</li><li class="k-b" style="--m:#0A0A0A">The cover fills the gap around the USB-C port so the end of the remote looks clean.</li><li class="k-n" style="--m:#25AFF4"><strong style="color:#0077B6">Note:</strong> No printer? Download the STL and order it from any print service.</li><li class="dl"><a class="btn" href="port-cover.stl" download><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Download the port cover STL</a></li><li class="nx"><button type="button" class="advance" data-next="step-11"><span>Done, next: Close the Shell</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-11" data-n="11">
+  <header><div class="num"><span>Step</span><b>11</b></div><h3>Close the Shell</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 11 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1523" data-i="0"><img src="photos/1523.webp" alt="Bottom shell lowered onto the top shell with the reset button hole circled in yellow and a line to the reset button on the board" decoding="async" width="1200" height="1200"><i class="mk" style="left:52.1%;top:74%;width:9%;border-color:#FFD400"></i><i class="mk" style="left:62.7%;top:73.6%;width:5%;border-color:#FFD400"></i><svg class="ar" viewBox="0 0 100 100" aria-hidden="true"><line x1="56.6" y1="73.7" x2="60.2" y2="73.6" stroke="#FFD400"/></svg></div><div class="ph hid" data-ph="1525" data-i="1"><img src="photos/1525.webp" alt="Shells brought together starting at the trigger end" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1527" data-i="2"><img src="photos/1527.webp" alt="Thumbs squeezing the shells shut at the top end, one clip at a time" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1528" data-i="3"><img src="photos/1528.webp" alt="Seam closed along one side of the remote" loading="lazy" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1526" data-i="4"><img src="photos/1526.webp" alt="Closed remote with the seam flush all the way around" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1523" data-i="0" aria-label="Photo 1 of 5, with callouts" class="has-mk"><img src="photos/1523-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1525" data-i="1" aria-label="Photo 2 of 5"><img src="photos/1525-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1527" data-i="2" aria-label="Photo 3 of 5"><img src="photos/1527-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1528" data-i="3" aria-label="Photo 4 of 5"><img src="photos/1528-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1526" data-i="4" aria-label="Photo 5 of 5"><img src="photos/1526-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Lower the bottom shell onto the top shell, starting at the trigger end.</li><li class="k-b" style="--m:#0A0A0A">Check that the B button is seated on top of its membrane button before you close the shell.</li><li class="k-a" style="--m:#FFD400"><strong style="color:#8A6D00">Alignment:</strong> The reset button on the board fits through the round hole in the bottom shell, circled in yellow. Line them up as you close the shell.</li><li class="k-b" style="--m:#0A0A0A">Squeeze the top of the remote where the two clips are, one clip at a time, until each one snaps shut.</li><li class="k-c" style="--m:#FF0000"><strong style="color:#D00000"><svg class="wi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Caution:</strong> Don’t force it. If the seam won’t close, open the shell and check the bracket and B button are seated.</li><li class="nx"><button type="button" class="advance" data-next="step-12"><span>Done, next: Reinstall the Screws</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-12" data-n="12">
+  <header><div class="num"><span>Step</span><b>12</b></div><h3>Reinstall the Screws</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 12 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1529" data-i="0"><img src="photos/1529.webp" alt="Reassembled remote face down with the four screw holes circled in red and the screws beside it" decoding="async" width="1200" height="1200"><i class="mk" style="left:53.4%;top:49.1%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:66.2%;top:49.1%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:54.3%;top:82.2%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:67.5%;top:82.2%;width:9%;border-color:#FF0000"></i></div><div class="ph hid" data-ph="1530" data-i="1"><img src="photos/1530.webp" alt="Screwdriver reinstalling one of the four tri-wing screws, holes circled in red" loading="lazy" decoding="async" width="1200" height="1200"><i class="mk" style="left:43.9%;top:46.6%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:56.4%;top:46.6%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:43.5%;top:77.3%;width:9%;border-color:#FF0000"></i><i class="mk" style="left:56.5%;top:77.3%;width:9%;border-color:#FF0000"></i></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1529" data-i="0" aria-label="Photo 1 of 2, with callouts" class="has-mk"><img src="photos/1529-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1530" data-i="1" aria-label="Photo 2 of 2, with callouts" class="has-mk"><img src="photos/1530-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Reinstall the four tri-wing screws you removed in Step 2, in the locations circled.</li><li class="k-c" style="--m:#FF0000"><strong style="color:#D00000"><svg class="wi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Caution:</strong> Stop as soon as each screw is snug. Overtightening can strip the plastic posts.</li><li class="nx"><button type="button" class="advance" data-next="step-13"><span>Done, next: Connect the Battery</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-13" data-n="13">
+  <header><div class="num"><span>Step</span><b>13</b></div><h3>Connect the Battery</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 13 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1531_zoom" data-i="0"><img src="photos/1531_zoom.webp" alt="Close-up of the battery socket. The black negative wire goes in the top pin, marked Negative, and the red positive wire in the bottom pin, marked Positive" decoding="async" width="1200" height="1200"><svg class="ar" viewBox="0 0 100 100" aria-hidden="true"><line x1="63" y1="30" x2="51" y2="47" stroke="#0A0A0A" marker-end="url(#ah-ink)"/><line x1="63" y1="72" x2="51" y2="53.5" stroke="#FF0000" marker-end="url(#ah-red)"/></svg><b class="tag r" style="left:63%;top:28%;background:#0A0A0A">Negative −</b><b class="tag r" style="left:63%;top:74%;background:#FF0000">Positive +</b></div><div class="ph hid" data-ph="1531" data-i="1"><img src="photos/1531.webp" alt="Battery connector being plugged into the socket at the bottom of the battery bay, with Negative on top and Positive below marked by arrows" loading="lazy" decoding="async" width="1200" height="1200"><i class="mk" style="left:44.5%;top:63.6%;width:9%;border-color:#FF0000"></i><svg class="ar" viewBox="0 0 100 100" aria-hidden="true"><line x1="55" y1="55" x2="47.2" y2="62.4" stroke="#0A0A0A" marker-end="url(#ah-ink)"/><line x1="55" y1="72" x2="47.2" y2="64.9" stroke="#FF0000" marker-end="url(#ah-red)"/></svg><b class="tag r" style="left:55%;top:53%;background:#0A0A0A">Negative −</b><b class="tag r" style="left:55%;top:74%;background:#FF0000">Positive +</b></div><div class="ph hid" data-ph="1532" data-i="2"><img src="photos/1532.webp" alt="Battery set into the bay with the wires tucked to the side" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1531_zoom" data-i="0" aria-label="Photo 1 of 3, with callouts" class="has-mk"><img src="photos/1531_zoom-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1531" data-i="1" aria-label="Photo 2 of 3, with callouts" class="has-mk"><img src="photos/1531-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1532" data-i="2" aria-label="Photo 3 of 3"><img src="photos/1532-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Plug the battery connector into the socket at the bottom of the battery bay.</li><li class="k-b" style="--m:#0A0A0A">Negative (black wire) goes on top. Positive (red wire) goes on the bottom.</li><li class="k-c" style="--m:#FF0000"><strong style="color:#D00000"><svg class="wi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Caution:</strong> Don’t install the battery backwards. Match the wires to the Negative and Positive labels in the photo before you plug it in. Backwards will damage the board.</li><li class="k-b" style="--m:#0A0A0A">Tuck the wires to the side and set the battery into the bay.</li><li class="k-c" style="--m:#FF0000"><strong style="color:#D00000"><svg class="wi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>Caution:</strong> Never puncture, bend or crush a lithium battery.</li><li class="nx"><button type="button" class="advance" data-next="step-14"><span>Done, next: Replace the Battery Cover</span> &rarr;</button></li></ul>
+  </div>
+</article>
+<article class="step" id="step-14" data-n="14">
+  <header><div class="num"><span>Step</span><b>14</b></div><h3>Replace the Battery Cover</h3>
+    <button type="button" class="done" aria-pressed="false" aria-label="Mark step 14 done"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Mark done</span></button></header>
+  <div class="body">
+    <div class="media"><div class="frame" data-zoom role="button" tabindex="0" aria-label="Enlarge photo"><div class="ph" data-ph="1533" data-i="0"><img src="photos/1533.webp" alt="Battery cover sliding back on" decoding="async" width="1200" height="1200"></div><div class="ph hid" data-ph="1535" data-i="1"><img src="photos/1535.webp" alt="Finished remote, back side up, with the battery cover clicked shut" loading="lazy" decoding="async" width="1200" height="1200"></div></div><div class="thumbs"><button type="button" aria-pressed="true" data-ph="1533" data-i="0" aria-label="Photo 1 of 2"><img src="photos/1533-t.webp" alt="" loading="lazy" width="400" height="400"></button><button type="button" aria-pressed="false" data-ph="1535" data-i="1" aria-label="Photo 2 of 2"><img src="photos/1535-t.webp" alt="" loading="lazy" width="400" height="400"></button></div></div>
+    <ul class="lines"><li class="k-b" style="--m:#0A0A0A">Slide the battery cover back on until it clicks.</li><li class="k-b" style="--m:#0A0A0A">Your OpenMote is ready. Charge it over USB-C before first use.</li><li class="nx"><button type="button" class="advance" data-next="done"><span>Done, finish</span> &rarr;</button></li></ul>
+  </div>
+</article>
+  <section class="end" id="done">
+    <div class="col"><div class="eyebrow">Conclusion</div><h2>Done. Your OpenMote is in.</h2>
+      <p>Nice work. Charge it over USB-C before first use. Setup and programming guides are next. Until they are up, ask in the Discord.</p>
+      <div class="btns"><a class="btn" href="https://openmote.io/discord" target="_blank" rel="noopener">Join the Discord</a><a class="btn ghost" href="#step-1">Back to Step 1</a></div>
+    </div>
+    <div class="pic"><img src="photos/1534.webp" alt="A closed Wii Remote with OpenMote inside, button side up. From the outside it looks like the original." loading="lazy" width="1200" height="1200"></div>
+  </section>
+  <footer class="foot"><nav class="fl"><a href="https://openmote.io">openmote.io</a> &middot; <a href="https://www.instagram.com/openmote.io/">Instagram</a> &middot; <a href="https://openmote.io/discord">Discord</a></nav>&copy; 2026 Hat &amp; Hammer &middot; Los Angeles<div class="tm">Wii and Wii Remote are trademarks of Nintendo. OpenMote is an independent product from Hat &amp; Hammer and is not affiliated with, endorsed by, or sponsored by Nintendo.</div></footer>
+</main>
+<div class="resume"><span>You were partway through.</span><a href="#step-1">Resume</a><button type="button" aria-label="Dismiss">&#x2715;</button></div>
+<div class="lb" role="dialog" aria-modal="true" aria-label="Enlarged photo"><button class="x" type="button" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><div class="stage"></div></div>
+<script>
+(function(){
+  var KEY='om-guide-wiimote-done', N=14, done=[], passed=0, opener=null;
+  try{done=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
+  var bar=document.querySelector('.top .bar i'), cnt=document.querySelector('.prog .count'), st=document.getElementById('st');
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
+  function paint(){
+    document.querySelectorAll('.step').forEach(function(s){var n=+s.dataset.n;var on=done.indexOf(n)>-1;s.classList.toggle('is-done',on);s.querySelector('.done').setAttribute('aria-pressed',on);});
+    document.querySelectorAll('.jump a').forEach(function(a,i){a.classList.toggle('is-done',done.indexOf(i+1)>-1);a.classList.toggle('is-current',i===Math.max(0,Math.min(passed,N)-1));});
+    var shown=Math.max(passed,done.length);
+    bar.style.width=(shown/N*100)+'%';
+    cnt.textContent=(shown>=N?'All '+N+' steps':'Step '+Math.max(shown,1)+' of '+N);
+  }
+  function onScroll(){var line=70+window.innerHeight*0.35;var n=0;for(var i=1;i<=N;i++){var el=document.getElementById('step-'+i);if(el&&el.getBoundingClientRect().top<line)n=i;}if(n!==passed){passed=n;paint();}}
+  window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);
+  function mark(n,on){var i=done.indexOf(n);if(on&&i<0)done.push(n);if(!on&&i>-1)done.splice(i,1);save();paint();if(st)st.textContent=done.length+' of '+N+' steps done';}
+  document.querySelectorAll('.step .done').forEach(function(b){b.addEventListener('click',function(){var n=+b.closest('.step').dataset.n;mark(n,done.indexOf(n)<0);});});
+  document.querySelectorAll('.advance').forEach(function(b){b.addEventListener('click',function(){var n=+b.closest('.step').dataset.n;mark(n,true);var t=document.getElementById(b.dataset.next);if(t)t.scrollIntoView();});});
+  document.querySelectorAll('.thumbs').forEach(function(t){
+    t.addEventListener('pointerdown',function(e){var b=e.target.closest('button');if(b){var im=new Image();im.src='photos/'+b.dataset.ph+'.webp';}});
+    t.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var step=t.closest('.step');step.querySelectorAll('.ph').forEach(function(p){p.classList.toggle('hid',p.dataset.ph!==b.dataset.ph)});t.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});});
+  });
+  var lb=document.querySelector('.lb'), stage=lb.querySelector('.stage'), x=lb.querySelector('.x');
+  function open(f){var ph=f.querySelector('.ph:not(.hid)');if(!ph)return;stage.replaceChildren(ph.cloneNode(true));opener=f;lb.classList.add('on');document.body.style.overflow='hidden';x.focus();}
+  function close(){if(!lb.classList.contains('on'))return;lb.classList.remove('on');document.body.style.overflow='';stage.replaceChildren();if(opener)opener.focus();}
+  document.querySelectorAll('[data-zoom]').forEach(function(f){f.addEventListener('click',function(){open(f)});f.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(f);}});});
+  lb.addEventListener('click',function(e){if(e.target===lb||e.target===x||x.contains(e.target))close();});
+  lb.addEventListener('keydown',function(e){if(e.key==='Tab'){e.preventDefault();x.focus();}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  var wl;function wake(){if('wakeLock' in navigator)navigator.wakeLock.request('screen').then(function(l){wl=l}).catch(function(){})}
+  document.addEventListener('pointerdown',function f(){wake();document.removeEventListener('pointerdown',f)});
+  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'&&wl)wake()});
+  var rs=document.querySelector('.resume');
+  if(rs&&done.length&&done.length<N&&!location.hash){var k=1;while(done.indexOf(k)>-1&&k<N)k++;rs.querySelector('a').href='#step-'+k;rs.querySelector('a').textContent='Resume at Step '+k;rs.classList.add('on');
+    rs.querySelector('a').addEventListener('click',function(){rs.classList.remove('on')});rs.querySelector('button').addEventListener('click',function(){rs.classList.remove('on')});
+    window.addEventListener('scroll',function g(){if(window.scrollY>300){rs.classList.remove('on');window.removeEventListener('scroll',g);}},{passive:true});}
+  onScroll(); paint();
+})();
+</script>
+</body>
+</html>

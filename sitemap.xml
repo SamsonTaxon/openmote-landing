@@ -5,4 +5,14 @@
     <lastmod>2026-08-07</lastmod>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://openmote.io/guides/</loc>
+    <lastmod>2026-10-06</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://openmote.io/guides/assembly/</loc>
+    <lastmod>2026-10-06</lastmod>
+    <priority>0.7</priority>
+  </url>
 </urlset>

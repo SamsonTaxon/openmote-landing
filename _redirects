@@ -3,3 +3,4 @@
 # Cloudflare strips .html and the rule loops infinitely.
 
 /discord  https://discord.gg/vdjjZ4ygR3  302
+/assembly  /guides/assembly/  302
